@@ -12,8 +12,12 @@ class Ocean {
         }
     }
 
-    public Square[][] getTable() {
+    public Square[][] getOceanBoard() {
         return this.oceanBoard;
+    }
+
+    public int getOceanSize(){
+        return this.oceanSize;
     }
 
     public void placeOnTable(Ship newShip) {
