@@ -36,4 +36,10 @@ class Ship{
         return this.orientation;
     }
 
+    public ArrayList<Square> getListOfFields(){
+        return this.listOfFields;
+    }
+
+
+
 }

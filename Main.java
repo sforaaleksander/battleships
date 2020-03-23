@@ -44,6 +44,7 @@ class Main {
             int length = ships.get(key);
             Ship newShip = new Ship(length, userOrientation, posX, posY);
             ocean.placeOnTable(newShip);
+            ocean.setFieldsUnavailable();
         }
         System.out.println(ocean.toString());
     }
