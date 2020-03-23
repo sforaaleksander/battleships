@@ -3,9 +3,21 @@ import java.util.Map;
 
 class Square{
     private String status;
+    private int posX;
+    private int posY;
 
-    Square(){
+    Square(int posX, int posY){
     this.status = "EMPTY";
+    this.posX = posX;
+    this.posY = posY;
+    }
+
+    public int getPosX(){
+        return this.posX;
+    }
+
+    public int getPosY(){
+        return this.posY;
     }
 
     public String getStatus(){

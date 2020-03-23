@@ -42,7 +42,7 @@ class Main {
             int posX = gatherIntInput("Type in the X position.");
             int posY = gatherIntInput("Type in the Y position.");
             int length = ships.get(key);
-            Ship newShip = new Ship(length, userOrientation, posY, posX);
+            Ship newShip = new Ship(length, userOrientation, posX, posY);
             ocean.placeOnTable(newShip);
         }
         System.out.println(ocean.toString());
