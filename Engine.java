@@ -1,6 +1,6 @@
 class Engine {
 
-    private static boolean checkPlacement(Ship theShip, Square[][] oceanBoard) {
+    public static boolean checkPlacement(Ship theShip, Square[][] oceanBoard) {
             if (theShip.getOrientation().equals("HORIZONTAL")) {
                 if (theShip.getPosX() == 0){
                 for (int i = theShip.getPosX(); i < theShip.getPosX() + theShip.getLength() + 1; i++) {
@@ -23,11 +23,13 @@ class Engine {
         return true;}
 
 
-    private static void checkIf0to10(){
-
+    public static boolean checkIfAvailable(Square field){
+        if (field.getIsAvailable()){
+            return true;
+        } return false;
     }
 
-    private static boolean checkIfFitsOnMap(Ship theShip, Square[][] table) {
+    public static boolean checkIfFitsOnMap(Ship theShip, Square[][] table) {
         if (theShip.getOrientation().equals("HORIZONTAL")) {
             if (theShip.getLength() + theShip.getPosX() < table.length && theShip.getPosX() >= 0) {
                 return true;

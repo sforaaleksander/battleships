@@ -29,20 +29,22 @@ class Ocean {
     }
 
     public void placeOnTable(Ship newShip) {
+        if (Engine.checkIfAvailable(this.getTable()[newShip.getPosX()][newShip.getPosY()]) && Engine.checkIfFitsOnMap(newShip, this.getTable())){
+
         if (newShip.getOrientation().equals("HORIZONTAL")) {
             for (int i = newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i++) {
                 oceanBoard[newShip.getPosY()][i].changeStatus("SHIP");
                 newShip.addSquareToList(new Square(i, newShip.getPosY()));
                 this.addToShipSquares(new Square(i, newShip.getPosY()));
-            }
-        } else {
+            }}
+         else {
             for (int i = newShip.getPosY(); i < newShip.getPosY() + newShip.getLength(); i++) {
                 oceanBoard[i][newShip.getPosX()].changeStatus("SHIP");
                 newShip.addSquareToList(new Square(newShip.getPosX(), i));
                 this.addToShipSquares(new Square(newShip.getPosX(), i));
             }
         } 
-    }
+    }}
 
     public String toString() {
         String output = " ";
