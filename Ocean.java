@@ -1,31 +1,29 @@
-import java.util.Arrays;
-
 class Ocean {
     private int oceanSize;
-    private Square[][] theOcean;
+    private Square[][] oceanBoard;
 
     Ocean(int oceanSize) {
         this.oceanSize = oceanSize;
-        theOcean = new Square[oceanSize][oceanSize];
+        oceanBoard = new Square[oceanSize][oceanSize];
         for (int i = 0; i < oceanSize; i++) {
             for (int j = 0; j < oceanSize; j++) {
-                theOcean[i][j] = new Square();
+                oceanBoard[i][j] = new Square();
             }
         }
     }
 
     public Square[][] getTable() {
-        return this.theOcean;
+        return this.oceanBoard;
     }
 
     public void placeOnTable(Ship newShip) {
         if (newShip.getOrientation().equals("HORIZONTAL")) {
             for (int i = newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i++) {
-                theOcean[newShip.getPosY()][i].mark();
+                oceanBoard[newShip.getPosY()][i].changeStatus("SHIP");
             }
         } else {
             for (int i = newShip.getPosY(); i < newShip.getPosY() + newShip.getLength(); i++) {
-                theOcean[i][newShip.getPosX()].mark();
+                oceanBoard[i][newShip.getPosX()].changeStatus("SHIP");
             }
 
         }
@@ -41,7 +39,7 @@ class Ocean {
         for (int i = 0; i < this.oceanSize; i++) {
             output += letters[i];
             for (int j = 0; j < this.oceanSize; j++) {
-                output += theOcean[i][j].toString();
+                output += oceanBoard[i][j].toString();
             }
             output += "\n";
         }

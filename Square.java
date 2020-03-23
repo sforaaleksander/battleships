@@ -1,24 +1,31 @@
+import java.util.HashMap;
+import java.util.Map;
+
 class Square{
-    private boolean marked;
+    private String status;
 
     Square(){
-    this.marked = false;
+    this.status = "EMPTY";
     }
 
-    public void mark(){
-        this.marked = true;
+    public String getStatus(){
+        return this.status;
     }
 
-    public void unmark(){
-        this.marked = false;
+    public void changeStatus(String status){
+        this.status = status;
     }
-
 
     public String toString(){
-        String emptySquare = " \u25A1";
-        String fullSquare = " \u25A3";
-        if (this.marked){
-            return fullSquare;
-        } return emptySquare;
+        String emptyMark = " \u25A1";
+        String shipMark = " \u25A3";
+        String hitMark = " \u2612";
+        String missedMark = " \u22A1";  // " \u29C7"; 
+        Map<String, String> squareGraphic = new HashMap<>();
+        squareGraphic.put("EMPTY", emptyMark);
+        squareGraphic.put("SHIP", shipMark);
+        squareGraphic.put("HIT", hitMark);
+        squareGraphic.put("MISSED", missedMark);
+        return squareGraphic.get(this.getStatus());
     }
 }
