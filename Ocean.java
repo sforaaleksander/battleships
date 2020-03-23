@@ -13,7 +13,6 @@ class Ocean{
         }
     }
 
-
     public Square[][] getTable(){
         return this.theOcean;
     }
