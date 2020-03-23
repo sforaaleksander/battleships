@@ -23,8 +23,14 @@ class Ocean{
         for (int i=newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i ++){
             theOcean[newShip.getPosY()][i].mark();
         }
+    } else{
+        for (int i = newShip.getPosY(); i < newShip.getPosY() + newShip.getLength(); i ++){
+            theOcean[i][newShip.getPosX()].mark();
+        }
+
+        }
     }
-    }
+    
 
 
     public String toString(){
