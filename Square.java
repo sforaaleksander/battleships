@@ -3,13 +3,23 @@ import java.util.Map;
 
 class Square{
     private String status;
+    private boolean isAvailable;
     private int posX;
     private int posY;
 
     Square(int posX, int posY){
     this.status = "EMPTY";
+    this.isAvailable = true;
     this.posX = posX;
     this.posY = posY;
+    }
+
+    public boolean getIsAvailable(){
+        return this.isAvailable;
+    }
+
+    public void setUnavailable(){
+        this.isAvailable = false;
     }
 
     public int getPosX(){

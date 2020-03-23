@@ -1,6 +1,10 @@
+import java.util.ArrayList;
+
 class Ocean {
     private int oceanSize;
     private Square[][] oceanBoard;
+    private ArrayList<Square> allShipSquares;
+    private ArrayList<Square> allUnavailableSquares;
 
     Ocean(int oceanSize) {
         this.oceanSize = oceanSize;
@@ -16,19 +20,28 @@ class Ocean {
         return this.oceanBoard;
     }
 
+    public ArrayList<Square> getAllShipSquares(){
+        return this.allShipSquares;
+    }
+
+    public void addToShipSquares(Square field){
+        this.allShipSquares.add(field);
+    }
+
     public void placeOnTable(Ship newShip) {
         if (newShip.getOrientation().equals("HORIZONTAL")) {
             for (int i = newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i++) {
                 oceanBoard[newShip.getPosY()][i].changeStatus("SHIP");
                 newShip.addSquareToList(new Square(i, newShip.getPosY()));
+                this.addToShipSquares(new Square(i, newShip.getPosY()));
             }
         } else {
             for (int i = newShip.getPosY(); i < newShip.getPosY() + newShip.getLength(); i++) {
                 oceanBoard[i][newShip.getPosX()].changeStatus("SHIP");
                 newShip.addSquareToList(new Square(newShip.getPosX(), i));
+                this.addToShipSquares(new Square(newShip.getPosX(), i));
             }
-
-        }
+        } 
     }
 
     public String toString() {
@@ -46,6 +59,22 @@ class Ocean {
             output += "\n";
         }
         return output;
+    }
+
+
+    public void setFieldsUnavailable(){
+        for (Square element : getAllShipSquares()){
+            for (int i = -1; i < 2; i++){
+                for (int j = -1; j <2; j++){
+                    int x = element.getPosX() + j;
+                    int y = element.getPosY() + i;
+                    if (x >= 0 && x < 11 && y >= 0 && y < 11){
+                    this.getTable()[x][y].setUnavailable();
+                    }
+                }
+            }
+
+        }
     }
 
 }
