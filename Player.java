@@ -10,11 +10,16 @@ class Player {
     private boolean isHuman;
 
     Player(boolean isHuman) {
-        this.playerName = "Player";
+        this.playerName = createPlayerName();
         this.isHuman = isHuman;
         this.playerBoard = createPlayerBoard();
         this.boardOfShots = new Ocean(10);
         // listofships?
+    }
+
+    private String createPlayerName(){
+        String userName = Engine.gatherInput("Type in your name: ");
+        return userName;
     }
 
     private Ocean createPlayerBoard(){
