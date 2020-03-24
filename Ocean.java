@@ -9,10 +9,10 @@ class Ocean {
     Ocean(int oceanSize) {
         this.oceanSize = oceanSize;
         this.oceanBoard = initializeOceanBoard(oceanSize);
-        
+
     }
 
-    public Square[][] initializeOceanBoard(int oceanSize){
+    public Square[][] initializeOceanBoard(int oceanSize) {
         oceanBoard = new Square[oceanSize][oceanSize];
         allShipSquares = new ArrayList<>();
         for (int i = 0; i < oceanSize; i++) {
@@ -20,7 +20,8 @@ class Ocean {
                 oceanBoard[i][j] = new Square(j, i);
             }
         }
-    return oceanBoard;}
+        return oceanBoard;
+    }
 
     public Square[][] getOceanBoard() {
         return this.oceanBoard;
@@ -30,9 +31,9 @@ class Ocean {
         return this.oceanSize;
     };
 
-    public Square getSquareByPos(int posY, int posX){
+    public Square getSquareByPos(int posY, int posX) {
         return this.getOceanBoard()[posY][posX];
-    } 
+    }
 
     public ArrayList<Square> getAllShipSquares() {
         return this.allShipSquares;
@@ -42,7 +43,7 @@ class Ocean {
         this.allShipSquares.add(field);
     }
 
-    public void placeOnTable(Ship newShip) {
+    public boolean placeOnTable(Ship newShip) {
         if (Engine.checkIfAvailable(this.getOceanBoard()[newShip.getPosX()][newShip.getPosY()])
                 && Engine.checkIfFitsOnMap(newShip, this.getOceanBoard())) {
 
@@ -61,7 +62,9 @@ class Ocean {
                     this.addToShipSquares(field);
                 }
             }
-        }
+            return true;
+        } else
+            return false;
     }
 
     public String toString() {

@@ -24,11 +24,13 @@ class Player {
 
     private Ocean createPlayerBoard(){
         int oceanSize = 10;
+        boolean isPlaceOK = false;
         ArrayList<Ship> list = new ArrayList<>();
         Ocean ocean = new Ocean(oceanSize);
         for (String key : Main.ships.keySet()) {
+            do{
             System.out.println(ocean.getOceanBoard().toString());
-            System.out.println("Place the " + key + "ship on your board!");
+            System.out.println("Place the " + key + "ship on your board. The ships may not touch each other.");
             String userOrientation = Engine.gatherInput("Type [horizontal] or [vertical] for your ship placement.");
             String userLetter = Engine.gatherInput("Type in the [letter] for Y position.");
             int posY = Engine.fromLetterToNum(userLetter);
@@ -36,7 +38,8 @@ class Player {
             int length = Main.ships.get(key);
             Ship newShip = new Ship(length, userOrientation, posX, posY);
             list.add(newShip);
-            ocean.placeOnTable(newShip);
+            isPlaceOK = ocean.placeOnTable(newShip);
+            } while (!isPlaceOK);
             ocean.setFieldsUnavailable();
         }
         this.listOfShips = list.toArray(new Ship[list.size()]);
