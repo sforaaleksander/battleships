@@ -91,6 +91,16 @@ class Player {
         }
         
     }
+
+    public void displayScreen(){
+        String playerBoard = this.getPlayerBoard().getOceanBoard().toString();
+        String hitsBoard = this.getBoardOfShots().getOceanBoard().toString();
+        System.out.println(playerBoard);
+        System.out.println("\n\n\n");
+        System.out.println(hitsBoard);
+
+    }
+
     
 
 }
