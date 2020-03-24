@@ -73,7 +73,7 @@ class Game {
             boolean isAlive=true; //function checking if any player have 0 ships or all ships are destoryed
                     
 
-            int turn = newGame.getTurn();
+            int turn = getTurn();
             boolean switchPlayer = false;
             Player currentPlayer;
             Player opponentPlayer;
@@ -84,13 +84,13 @@ class Game {
 
                 if(switchPlayer == false){
                     switchPlayer =true;
-                    currentPlayer = newGame.getPlayerOne();
-                    opponentPlayer = newGame.getPlayerTwo();
+                    currentPlayer = getPlayerOne();
+                    opponentPlayer = getPlayerTwo();
                     turn++;
                 } else {
                     switchPlayer = false;
-                    currentPlayer = newGame.getPlayerTwo();
-                    opponentPlayer = newGame.getPlayerOne();
+                    currentPlayer = getPlayerTwo();
+                    opponentPlayer = getPlayerOne();
                 }
                 isAlive = Engine.areBothPlayersAlive(currentPlayer, opponentPlayer);
             
