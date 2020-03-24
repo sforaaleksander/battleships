@@ -40,9 +40,9 @@ class Game {
         boolean switchPlayer = false;
         Player currentPlayer;
         Player opponentPlayer;
-
+        
         while (isAlive) {
-            if (switchPlayer == false) {
+            if (!switchPlayer) {
                 switchPlayer = true;
                 currentPlayer = getPlayerOne();
                 opponentPlayer = getPlayerTwo();
@@ -52,8 +52,10 @@ class Game {
                 currentPlayer = getPlayerTwo();
                 opponentPlayer = getPlayerOne();
             }
-            currentPlayer.getPlayerBoard().getOceanBoard().toString();
-            currentPlayer.launchTheRocket(opponentPlayer);
+            
+            currentPlayer.displayScreen("");
+            String message = currentPlayer.launchTheRocket(opponentPlayer);
+            currentPlayer.displayScreen(message);
             isAlive = Engine.areBothPlayersAlive(currentPlayer, opponentPlayer);
 
         }

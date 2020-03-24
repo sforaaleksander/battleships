@@ -77,28 +77,30 @@ class Player {
         return this.isHuman;
     }
 
-    public boolean launchTheRocket(Player playerBeingShot){
+    public String launchTheRocket(Player playerBeingShot){
         String userLetter = Engine.gatherInput("Type in the letter field you want to hit.");
         int posY = Engine.fromLetterToNum(userLetter);
         int posX = Engine.gatherIntInput("Type in the number of the field.") - 1;
 
         if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())){
-            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("SHOT");
-            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("SHOT");
-            return true;
+            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
+            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
+            return "YOU HIT";
         } else{
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
-            return false;
+            return "YOU MISSED";
         }
         
     }
 
-    public void displayScreen(){
+    public void displayScreen(String message){
         String playerBoard = this.getPlayerBoard().toString();
         String hitsBoard = this.getBoardOfShots().toString();
         System.out.println(playerBoard);
         System.out.println("\n\n\n");
         System.out.println(hitsBoard);
+        System.out.println("\n");
+        System.out.println(message);
 
     }
 

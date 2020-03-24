@@ -90,8 +90,8 @@ class Ocean {
                 for (int j = -1; j < 2; j++) {
                     int x = element.getPosX() + j;
                     int y = element.getPosY() + i;
-                    if (x >= 0 && x < 11 && y >= 0 && y < 11) {
-                        this.getOceanBoard()[x][y].setUnavailable();
+                    if (x >= 0 && x < 10 && y >= 0 && y < 10) {
+                        this.getOceanBoard()[y][x].setUnavailable();
                     }
                 }
             }
