@@ -14,14 +14,14 @@ class Engine {
         return userInput;
     }
 
-
-    public static boolean checkIfAvailable(Square field){
-        if (field.getIsAvailable()){
+    public static boolean checkIfAvailable(Square field) {
+        if (field.getIsAvailable()) {
             return true;
-        } return false;
+        }
+        return false;
     }
 
-    public static int fromLetterToNum(String letter){
+    public static int fromLetterToNum(String letter) {
         Map<String, Integer> letterNums = new HashMap<>();
         letterNums.put("A", 0);
         letterNums.put("B", 1);
@@ -50,36 +50,47 @@ class Engine {
         }
     }
 
-    public static boolean isFieldAShip(int posX, int posY, Square[][] board){
-        if (board[posY][posX].getStatus().equals("SHIP")){
-        return true;
-    } return false;
+    public static boolean isFieldAShip(int posX, int posY, Square[][] board) {
+        if (board[posY][posX].getStatus().equals("SHIP")) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean areBothPlayersAlive(Player player1, Player player2) {
+        for (Square element1 : player1.getPlayerBoard().getAllShipSquares()) {
+            if (element1.getStatus().equals("SHIP")) {
+                for (Square element2 : player2.getPlayerBoard().getAllShipSquares()) {
+                    if (element2.getStatus().equals("SHIP")) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
-}
-
-
-
-
-
 
 // public static boolean checkPlacement(Ship theShip, Square[][] oceanBoard) {
-//     if (theShip.getOrientation().equals("HORIZONTAL")) {
-//         if (theShip.getPosX() == 0){
-//         for (int i = theShip.getPosX(); i < theShip.getPosX() + theShip.getLength() + 1; i++) {
-//             if (oceanBoard[theShip.getPosY()][i].getStatus().equals("SHIP")){
-//                 return false;
-//             }
-//             if (oceanBoard[theShip.getPosY()][i].getStatus().equals("SHIP")){
-//                 return false;
-//             }
-//         }
-//     }
-//     } else {
-//         for (int i = theShip.getPosY(); i < theShip.getPosY() + theShip.getLength(); i++) {
-//             if (oceanBoard[i][theShip.getPosX()].getStatus().equals("SHIP")){
-//                 return false;
-//             };
-//         }
+// if (theShip.getOrientation().equals("HORIZONTAL")) {
+// if (theShip.getPosX() == 0){
+// for (int i = theShip.getPosX(); i < theShip.getPosX() + theShip.getLength() +
+// 1; i++) {
+// if (oceanBoard[theShip.getPosY()][i].getStatus().equals("SHIP")){
+// return false;
+// }
+// if (oceanBoard[theShip.getPosY()][i].getStatus().equals("SHIP")){
+// return false;
+// }
+// }
+// }
+// } else {
+// for (int i = theShip.getPosY(); i < theShip.getPosY() + theShip.getLength();
+// i++) {
+// if (oceanBoard[i][theShip.getPosX()].getStatus().equals("SHIP")){
+// return false;
+// };
+// }
 
-//     }
+// }
 // return true;}
