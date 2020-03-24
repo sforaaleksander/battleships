@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.function.IntFunction;
 
 class Player {
     private String playerName;
@@ -29,12 +28,12 @@ class Player {
         Ocean ocean = new Ocean(oceanSize);
         for (String key : Main.ships.keySet()) {
             do{
-            System.out.println(ocean.getOceanBoard().toString());
+            System.out.println(ocean.toString());
             System.out.println("Place the " + key + "ship on your board. The ships may not touch each other.");
             String userOrientation = Engine.gatherInput("Type [horizontal] or [vertical] for your ship placement.");
             String userLetter = Engine.gatherInput("Type in the [letter] for Y position.");
             int posY = Engine.fromLetterToNum(userLetter);
-            int posX = Engine.gatherIntInput("Type in the [number] for X position.");
+            int posX = Engine.gatherIntInput("Type in the [number] for X position.") - 1;
             int length = Main.ships.get(key);
             Ship newShip = new Ship(length, userOrientation, posX, posY);
             list.add(newShip);
@@ -43,7 +42,7 @@ class Player {
             ocean.setFieldsUnavailable();
         }
         this.listOfShips = list.toArray(new Ship[list.size()]);
-        System.out.println(ocean.getOceanBoard().toString());
+        System.out.println(ocean.toString());
         return ocean;
     }
 
@@ -95,8 +94,8 @@ class Player {
     }
 
     public void displayScreen(){
-        String playerBoard = this.getPlayerBoard().getOceanBoard().toString();
-        String hitsBoard = this.getBoardOfShots().getOceanBoard().toString();
+        String playerBoard = this.getPlayerBoard().toString();
+        String hitsBoard = this.getBoardOfShots().toString();
         System.out.println(playerBoard);
         System.out.println("\n\n\n");
         System.out.println(hitsBoard);
