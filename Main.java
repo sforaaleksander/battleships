@@ -68,7 +68,11 @@ class Main {
         isRunning = false;
     }
 
-    public static void startPvPGame(){}
+    public static void startPvPGame(){
+        Game newGame= new Game(true, true);
+        newGame.pvpMode();
+
+    }
 
     public static void startPvCGame(){}
 
