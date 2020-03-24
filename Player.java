@@ -78,7 +78,7 @@ class Player {
         return this.isHuman;
     }
 
-    public void launchTheRocket(Player playerBeingShot){
+    public boolean launchTheRocket(Player playerBeingShot){
         String userLetter = Engine.gatherInput("Type in the letter field you want to hit.");
         int posY = Engine.fromLetterToNum(userLetter);
         int posX = Engine.gatherIntInput("Type in the number of the field.") - 1;
@@ -86,8 +86,10 @@ class Player {
         if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())){
             playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("SHOT");
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("SHOT");
+            return true;
         } else{
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
+            return false;
         }
         
     }
