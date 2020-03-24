@@ -30,6 +30,10 @@ class Ocean {
         return this.oceanSize;
     };
 
+    public Square getSquareByPos(int posY, int posX){
+        return this.getOceanBoard()[posY][posX];
+    } 
+
     public ArrayList<Square> getAllShipSquares() {
         return this.allShipSquares;
     }
@@ -44,15 +48,17 @@ class Ocean {
 
             if (newShip.getOrientation().equals("HORIZONTAL")) {
                 for (int i = newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i++) {
-                    oceanBoard[newShip.getPosY()][i].changeStatus("SHIP");
-                    newShip.addSquareToList(new Square(i, newShip.getPosY()));
-                    this.addToShipSquares(new Square(i, newShip.getPosY()));
+                    this.getOceanBoard()[newShip.getPosY()][i].changeStatus("SHIP");
+                    Square field = this.getSquareByPos(i, newShip.getPosY());
+                    newShip.addSquareToList(field);
+                    this.addToShipSquares(field);
                 }
             } else {
                 for (int i = newShip.getPosY(); i < newShip.getPosY() + newShip.getLength(); i++) {
-                    oceanBoard[i][newShip.getPosX()].changeStatus("SHIP");
-                    newShip.addSquareToList(new Square(newShip.getPosX(), i));
-                    this.addToShipSquares(new Square(newShip.getPosX(), i));
+                    this.getOceanBoard()[i][newShip.getPosX()].changeStatus("SHIP");
+                    Square field = this.getSquareByPos(newShip.getPosX(), i);
+                    newShip.addSquareToList(field);
+                    this.addToShipSquares(field);
                 }
             }
         }
