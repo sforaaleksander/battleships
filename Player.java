@@ -29,11 +29,13 @@ class Player {
         for (String key : Main.ships.keySet()) {
             do{
             System.out.println(ocean.toString());
-            System.out.println("Place the " + key + "ship on your board. The ships may not touch each other.");
-            String userOrientation = Engine.gatherInput("Type [horizontal] or [vertical] for your ship placement.");
-            String userLetter = Engine.gatherInput("Type in the [letter] for Y position.");
+            System.out.println("Place the " + key + " ship on your board. The ship's length is " + Main.ships.get(key) + ".");
+            System.out.println("The ships may not touch each other.");
+            String userOrientation = Engine.gatherInput("Type [h] for horizontal or [v] for vertical for your ship placement.");
+            String userPosition = Engine.gatherInput("Type the position. (eg. F3)");
+            char userLetter = userPosition.charAt(0);
             int posY = Engine.fromLetterToNum(userLetter);
-            int posX = Engine.gatherIntInput("Type in the [number] for X position.") - 1;
+            int posX =  Integer.parseInt(userPosition.substring(1)) - 1;
             int length = Main.ships.get(key);
             Ship newShip = new Ship(length, userOrientation, posX, posY);
             list.add(newShip);
@@ -78,9 +80,10 @@ class Player {
     }
 
     public String launchTheRocket(Player playerBeingShot){
-        String userLetter = Engine.gatherInput("Type in the letter field you want to hit.");
+        String userPosition = Engine.gatherInput("Type the field to shoot at. (eg. F3)");
+        char userLetter = userPosition.charAt(0);
         int posY = Engine.fromLetterToNum(userLetter);
-        int posX = Engine.gatherIntInput("Type in the number of the field.") - 1;
+        int posX =  Integer.parseInt(userPosition.substring(1))-1;
 
         if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())){
             playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");

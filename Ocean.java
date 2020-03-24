@@ -47,7 +47,7 @@ class Ocean {
         if (Engine.checkIfAvailable(this.getOceanBoard()[newShip.getPosX()][newShip.getPosY()])
                 && Engine.checkIfFitsOnMap(newShip, this.getOceanBoard())) {
 
-            if (newShip.getOrientation().equals("HORIZONTAL")) {
+            if (newShip.getOrientation().equals("H")) {
                 for (int i = newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i++) {
                     this.getOceanBoard()[newShip.getPosY()][i].changeStatus("SHIP");
                     Square field = this.getSquareByPos(i, newShip.getPosY());
