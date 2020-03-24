@@ -38,7 +38,7 @@ class Game {
 
     public void pvpMode(){
         init(true,true);
-        ChooseNameScreen();
+        //ChooseNameScreen();
 
         // function with 2 inputs and assigning to :
         // 
@@ -47,7 +47,7 @@ class Game {
         //newGame.getPlayerOne().setPlayerName(playerInput)
         //same for second
 
-        printWelcomeScreen();
+        // printWelcomeScreen(newGame);
 
         // function with just  screen like 
 
@@ -59,7 +59,7 @@ class Game {
 
         //newGame.getPlayerOne().getPlayerName();
 
-        shipPlacement();
+        // shipPlacement(newGame);
         //function allowing player1 and player2 set their ships on board. 
         //between them should be function switchHotSeatScreen() used to inform player to switch 
         // same shit screen like that 
@@ -69,17 +69,16 @@ class Game {
 
         //       press enter to start ...
 
-        mainGamePlay(){
+        // mainGamePlay(newGame){
             boolean isAlive=true; //function checking if any player have 0 ships or all ships are destoryed
-            
-            
+                    
 
             int turn = newGame.getTurn();
             boolean switchPlayer = false;
             Player currentPlayer;
             Player opponentPlayer;
 
-            isAlive = Engine.areBothPlayersAlive(currentPlayer, opponentPlayer);
+            
 
             while(isAlive){
 
@@ -93,12 +92,11 @@ class Game {
                     currentPlayer = newGame.getPlayerTwo();
                     opponentPlayer = newGame.getPlayerOne();
                 }
-                
-
-
+                isAlive = Engine.areBothPlayersAlive(currentPlayer, opponentPlayer);
+            
             }
         }
 
     }
 
-}
+
