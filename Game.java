@@ -3,6 +3,12 @@ class Game {
     private Player player2;
     private int turn;
 
+    public void init(boolean isHuman1, boolean isHuman2){
+        this.player1 = new Player(isHuman1);
+        this.player2 = new Player(isHuman2);
+        this.turn = 0;
+    }
+
     Game(boolean isHuman1, boolean isHuman2) {
         this.player1 = new Player(isHuman1);
         this.player2 = new Player(isHuman2);
@@ -31,8 +37,8 @@ class Game {
     }
 
     public void pvpMode(){
-        Game newGame =new Game(true, true);
-        ChooseNameScreen(newGame);
+        init(true,true);
+        ChooseNameScreen();
 
         // function with 2 inputs and assigning to :
         // 
@@ -41,7 +47,7 @@ class Game {
         //newGame.getPlayerOne().setPlayerName(playerInput)
         //same for second
 
-        printWelcomeScreen(newGame);
+        printWelcomeScreen();
 
         // function with just  screen like 
 
@@ -53,7 +59,7 @@ class Game {
 
         //newGame.getPlayerOne().getPlayerName();
 
-        shipPlacement(newGame);
+        shipPlacement();
         //function allowing player1 and player2 set their ships on board. 
         //between them should be function switchHotSeatScreen() used to inform player to switch 
         // same shit screen like that 
@@ -63,7 +69,7 @@ class Game {
 
         //       press enter to start ...
 
-        mainGamePlay(newGame){
+        mainGamePlay(){
             boolean isAlive=true; //function checking if any player have 0 ships or all ships are destoryed
             
             isAlive= isAnyPlayerAlive();
@@ -85,7 +91,9 @@ class Game {
                     currentPlayer = newGame.getPlayerTwo();
                     opponentPlayer = newGame.getPlayerOne();
                 }
-            
+                
+
+
             }
         }
 
