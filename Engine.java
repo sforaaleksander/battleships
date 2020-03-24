@@ -1,4 +1,16 @@
 class Engine {
+    public static String gatherInput(String title) {
+        System.out.println(title);
+        String userInput = Main.scan.next().toUpperCase();
+        return userInput;
+    }
+
+    public static int gatherIntInput(String title) {
+        System.out.println(title);
+        int userInput = Main.scan.nextInt();
+        return userInput;
+    }
+
 
     public static boolean checkIfAvailable(Square field){
         if (field.getIsAvailable()){
@@ -20,6 +32,10 @@ class Engine {
         }
     }
 }
+
+
+
+
 
 
 // public static boolean checkPlacement(Ship theShip, Square[][] oceanBoard) {

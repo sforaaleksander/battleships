@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-class Square{
+class Square {
     private String status;
     private boolean isAvailable;
     private int posX;
@@ -26,23 +26,23 @@ class Square{
         return this.posX;
     }
 
-    public int getPosY(){
+    public int getPosY() {
         return this.posY;
     }
 
-    public String getStatus(){
+    public String getStatus() {
         return this.status;
     }
 
-    public void changeStatus(String status){
+    public void changeStatus(String status) {
         this.status = status;
     }
 
-    public String toString(){
+    public String toString() {
         String emptyMark = " \u25A1";
         String shipMark = " \u25A3";
         String hitMark = " \u2612";
-        String missedMark = " \u22A1";  // " \u29C7"; 
+        String missedMark = " \u22A1"; // " \u29C7";
         Map<String, String> squareGraphic = new HashMap<>();
         squareGraphic.put("EMPTY", emptyMark);
         squareGraphic.put("SHIP", shipMark);

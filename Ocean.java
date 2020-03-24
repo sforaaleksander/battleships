@@ -8,6 +8,11 @@ class Ocean {
 
     Ocean(int oceanSize) {
         this.oceanSize = oceanSize;
+        this.oceanBoard = initializeOceanBoard(oceanSize);
+        
+    }
+
+    public Square[][] initializeOceanBoard(int oceanSize){
         oceanBoard = new Square[oceanSize][oceanSize];
         allShipSquares = new ArrayList<>();
         for (int i = 0; i < oceanSize; i++) {
@@ -15,43 +20,49 @@ class Ocean {
                 oceanBoard[i][j] = new Square(j, i);
             }
         }
-    }
+    return oceanBoard;}
 
-    public Square[][] getTable() {
+    public Square[][] getOceanBoard() {
         return this.oceanBoard;
     }
 
-    public ArrayList<Square> getAllShipSquares(){
+    public int getOceanSize() {
+        return this.oceanSize;
+    };
+
+    public ArrayList<Square> getAllShipSquares() {
         return this.allShipSquares;
     }
 
-    public void addToShipSquares(Square field){
+    public void addToShipSquares(Square field) {
         this.allShipSquares.add(field);
     }
 
     public void placeOnTable(Ship newShip) {
-        if (Engine.checkIfAvailable(this.getTable()[newShip.getPosX()][newShip.getPosY()]) && Engine.checkIfFitsOnMap(newShip, this.getTable())){
+        if (Engine.checkIfAvailable(this.getOceanBoard()[newShip.getPosX()][newShip.getPosY()])
+                && Engine.checkIfFitsOnMap(newShip, this.getOceanBoard())) {
 
-        if (newShip.getOrientation().equals("HORIZONTAL")) {
-            for (int i = newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i++) {
-                oceanBoard[newShip.getPosY()][i].changeStatus("SHIP");
-                newShip.addSquareToList(new Square(i, newShip.getPosY()));
-                this.addToShipSquares(new Square(i, newShip.getPosY()));
-            }}
-         else {
-            for (int i = newShip.getPosY(); i < newShip.getPosY() + newShip.getLength(); i++) {
-                oceanBoard[i][newShip.getPosX()].changeStatus("SHIP");
-                newShip.addSquareToList(new Square(newShip.getPosX(), i));
-                this.addToShipSquares(new Square(newShip.getPosX(), i));
+            if (newShip.getOrientation().equals("HORIZONTAL")) {
+                for (int i = newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i++) {
+                    oceanBoard[newShip.getPosY()][i].changeStatus("SHIP");
+                    newShip.addSquareToList(new Square(i, newShip.getPosY()));
+                    this.addToShipSquares(new Square(i, newShip.getPosY()));
+                }
+            } else {
+                for (int i = newShip.getPosY(); i < newShip.getPosY() + newShip.getLength(); i++) {
+                    oceanBoard[i][newShip.getPosX()].changeStatus("SHIP");
+                    newShip.addSquareToList(new Square(newShip.getPosX(), i));
+                    this.addToShipSquares(new Square(newShip.getPosX(), i));
+                }
             }
-        } 
-    }}
+        }
+    }
 
     public String toString() {
         String output = " ";
         String[] letters = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
         for (int x = 1; x < 11; x++) {
-            output += " " +x;
+            output += " " + x;
         }
         output += "\n";
         for (int i = 0; i < this.oceanSize; i++) {
@@ -64,15 +75,14 @@ class Ocean {
         return output;
     }
 
-
-    public void setFieldsUnavailable(){
-        for (Square element : getAllShipSquares()){
-            for (int i = -1; i < 2; i++){
-                for (int j = -1; j <2; j++){
+    public void setFieldsUnavailable() {
+        for (Square element : getAllShipSquares()) {
+            for (int i = -1; i < 2; i++) {
+                for (int j = -1; j < 2; j++) {
                     int x = element.getPosX() + j;
                     int y = element.getPosY() + i;
-                    if (x >= 0 && x < 11 && y >= 0 && y < 11){
-                    this.getTable()[x][y].setUnavailable();
+                    if (x >= 0 && x < 11 && y >= 0 && y < 11) {
+                        this.getOceanBoard()[x][y].setUnavailable();
                     }
                 }
             }
