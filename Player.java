@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.function.IntFunction;
+
 class Player {
     private String playerName;
     private Ocean playerBoard;
@@ -14,20 +17,30 @@ class Player {
         // listofships?
     }
 
-    private static Ocean createPlayerBoard(){
+    private Ocean createPlayerBoard(){
         int oceanSize = 10;
+        ArrayList<Ship> list = new ArrayList<>();
         Ocean ocean = new Ocean(oceanSize);
         for (String key : Main.ships.keySet()) {
+            System.out.println(ocean.getOceanBoard().toString());
             System.out.println("Place the " + key + "ship on your board!");
             String userOrientation = Engine.gatherInput("Type [horizontal] or [vertical] for your ship placement.");
-            int posX = Engine.gatherIntInput("Type in the X position.");
-            int posY = Engine.gatherIntInput("Type in the Y position.");
+            String userLetter = Engine.gatherInput("Type in the [letter] for Y position.");
+            int posY = Engine.fromLetterToNum(userLetter);
+            int posX = Engine.gatherIntInput("Type in the [number] for X position.");
             int length = Main.ships.get(key);
             Ship newShip = new Ship(length, userOrientation, posX, posY);
+            list.add(newShip);
             ocean.placeOnTable(newShip);
             ocean.setFieldsUnavailable();
         }
+        this.listOfShips = list.toArray(new Ship[list.size()]);
+        System.out.println(ocean.getOceanBoard().toString());
         return ocean;
+    }
+
+    public Ship[] getListOfShips(){
+        return this.listOfShips;
     }
 
     public void setPlayerName(String name) {
@@ -58,8 +71,17 @@ class Player {
     }
 
     public void launchTheRocket(Player playerBeingShot){
+        String userLetter = Engine.gatherInput("Type in the letter field you want to hit.");
+        int posY = Engine.fromLetterToNum(userLetter);
+        int posX = Engine.gatherIntInput("Type in the number of the field.") - 1;
 
-
+        if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())){
+            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("SHOT");
+            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("SHOT");
+        } else{
+            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
+        }
+        
     }
     
 

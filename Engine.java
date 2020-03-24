@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 class Engine {
     public static String gatherInput(String title) {
         System.out.println(title);
@@ -18,6 +21,21 @@ class Engine {
         } return false;
     }
 
+    public static int fromLetterToNum(String letter){
+        Map<String, Integer> letterNums = new HashMap<>();
+        letterNums.put("A", 0);
+        letterNums.put("B", 1);
+        letterNums.put("C", 2);
+        letterNums.put("D", 3);
+        letterNums.put("E", 4);
+        letterNums.put("F", 5);
+        letterNums.put("G", 6);
+        letterNums.put("H", 7);
+        letterNums.put("I", 8);
+        letterNums.put("J", 9);
+        return letterNums.get(letter);
+    }
+
     public static boolean checkIfFitsOnMap(Ship theShip, Square[][] table) {
         if (theShip.getOrientation().equals("HORIZONTAL")) {
             if (theShip.getLength() + theShip.getPosX() < table.length && theShip.getPosX() >= 0) {
@@ -31,6 +49,12 @@ class Engine {
             return false;
         }
     }
+
+    public static boolean isFieldAShip(int posX, int posY, Square[][] board){
+        if (board[posY][posX].getStatus().equals("SHIP")){
+        return true;
+    } return false;
+}
 }
 
 
