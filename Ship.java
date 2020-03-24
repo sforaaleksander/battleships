@@ -21,7 +21,6 @@ class Ship{
 
     public void addSquareToList(Square field){
         this.listOfFields.add(field);
-
     }
 
     public int getPosX(){

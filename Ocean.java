@@ -9,6 +9,7 @@ class Ocean {
     Ocean(int oceanSize) {
         this.oceanSize = oceanSize;
         oceanBoard = new Square[oceanSize][oceanSize];
+        allShipSquares = new ArrayList<>();
         for (int i = 0; i < oceanSize; i++) {
             for (int j = 0; j < oceanSize; j++) {
                 oceanBoard[i][j] = new Square(j, i);
