@@ -13,7 +13,9 @@ class Main {
 
     public static void main(String args[]) {
         initialize();
+        while (isRunning){
         mainMenu();
+        }
     }
 
     public static void initialize(){
