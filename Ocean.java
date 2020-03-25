@@ -89,6 +89,9 @@ class Ocean {
 
     public boolean checkIfAroundShipUnavailable(Square beginnigField, Ship ship){
         ArrayList<Square> potentialShipSquares = new ArrayList<Square>();
+        if (Engine.checkIfFitsOnMap(ship, this.getOceanBoard()) == false){
+            return false;
+        }
         for (int z = 0; z < ship.getLength(); z++ ) {
             if (ship.getOrientation().equals("H")) {
                 for (int i = ship.getPosX(); i < ship.getPosX() + ship.getLength(); i++) {
@@ -106,7 +109,9 @@ class Ocean {
                     int x = element.getPosX() + j;
                     int y = element.getPosY() + i;
                     if (x >= 0 && x < 10 && y >= 0 && y < 10) {
-                        if (this.getOceanBoard()[y][x].getIsAvailable() == false) {
+                        System.out.println(this.getOceanBoard()[y][x].getStatus().equals("SHIP"));
+                        if (this.getOceanBoard()[y][x].getStatus().equals("SHIP")) {
+                            
                             return false;
                         }
                     }
@@ -123,8 +128,8 @@ class Ocean {
                     int x = element.getPosX() + j;
                     int y = element.getPosY() + i;
                     if (x >= 0 && x < 10 && y >= 0 && y < 10) {
-                        this.getOceanBoard()[x][y].setUnavailable(); // zmieniam x z y
-                        
+                        this.getOceanBoard()[y][x].setUnavailable(); // zmieniam x z y
+
                         System.out.println("y:" +(y +1) +" x:"+ (x+1));
                         //System.out.println(this.getOceanBoard()[y][x].getIsAvailable()); //
                     }
