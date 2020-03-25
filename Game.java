@@ -1,4 +1,5 @@
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.HashSet;
 
 class Game {
@@ -52,8 +53,6 @@ class Game {
         }
     }
 
-
-
     public void pvpMode() {
         boolean isAlive = true;
         int turn = getTurn();
@@ -72,7 +71,6 @@ class Game {
                 opponentPlayer = getPlayerOne();
                 turn = turn + 1;
             }
-
             currentPlayer.displayScreen("", currentPlayer.getPlayerName(), turn);
             String message = currentPlayer.launchTheRocket(opponentPlayer);
             currentPlayer.displayScreen(message, currentPlayer.getPlayerName(), turn);
@@ -83,6 +81,46 @@ class Game {
                 winGameScreen(currentPlayer, opponentPlayer);
             }
         }
+    }
+
+    public void pvcMode(){
+        boolean isAlive = true;
+        int turn = getTurn();
+        boolean switchPlayer = false;
+        Player currentPlayer;
+        Player opponentPlayer;
+
+        while (isAlive) {
+            if (!switchPlayer) {
+                switchPlayer = true;
+                currentPlayer = getPlayerOne();
+                opponentPlayer = getPlayerTwo();
+            } else {
+                switchPlayer = false;
+                currentPlayer = getPlayerTwo();
+                opponentPlayer = getPlayerOne();
+                turn = turn + 1;
+            }
+            if (currentPlayer==getPlayerOne()){
+            currentPlayer.displayScreen("", currentPlayer.getPlayerName(), turn);
+            String message = currentPlayer.launchTheRocket(opponentPlayer);
+            currentPlayer.displayScreen(message, currentPlayer.getPlayerName(), turn);
+            Engine.gatherInput("End turn and switch player.");
+            Engine.changeHotSeats();
+            isAlive = Engine.areBothPlayersAlive(currentPlayer, opponentPlayer);
+            } else{
+                System.out.println("Computer is now taking the shot...");
+                try{
+                TimeUnit.SECONDS.sleep(3);
+                } catch (InterruptedException e){
+                    System.out.println(e);
+                }
+            }
+            if (!isAlive) {
+                winGameScreen(currentPlayer, opponentPlayer);
+            }
+        }
+
     }
 }
 

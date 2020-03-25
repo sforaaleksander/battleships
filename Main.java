@@ -74,12 +74,15 @@ class Main {
     }
 
     public static void startPvPGame(){
-        Game newGame= new Game(true, true);
+        Game newGame = new Game(true, true);
         newGame.pvpMode();
 
     }
 
-    public static void startPvCGame(){}
+    public static void startPvCGame(){
+        Game newGame = new Game(true, false);
+        newGame.pvcMode();
+    }
 
     public static void startCvCGame(){}
 }
