@@ -54,7 +54,7 @@ class Ocean {
                     newShip.addSquareToList(field);
                     this.addToShipSquares(field);
                 }
-            } else {
+            } else if (newShip.getOrientation().equals("V")) {
                 for (int i = newShip.getPosY(); i < newShip.getPosY() + newShip.getLength(); i++) {
                     this.getOceanBoard()[i][newShip.getPosX()].changeStatus("SHIP");
                     Square field = this.getSquareByPos(newShip.getPosX(), i);

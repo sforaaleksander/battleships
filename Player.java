@@ -16,30 +16,35 @@ class Player {
         // listofships?
     }
 
-    private String createPlayerName(){
+    private String createPlayerName() {
         String userName = Engine.gatherInput("Type in your name: ");
         return userName;
     }
 
-    private Ocean createPlayerBoard(){
+    private Ocean createPlayerBoard() {
         int oceanSize = 10;
-        boolean isPlaceOK = false;
+        boolean isPlaceOK = true;
         ArrayList<Ship> list = new ArrayList<>();
         Ocean ocean = new Ocean(oceanSize);
         for (String key : Main.ships.keySet()) {
-            do{
-            System.out.println(ocean.toString());
-            System.out.println("Place the " + key + " ship on your board. The ship's length is " + Main.ships.get(key) + ".");
-            System.out.println("The ships may not touch each other.");
-            String userOrientation = Engine.gatherInput("Type [h] for horizontal or [v] for vertical for your ship placement.");
-            String userPosition = Engine.gatherInput("Type the position. (eg. F3)");
-            char userLetter = userPosition.charAt(0);
-            int posY = Engine.fromLetterToNum(userLetter);
-            int posX =  Integer.parseInt(userPosition.substring(1)) - 1;
-            int length = Main.ships.get(key);
-            Ship newShip = new Ship(length, userOrientation, posX, posY);
-            list.add(newShip);
-            isPlaceOK = ocean.placeOnTable(newShip);
+            do {
+                System.out.println(ocean.toString());
+                System.out.println(
+                        "Place the " + key + " ship on your board. The ship's length is " + Main.ships.get(key) + ".");
+                if (!isPlaceOK) {
+                    System.out.println("The ships must fit on board and may not touch each other.");
+                    System.out.println("Type [h] for horizontal or [v] for vertical and [letter][number] for position.");
+                }
+                String userOrientation = Engine
+                        .gatherInput("Type [h] for horizontal or [v] for vertical for your ship placement.");
+                String userPosition = Engine.gatherInput("Type the position. (eg. F3)");
+                char userLetter = userPosition.charAt(0);
+                int posY = Engine.fromLetterToNum(userLetter);
+                int posX = Integer.parseInt(userPosition.substring(1)) - 1;
+                int length = Main.ships.get(key);
+                Ship newShip = new Ship(length, userOrientation, posX, posY);
+                list.add(newShip);
+                isPlaceOK = ocean.placeOnTable(newShip);
             } while (!isPlaceOK);
             ocean.setFieldsUnavailable();
         }
@@ -48,7 +53,7 @@ class Player {
         return ocean;
     }
 
-    public Ship[] getListOfShips(){
+    public Ship[] getListOfShips() {
         return this.listOfShips;
     }
 
@@ -75,28 +80,29 @@ class Player {
     public void setBoardOfShots(Ocean board) {
         this.boardOfShots = board;
     }
-    public boolean getIsHuman(){
+
+    public boolean getIsHuman() {
         return this.isHuman;
     }
 
-    public String launchTheRocket(Player playerBeingShot){
+    public String launchTheRocket(Player playerBeingShot) {
         String userPosition = Engine.gatherInput("Type the field to shoot at. (eg. F3)");
         char userLetter = userPosition.charAt(0);
         int posY = Engine.fromLetterToNum(userLetter);
-        int posX =  Integer.parseInt(userPosition.substring(1))-1;
+        int posX = Integer.parseInt(userPosition.substring(1)) - 1;
 
-        if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())){
+        if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
             playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
             return "YOU HIT";
-        } else{
+        } else {
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
             return "YOU MISSED";
         }
-        
+
     }
 
-    public void displayScreen(String message){
+    public void displayScreen(String message) {
         String playerBoard = this.getPlayerBoard().toString();
         String hitsBoard = this.getBoardOfShots().toString();
         System.out.println(playerBoard);
@@ -106,7 +112,5 @@ class Player {
         System.out.println(message);
 
     }
-
-    
 
 }
