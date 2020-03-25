@@ -53,7 +53,6 @@ class Player {
                         "Place the " + key + " ship on your board. The ship's length is " + Main.ships.get(key) + ".");
                 if (!isPlaceOK) {
                     System.out.println("The ships must fit on board and may not touch each other.");
-                    System.out.println("Type [h] for horizontal or [v] for vertical and [letter][number] for position.");
                 }
                 String userOrientation = Engine
                         .gatherInput("Type [h] for horizontal or [v] for vertical for your ship placement.");
