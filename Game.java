@@ -29,8 +29,14 @@ class Game {
         this.turn = turn;
     }
 
-    public void winGameScreen(Player player) {
-        System.out.println("\n" + player.getPlayerName() + " WINS!\n");
+    public void winGameScreen(Player player1, Player player2) {
+        System.out.println("\n" + player1.getPlayerName() + " WINS!\n");
+        System.out.println(player1.getPlayerName() + "'S BOARD");
+        System.out.println(player1.getPlayerBoard().toString());
+        System.out.println("");
+        System.out.println(player2.getPlayerName() + "'S BOARD");
+        System.out.println(player2.getPlayerBoard().toString());
+
         // TODO
         // show highscore 
         restartGame();
@@ -74,7 +80,7 @@ class Game {
             Engine.changeHotSeats();
             isAlive = Engine.areBothPlayersAlive(currentPlayer, opponentPlayer);
             if (!isAlive) {
-                winGameScreen(currentPlayer);
+                winGameScreen(currentPlayer, opponentPlayer);
             }
         }
     }
