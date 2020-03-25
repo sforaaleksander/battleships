@@ -73,7 +73,7 @@ class Player {
             for (int i = 1; i < 4; i++) {
                 System.out.println(i + ". " + computerDifficulty.get(i));
             }
-            String compDiff = computerDifficulty.get(Engine.gatherIntInput("Select Computer Difficulty Level: "));
+            String compDiff = computerDifficulty.get(Engine.gatherIntInput("Select Computer Difficulty Level: ", 3));
             this.setDifficulty(compDiff);
         }
         Game.listOfPlayers.add(userName);
@@ -95,8 +95,8 @@ class Player {
                     System.out.println("The ships must fit on board and may not touch each other.");
                 }
                 String userOrientation = Engine
-                        .gatherInput("Type [h] for horizontal or [v] for vertical for your ship placement.");
-                String userPosition = Engine.gatherInput("Type the position. (eg. F3)");
+                        .gatherVOrHInput("Type [h] for horizontal or [v] for vertical for your ship placement.");
+                String userPosition = Engine.gatherPositionInput("Type the position. (eg. F3)");
                 char userLetter = userPosition.charAt(0);
                 int posY = Engine.fromLetterToNum(userLetter);
                 int posX = Integer.parseInt(userPosition.substring(1)) - 1;
@@ -154,7 +154,7 @@ class Player {
     }
 
     public String launchTheRocket(Player playerBeingShot) {
-        String userPosition = Engine.gatherInput("Type the field to shoot at. (eg. F3)");
+        String userPosition = Engine.gatherPositionInput("Type the field to shoot at. (eg. F3)");
         char userLetter = userPosition.charAt(0);
         int posY = Engine.fromLetterToNum(userLetter);
         int posX = Integer.parseInt(userPosition.substring(1)) - 1;

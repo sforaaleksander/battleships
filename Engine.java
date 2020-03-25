@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -17,9 +18,57 @@ class Engine {
         return userInput;
     }
 
-    public static int gatherIntInput(String title) {
+    public static int gatherIntInput(String title, int range) {
         System.out.println(title);
-        int userInput = Main.scan.nextInt();
+        String userInput;
+        int userInt = 1;
+        boolean validInput = false;
+        while (!validInput){
+        userInput = Main.scan.next();
+        if (userInput.matches("^[0-9]*$")){
+            userInt = Integer.parseInt(userInput);
+            if (userInt > 0 && userInt <= range){
+                validInput = true;                
+            }
+        }
+        }
+
+        return userInt;
+    }
+
+    public static String gatherVOrHInput(String title){
+        System.out.println(title);
+        String userInput = "";
+        boolean validInput = false;
+        while (!validInput) {
+        userInput = Main.scan.next().toUpperCase();
+        if (userInput.equals("H") || userInput.equals("V")){
+            validInput = true;
+        }
+        }
+        return userInput;
+
+    }
+
+    public static String gatherPositionInput(String title) {
+        System.out.println(title);
+        Character[] letters = new Character[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+        boolean validInput = true;
+        String userInput = "";
+        do {
+            if (!validInput) {
+                System.out.println("Please provide the position in a correct format. (eg. F3)");
+            }
+            validInput = false;
+            userInput = Main.scan.next().toUpperCase();
+            if (userInput.substring(1).matches("^[0-9]*$")) {
+                if (Arrays.asList(letters).contains(userInput.charAt(0)) && Integer.parseInt(userInput.substring(1)) > 0
+                        && Integer.parseInt(userInput.substring(1)) <= 10) {
+                    validInput = true;
+                }
+            }
+        } while (!validInput);
+
         return userInput;
     }
 
