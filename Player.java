@@ -32,8 +32,8 @@ class Player {
         for (String key : Main.ships.keySet()) {
             do {
 
-                System.out.println(ocean.toString());
-                Engine.gatherInput("dupaaaa");
+                // System.out.println(ocean.toString());
+                // Engine.gatherInput("dupaaaa");
                 // System.out.println(
                 // "Place the " + key + " ship on your board. The ship's length is " +
                 // Main.ships.get(key) + ".");
@@ -48,6 +48,8 @@ class Player {
                 Ship newShip = new Ship(length, computerOrientation, posX, posY);
                 list.add(newShip);
                 isPlaceOK = ocean.placeOnTable(newShip);
+                System.out.println(ocean.toString());
+                Engine.gatherInput("dupaaaa");
             } while (!isPlaceOK);
             ocean.setFieldsUnavailable();
         }

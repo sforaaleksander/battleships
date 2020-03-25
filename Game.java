@@ -101,7 +101,7 @@ class Game {
                 currentPlayer = getPlayerTwo();
                 opponentPlayer = getPlayerOne();
             }
-            if (currentPlayer == getPlayerOne()) {
+            if (currentPlayer.getIsHuman() == true) {
                 currentPlayer.displayScreen("", currentPlayer.getPlayerName(), turn);
                 String message = currentPlayer.launchTheRocket(opponentPlayer);
                 currentPlayer.displayScreen(message, currentPlayer.getPlayerName(), turn);
@@ -112,7 +112,7 @@ class Game {
                 System.out.println("\n\n\nComputer is now taking the shot...");
                 currentPlayer.computerLaunchTheRocket(opponentPlayer);
                 try {
-                    TimeUnit.SECONDS.sleep(3);
+                    TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     System.out.println(e);
                 }

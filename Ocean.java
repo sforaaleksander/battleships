@@ -44,15 +44,17 @@ class Ocean {
     }
 
     public boolean placeOnTable(Ship newShip) {
-        if (Engine.checkIfAvailable(this.getOceanBoard()[newShip.getPosX()][newShip.getPosY()])
-                && Engine.checkIfFitsOnMap(newShip, this.getOceanBoard())) {
-
+            if (this.checkIfAroundShipUnavailable(this.getOceanBoard()[newShip.getPosX()][newShip.getPosY()], newShip)
+                    && Engine.checkIfFitsOnMap(newShip, this.getOceanBoard())) {
+        // if (Engine.checkIfAvailable(this.getOceanBoard()[newShip.getPosX()][newShip.getPosY()])
+        //         && Engine.checkIfFitsOnMap(newShip, this.getOceanBoard())) {
             if (newShip.getOrientation().equals("H")) {
                 for (int i = newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i++) {
                     this.getOceanBoard()[newShip.getPosY()][i].changeStatus("SHIP");
                     Square field = this.getSquareByPos(newShip.getPosY(), i); // zamieniam pozycje i dziala
                     newShip.addSquareToList(field);
                     this.addToShipSquares(field);
+                    System.out.println(field.getStatus()); //
                 }
             } else if (newShip.getOrientation().equals("V")) {
                 for (int i = newShip.getPosY(); i < newShip.getPosY() + newShip.getLength(); i++) {
@@ -60,6 +62,7 @@ class Ocean {
                     Square field = this.getSquareByPos(i, newShip.getPosX());
                     newShip.addSquareToList(field);
                     this.addToShipSquares(field);
+                    System.out.println(field.getStatus()); //
                 }
             }
             return true;
@@ -84,6 +87,35 @@ class Ocean {
         return output;
     }
 
+    public boolean checkIfAroundShipUnavailable(Square beginnigField, Ship ship){
+        ArrayList<Square> potentialShipSquares = new ArrayList<Square>();
+        for (int z = 0; z < ship.getLength(); z++ ) {
+            if (ship.getOrientation().equals("H")) {
+                for (int i = ship.getPosX(); i < ship.getPosX() + ship.getLength(); i++) {
+                    potentialShipSquares.add(this.getOceanBoard()[ship.getPosY()][i]);
+                }
+            } else if (ship.getOrientation().equals("V")) {
+                for (int i = ship.getPosY(); i < ship.getPosY() + ship.getLength(); i++) {
+                    potentialShipSquares.add(this.getOceanBoard()[i][ship.getPosX()]);
+                }
+            }
+        }
+        for (Square element : potentialShipSquares) {
+            for (int i = -1; i < 2; i++) {
+                for (int j = -1; j < 2; j++) {
+                    int x = element.getPosX() + j;
+                    int y = element.getPosY() + i;
+                    if (x >= 0 && x < 10 && y >= 0 && y < 10) {
+                        if (this.getOceanBoard()[y][x].getIsAvailable() == false) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     public void setFieldsUnavailable() {
         for (Square element : getAllShipSquares()) {
             for (int i = -1; i < 2; i++) {
@@ -91,7 +123,9 @@ class Ocean {
                     int x = element.getPosX() + j;
                     int y = element.getPosY() + i;
                     if (x >= 0 && x < 10 && y >= 0 && y < 10) {
-                        this.getOceanBoard()[y][x].setUnavailable();
+                        this.getOceanBoard()[x][y].setUnavailable(); // zmieniam x z y
+                        System.out.println("y:" +(y +1) +" x:"+ (x+1));
+                        //System.out.println(this.getOceanBoard()[y][x].getIsAvailable()); //
                     }
                 }
             }
