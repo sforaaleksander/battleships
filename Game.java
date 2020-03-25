@@ -11,7 +11,7 @@ class Game {
     Game(boolean isHuman1, boolean isHuman2) {
         this.player1 = new Player(isHuman1);
         this.player2 = new Player(isHuman2);
-        this.turn = 1;
+        this.turn = 0;
     }
 
     public Player getPlayerOne() {
@@ -39,13 +39,13 @@ class Game {
         System.out.println(player2.getPlayerBoard().toString());
 
         // TODO
-        // show highscore 
+        // show highscore
         restartGame();
     }
 
-    public void restartGame(){
+    public void restartGame() {
         String input = Engine.gatherInput("Do you want to start new game? [y/n]");
-        if(input.equals("Y")){
+        if (input.equals("Y")) {
             listOfPlayers.clear();
             Main.newGameMenu();
         } else {
@@ -65,11 +65,11 @@ class Game {
                 switchPlayer = true;
                 currentPlayer = getPlayerOne();
                 opponentPlayer = getPlayerTwo();
+                turn = turn + 1;
             } else {
                 switchPlayer = false;
                 currentPlayer = getPlayerTwo();
                 opponentPlayer = getPlayerOne();
-                turn = turn + 1;
             }
             currentPlayer.displayScreen("", currentPlayer.getPlayerName(), turn);
             String message = currentPlayer.launchTheRocket(opponentPlayer);
@@ -83,7 +83,7 @@ class Game {
         }
     }
 
-    public void pvcMode(){
+    public void pvcMode() {
         boolean isAlive = true;
         int turn = getTurn();
         boolean switchPlayer = false;
@@ -95,26 +95,28 @@ class Game {
                 switchPlayer = true;
                 currentPlayer = getPlayerOne();
                 opponentPlayer = getPlayerTwo();
+                turn = turn + 1;
             } else {
                 switchPlayer = false;
                 currentPlayer = getPlayerTwo();
                 opponentPlayer = getPlayerOne();
-                turn = turn + 1;
             }
-            if (currentPlayer==getPlayerOne()){
-            currentPlayer.displayScreen("", currentPlayer.getPlayerName(), turn);
-            String message = currentPlayer.launchTheRocket(opponentPlayer);
-            currentPlayer.displayScreen(message, currentPlayer.getPlayerName(), turn);
-            Engine.gatherInput("End turn and switch player.");
-            Engine.changeHotSeats();
-            isAlive = Engine.areBothPlayersAlive(currentPlayer, opponentPlayer);
-            } else{
-                System.out.println("Computer is now taking the shot...");
-                try{
-                TimeUnit.SECONDS.sleep(3);
-                } catch (InterruptedException e){
+            if (currentPlayer == getPlayerOne()) {
+                currentPlayer.displayScreen("", currentPlayer.getPlayerName(), turn);
+                String message = currentPlayer.launchTheRocket(opponentPlayer);
+                currentPlayer.displayScreen(message, currentPlayer.getPlayerName(), turn);
+                Engine.gatherInput("End turn and switch player.");
+                Engine.changeHotSeats();
+                isAlive = Engine.areBothPlayersAlive(currentPlayer, opponentPlayer);
+            } else {
+                System.out.println("\n\n\nComputer is now taking the shot...");
+                currentPlayer.computerLaunchTheRocket(opponentPlayer);
+                try {
+                    TimeUnit.SECONDS.sleep(3);
+                } catch (InterruptedException e) {
                     System.out.println(e);
                 }
+                Engine.changeHotSeats();
             }
             if (!isAlive) {
                 winGameScreen(currentPlayer, opponentPlayer);

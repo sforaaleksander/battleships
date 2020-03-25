@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 class Player {
     private String playerName;
@@ -7,6 +9,7 @@ class Player {
     // private boolean turn; ?
     private Ship[] listOfShips;
     private boolean isHuman;
+    private String difficulty;
 
     Player(boolean isHuman) {
         this.isHuman = isHuman;
@@ -16,6 +19,7 @@ class Player {
             this.playerBoard = createPlayerBoard();
         } else {
             this.playerBoard = computerCreatesOwnBoard();
+            this.difficulty = "";
         }
         // listofships?
     }
@@ -30,10 +34,12 @@ class Player {
 
                 System.out.println(ocean.toString());
                 Engine.gatherInput("dupaaaa");
-                //System.out.println(
-                //        "Place the " + key + " ship on your board. The ship's length is " + Main.ships.get(key) + ".");
+                // System.out.println(
+                // "Place the " + key + " ship on your board. The ship's length is " +
+                // Main.ships.get(key) + ".");
                 // if (!isPlaceOK) {
-                //     System.out.println("The ships must fit on board and may not touch each other.");
+                // System.out.println("The ships must fit on board and may not touch each
+                // other.");
                 // }
                 String computerOrientation = Engine.getRandomNumber() < 5 ? "H" : "V";
                 int posY = Engine.getRandomNumber();
@@ -59,8 +65,20 @@ class Player {
             System.out.println("Name already taken, choose other one: ");
             createPlayerName();
         }
+        if (humanOrComputer.equals("Computer")) {
+            Map<Integer, String> computerDifficulty = new HashMap<>();
+            computerDifficulty.put(1, "EASY");
+            computerDifficulty.put(2, "NORMAL");
+            computerDifficulty.put(3, "HARD");
+            for (int i = 1; i < 4; i++) {
+                System.out.println(i + ". " + computerDifficulty.get(i));
+            }
+            String compDiff = computerDifficulty.get(Engine.gatherIntInput("Select Computer Difficulty Level: "));
+            this.setDifficulty(compDiff);
+        }
         Game.listOfPlayers.add(userName);
         return userName;
+
     }
 
     private Ocean createPlayerBoard() {
@@ -93,6 +111,14 @@ class Player {
         System.out.println(ocean.toString());
         Engine.changeHotSeats();
         return ocean;
+    }
+
+    public String getDifficulty() {
+        return this.difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 
     public Ship[] getListOfShips() {
@@ -143,6 +169,27 @@ class Player {
         } else {
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
             return "YOU MISSED";
+        }
+
+    }
+
+    public void computerLaunchTheRocket(Player playerBeingShot) {
+        if (this.getDifficulty().equals("EASY")) {
+            int posY = Engine.getRandomNumber();
+            int posX = Engine.getRandomNumber();
+            if (Engine.isFieldAlreadyHit(posX, posY, this.getBoardOfShots().getOceanBoard())) {
+                // -points
+            } else if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
+                playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
+                this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
+            } else {
+                this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
+            }
+
+        } else if (this.getDifficulty().equals("NORMAL")) {
+
+        } else if (this.getDifficulty().equals("HARD")) {
+
         }
 
     }

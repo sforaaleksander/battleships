@@ -80,7 +80,7 @@ class Main {
     }
 
     public static void startPvCGame(){
-        Game newGame = new Game(true, false);
+        Game newGame = new Game(false, true);
         newGame.pvcMode();
     }
 
