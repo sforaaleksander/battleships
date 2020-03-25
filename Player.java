@@ -14,12 +14,13 @@ class Player {
     Player(boolean isHuman) {
         this.isHuman = isHuman;
         this.boardOfShots = new Ocean(10);
+        this.difficulty = "x";
         this.playerName = createPlayerName();
         if (isHuman) {
             this.playerBoard = createPlayerBoard();
         } else {
             this.playerBoard = computerCreatesOwnBoard();
-            this.difficulty = "";
+
         }
         // listofships?
     }
@@ -31,16 +32,6 @@ class Player {
         Ocean ocean = new Ocean(oceanSize);
         for (String key : Main.ships.keySet()) {
             do {
-
-                // System.out.println(ocean.toString());
-                // Engine.gatherInput("dupaaaa");
-                // System.out.println(
-                // "Place the " + key + " ship on your board. The ship's length is " +
-                // Main.ships.get(key) + ".");
-                // if (!isPlaceOK) {
-                // System.out.println("The ships must fit on board and may not touch each
-                // other.");
-                // }
                 String computerOrientation = Engine.getRandomNumber() < 5 ? "H" : "V";
                 int posY = Engine.getRandomNumber();
                 int posX = Engine.getRandomNumber();
@@ -49,7 +40,7 @@ class Player {
                 list.add(newShip);
                 isPlaceOK = ocean.placeOnTable(newShip);
                 System.out.println(ocean.toString());
-                Engine.gatherInput("dupaaaa");
+                Engine.gatherInput("cheat");
             } while (!isPlaceOK);
             ocean.setFieldsUnavailable();
         }
@@ -191,9 +182,17 @@ class Player {
         } else if (this.getDifficulty().equals("NORMAL")) {
 
         } else if (this.getDifficulty().equals("HARD")) {
-
+            int posY = 0;
+            int posX = 0;
+            if (Engine.isFieldAlreadyHit(posX, posY, this.getBoardOfShots().getOceanBoard())) {
+                // -points
+            } else if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
+                playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
+                this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
+            } else {
+                this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
+            }
         }
-
     }
 
     public void displayScreen(String message, String playerName, int turnNo) {

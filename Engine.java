@@ -23,31 +23,30 @@ class Engine {
         String userInput;
         int userInt = 1;
         boolean validInput = false;
-        while (!validInput){
-        userInput = Main.scan.next();
-        if (userInput.matches("^[0-9]*$")){
-            userInt = Integer.parseInt(userInput);
-            if (userInt > 0 && userInt <= range){
-                validInput = true;                
+        while (!validInput) {
+            userInput = Main.scan.next();
+            if (userInput.matches("^[0-9]*$")) {
+                userInt = Integer.parseInt(userInput);
+                if (userInt > 0 && userInt <= range) {
+                    validInput = true;
+                }
             }
-        }
         }
 
         return userInt;
     }
 
-    public static String gatherVOrHInput(String title){
+    public static String gatherVOrHInput(String title) {
         System.out.println(title);
         String userInput = "";
         boolean validInput = false;
         while (!validInput) {
-        userInput = Main.scan.next().toUpperCase();
-        if (userInput.equals("H") || userInput.equals("V")){
-            validInput = true;
-        }
+            userInput = Main.scan.next().toUpperCase();
+            if (userInput.equals("H") || userInput.equals("V")) {
+                validInput = true;
+            }
         }
         return userInput;
-
     }
 
     public static String gatherPositionInput(String title) {

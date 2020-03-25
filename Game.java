@@ -125,35 +125,3 @@ class Game {
 
     }
 }
-
-// ChooseNameScreen();
-
-// function with 2 inputs and assigning to :
-//
-// syso some text like "Enter Player1 name:"
-// playerInput = inputFunction
-// newGame.getPlayerOne().setPlayerName(playerInput)
-// same for second
-
-// printWelcomeScreen(newGame);
-
-// function with just screen like
-
-// WOJTEK
-// VS
-// RAFAŁ
-
-// press enter to start game...
-
-// newGame.getPlayerOne().getPlayerName();
-
-// shipPlacement(newGame);
-// function allowing player1 and player2 set their ships on board.
-// between them should be function switchHotSeatScreen() used to inform player
-// to switch
-// same shit screen like that
-// PLACEING SHIPS TURN
-//
-// Player: RAFAŁ
-
-// press enter to start ...
