@@ -49,7 +49,7 @@ class Main {
         System.out.println("THE BATTLESHIP GAME\n");
         for (int i = 0; i < mainMenuList.length; i++){
             System.out.println(i + 1 + ". " + mainMenuList[i]);
-        } int userChoice = Engine.gatherIntInput("");
+        } int userChoice = Engine.gatherIntInput("", 4);
         Engine.clearScreen();
         mainMenu.get(userChoice).run();        
     }
@@ -58,7 +58,7 @@ class Main {
         System.out.println("PLAY NEW GAME\n");
         for (int i = 0; i < newGameMenuList.length; i++){
             System.out.println(i + 1 + ". " + newGameMenuList[i]);
-        } int userChoice = Engine.gatherIntInput("");
+        } int userChoice = Engine.gatherIntInput("", 3);
         Engine.clearScreen();
         playGameMenu.get(userChoice).run();
     }
