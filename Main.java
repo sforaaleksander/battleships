@@ -49,7 +49,8 @@ class Main {
         for (int i = 0; i < mainMenuList.length; i++){
             System.out.println(i + 1 + ". " + mainMenuList[i]);
         } int userChoice = Engine.gatherIntInput("");
-        mainMenu.get(userChoice).run();
+        Engine.clearScreen();
+        mainMenu.get(userChoice).run();        
     }
 
     public static void newGameMenu(){
@@ -57,6 +58,7 @@ class Main {
         for (int i = 0; i < newGameMenuList.length; i++){
             System.out.println(i + 1 + ". " + newGameMenuList[i]);
         } int userChoice = Engine.gatherIntInput("");
+        Engine.clearScreen();
         playGameMenu.get(userChoice).run();
     }
 

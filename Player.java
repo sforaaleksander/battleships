@@ -69,6 +69,7 @@ class Player {
         }
         this.listOfShips = list.toArray(new Ship[list.size()]);
         System.out.println(ocean.toString());
+        Engine.changeHotSeats();
         return ocean;
     }
 

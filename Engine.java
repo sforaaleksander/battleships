@@ -2,6 +2,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 class Engine {
+    public static void clearScreen() {
+        try {
+            new ProcessBuilder("clear").inheritIO().start().waitFor();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public static String gatherInput(String title) {
         System.out.println(title);
         String userInput = Main.scan.next().toUpperCase();
@@ -96,7 +104,12 @@ class Engine {
         } else {
             return false;
         }
-        
+    }
+
+    public static void changeHotSeats() {
+        clearScreen();
+        gatherInput("\n\n\nPress any key when ready.");
+        clearScreen();
     }
 }
 
