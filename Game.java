@@ -10,7 +10,7 @@ class Game {
     Game(boolean isHuman1, boolean isHuman2) {
         this.player1 = new Player(isHuman1);
         this.player2 = new Player(isHuman2);
-        this.turn = 0;
+        this.turn = 1;
     }
 
     public Player getPlayerOne() {
@@ -60,11 +60,11 @@ class Game {
                 switchPlayer = true;
                 currentPlayer = getPlayerOne();
                 opponentPlayer = getPlayerTwo();
-                turn = turn + 1;
             } else {
                 switchPlayer = false;
                 currentPlayer = getPlayerTwo();
                 opponentPlayer = getPlayerOne();
+                turn = turn + 1;
             }
 
             currentPlayer.displayScreen("");
