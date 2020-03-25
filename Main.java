@@ -26,8 +26,8 @@ class Main {
 
         ships = new HashMap<>();
         ships.put("Carrier", 5);
-        // ships.put("Battleship", 4);
-        // ships.put("Cruiser", 3);
+        ships.put("Battleship", 4);
+        ships.put("Cruiser", 3);
         // ships.put("Submarine", 3);
         // ships.put("Destroyer", 2);
 

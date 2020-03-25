@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 class Engine {
     public static void clearScreen() {
@@ -110,6 +111,12 @@ class Engine {
         clearScreen();
         gatherInput("\n\n\nPress any key when ready.");
         clearScreen();
+    }
+
+    public static int getRandomNumber() {
+        Random r = new Random();
+        int number = r.nextInt(10);
+        return number;
     }
 }
 

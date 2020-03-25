@@ -25,8 +25,30 @@ class Player {
         boolean isPlaceOK = false;
         ArrayList<Ship> list = new ArrayList<>();
         Ocean ocean = new Ocean(oceanSize);
+        for (String key : Main.ships.keySet()) {
+            do {
+
+                System.out.println(ocean.toString());
+                Engine.gatherInput("dupaaaa");
+                //System.out.println(
+                //        "Place the " + key + " ship on your board. The ship's length is " + Main.ships.get(key) + ".");
+                // if (!isPlaceOK) {
+                //     System.out.println("The ships must fit on board and may not touch each other.");
+                // }
+                String computerOrientation = Engine.getRandomNumber() < 5 ? "H" : "V";
+                int posY = Engine.getRandomNumber();
+                int posX = Engine.getRandomNumber();
+                int length = Main.ships.get(key);
+                Ship newShip = new Ship(length, computerOrientation, posX, posY);
+                list.add(newShip);
+                isPlaceOK = ocean.placeOnTable(newShip);
+            } while (!isPlaceOK);
+            ocean.setFieldsUnavailable();
+        }
+        this.listOfShips = list.toArray(new Ship[list.size()]);
+        System.out.println(ocean.toString());
+        Engine.changeHotSeats();
         return ocean;
-        // TODO
     }
 
     private String createPlayerName() {
