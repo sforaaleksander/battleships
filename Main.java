@@ -19,6 +19,7 @@ class Main {
     }
 
     public static void initialize(){
+        Engine.clearScreen();
         isRunning = true;
         scan = new Scanner(System.in);
         scan.useDelimiter(System.lineSeparator());

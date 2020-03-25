@@ -67,9 +67,9 @@ class Game {
                 turn = turn + 1;
             }
 
-            currentPlayer.displayScreen("");
+            currentPlayer.displayScreen("", currentPlayer.getPlayerName(), turn);
             String message = currentPlayer.launchTheRocket(opponentPlayer);
-            currentPlayer.displayScreen(message);
+            currentPlayer.displayScreen(message, currentPlayer.getPlayerName(), turn);
             Engine.gatherInput("End turn and switch player.");
             Engine.changeHotSeats();
             isAlive = Engine.areBothPlayersAlive(currentPlayer, opponentPlayer);

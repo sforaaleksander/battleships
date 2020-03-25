@@ -125,15 +125,18 @@ class Player {
 
     }
 
-    public void displayScreen(String message) {
+    public void displayScreen(String message, String playerName, int turnNo) {
+        Engine.clearScreen();
+        System.out.println("CURRENT PLAYER: " + playerName);
+        System.out.println("CURRENT TURN: " + turnNo);
+        System.out.println("");
         String playerBoard = this.getPlayerBoard().toString();
         String hitsBoard = this.getBoardOfShots().toString();
         System.out.println("YOUR SHIPS");
         System.out.println(playerBoard);
-        System.out.println("____________________\n");
+        System.out.println("_____________________\n");
         System.out.println("BOARD OF SHOTS");
         System.out.println(hitsBoard);
-        System.out.println("\n");
         System.out.println(message);
 
     }
