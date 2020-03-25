@@ -9,15 +9,35 @@ class Player {
     private boolean isHuman;
 
     Player(boolean isHuman) {
-        this.playerName = createPlayerName();
         this.isHuman = isHuman;
-        this.playerBoard = createPlayerBoard();
         this.boardOfShots = new Ocean(10);
+        this.playerName = createPlayerName();
+        if (isHuman) {
+            this.playerBoard = createPlayerBoard();
+        } else {
+            this.playerBoard = computerCreatesOwnBoard();
+        }
         // listofships?
     }
 
+    private Ocean computerCreatesOwnBoard() {
+        int oceanSize = 10;
+        boolean isPlaceOK = false;
+        ArrayList<Ship> list = new ArrayList<>();
+        Ocean ocean = new Ocean(oceanSize);
+        return ocean;
+        // TODO
+    }
+
     private String createPlayerName() {
-        String userName = Engine.gatherInput("Type in your name: ");
+        String humanOrComputer = isHuman ? "Player" : "Computer";
+        int numberOfPlayer = Game.listOfPlayers.size() + 1;
+        String userName = Engine.gatherInput("Enter nickname for " + humanOrComputer + numberOfPlayer + ": ");
+        if (Game.listOfPlayers.contains(userName)) {
+            System.out.println("Name already taken, choose other one: ");
+            createPlayerName();
+        }
+        Game.listOfPlayers.add(userName);
         return userName;
     }
 
@@ -90,6 +110,9 @@ class Player {
         char userLetter = userPosition.charAt(0);
         int posY = Engine.fromLetterToNum(userLetter);
         int posX = Integer.parseInt(userPosition.substring(1)) - 1;
+        if (Engine.isFieldAlreadyHit(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
+            return "You dummy! You have already struck that coordinats!\nYOU WASTED A MISSLE";
+        }
 
         if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
             playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");

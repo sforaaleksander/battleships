@@ -50,7 +50,7 @@ class Ocean {
             if (newShip.getOrientation().equals("H")) {
                 for (int i = newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i++) {
                     this.getOceanBoard()[newShip.getPosY()][i].changeStatus("SHIP");
-                    Square field = this.getSquareByPos(i, newShip.getPosY());
+                    Square field = this.getSquareByPos(newShip.getPosY(), i); // zamieniam pozycje i dziala
                     newShip.addSquareToList(field);
                     this.addToShipSquares(field);
                 }

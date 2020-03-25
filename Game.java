@@ -1,11 +1,11 @@
+import java.util.Set;
+import java.util.HashSet;
+
 class Game {
     private Player player1;
     private Player player2;
     private int turn;
-
-    // public static void init(boolean isHuman1, boolean isHuman2){
-    // Game newGame= new Game(isHuman1, isHuman2);
-    // }
+    public static Set<String> listOfPlayers = new HashSet<>();
 
     Game(boolean isHuman1, boolean isHuman2) {
         this.player1 = new Player(isHuman1);
@@ -29,10 +29,24 @@ class Game {
         this.turn = turn;
     }
 
-    public void chooseGameMode() {
-
-        System.out.println("Select Game Mode:");
+    public void winGameScreen(Player player) {
+        System.out.println("\n" + player.getPlayerName() + " WINS!!!!!!!!!!!!!!!\n");
+        // TODO
+        // show highscore 
+        restartGame();
     }
+
+    public void restartGame(){
+        String input = Engine.gatherInput("Do you want to start new game mode? [y/n]");
+        if(input.equals("Y")){
+            listOfPlayers.clear();
+            Main.newGameMenu();
+        } else {
+            Main.exitGame();
+        }
+    }
+
+
 
     public void pvpMode() {
         boolean isAlive = true;
@@ -40,7 +54,7 @@ class Game {
         boolean switchPlayer = false;
         Player currentPlayer;
         Player opponentPlayer;
-        
+
         while (isAlive) {
             if (!switchPlayer) {
                 switchPlayer = true;
@@ -52,15 +66,16 @@ class Game {
                 currentPlayer = getPlayerTwo();
                 opponentPlayer = getPlayerOne();
             }
-            
+
             currentPlayer.displayScreen("");
             String message = currentPlayer.launchTheRocket(opponentPlayer);
             currentPlayer.displayScreen(message);
             isAlive = Engine.areBothPlayersAlive(currentPlayer, opponentPlayer);
-
+            if (!isAlive) {
+                winGameScreen(currentPlayer);
+            }
         }
     }
-
 }
 
 // ChooseNameScreen();
