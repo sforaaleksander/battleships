@@ -129,7 +129,7 @@ class Player {
         String hitsBoard = this.getBoardOfShots().toString();
         System.out.println("YOUR SHIPS");
         System.out.println(playerBoard);
-        System.out.println("\n____________________");
+        System.out.println("____________________\n");
         System.out.println("BOARD OF SHOTS");
         System.out.println(hitsBoard);
         System.out.println("\n");
