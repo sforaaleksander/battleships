@@ -124,6 +124,7 @@ class Ocean {
                     int y = element.getPosY() + i;
                     if (x >= 0 && x < 10 && y >= 0 && y < 10) {
                         this.getOceanBoard()[x][y].setUnavailable(); // zmieniam x z y
+                        
                         System.out.println("y:" +(y +1) +" x:"+ (x+1));
                         //System.out.println(this.getOceanBoard()[y][x].getIsAvailable()); //
                     }
