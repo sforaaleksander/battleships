@@ -109,7 +109,7 @@ class Player {
         char userLetter = userPosition.charAt(0);
         int posY = Engine.fromLetterToNum(userLetter);
         int posX = Integer.parseInt(userPosition.substring(1)) - 1;
-        if (Engine.isFieldAlreadyHit(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
+        if (Engine.isFieldAlreadyHit(posX, posY, this.getBoardOfShots().getOceanBoard())) {
             return "You dummy! You have already struck that coordinats!\nYOU WASTED A MISSLE";
         }
 
