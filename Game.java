@@ -30,14 +30,14 @@ class Game {
     }
 
     public void winGameScreen(Player player) {
-        System.out.println("\n" + player.getPlayerName() + " WINS!!!!!!!!!!!!!!!\n");
+        System.out.println("\n" + player.getPlayerName() + " WINS!\n");
         // TODO
         // show highscore 
         restartGame();
     }
 
     public void restartGame(){
-        String input = Engine.gatherInput("Do you want to start new game mode? [y/n]");
+        String input = Engine.gatherInput("Do you want to start new game? [y/n]");
         if(input.equals("Y")){
             listOfPlayers.clear();
             Main.newGameMenu();
