@@ -17,7 +17,7 @@ class Ocean {
         allShipSquares = new ArrayList<>();
         for (int i = 0; i < oceanSize; i++) {
             for (int j = 0; j < oceanSize; j++) {
-                oceanBoard[i][j] = new Square(j, i);
+                oceanBoard[i][j] = new Square(i, j);
             }
         }
         return oceanBoard;
@@ -57,7 +57,7 @@ class Ocean {
             } else if (newShip.getOrientation().equals("V")) {
                 for (int i = newShip.getPosY(); i < newShip.getPosY() + newShip.getLength(); i++) {
                     this.getOceanBoard()[i][newShip.getPosX()].changeStatus("SHIP");
-                    Square field = this.getSquareByPos(newShip.getPosX(), i);
+                    Square field = this.getSquareByPos(i, newShip.getPosX());
                     newShip.addSquareToList(field);
                     this.addToShipSquares(field);
                 }

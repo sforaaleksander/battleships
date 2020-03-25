@@ -127,8 +127,10 @@ class Player {
     public void displayScreen(String message) {
         String playerBoard = this.getPlayerBoard().toString();
         String hitsBoard = this.getBoardOfShots().toString();
+        System.out.println("YOUR SHIPS");
         System.out.println(playerBoard);
-        System.out.println("\n\n\n");
+        System.out.println("\n____________________");
+        System.out.println("BOARD OF SHOTS");
         System.out.println(hitsBoard);
         System.out.println("\n");
         System.out.println(message);

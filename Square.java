@@ -7,7 +7,7 @@ class Square {
     private int posX;
     private int posY;
 
-    Square(int posX, int posY){
+    Square(int posY, int posX){
     this.status = "EMPTY";
     this.isAvailable = true;
     this.posX = posX;
