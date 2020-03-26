@@ -161,9 +161,9 @@ class Engine {
         clearScreen();
     }
 
-    public static int getRandomNumber() {
+    public static int getRandomNumber(int range) {
         Random r = new Random();
-        int number = r.nextInt(10);
+        int number = r.nextInt(range);
         return number;
     }
 }

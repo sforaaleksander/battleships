@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 class Player {
     private String playerName;
@@ -10,21 +12,40 @@ class Player {
     private ArrayList<Ship> listOfShips;
     private boolean isHuman;
     private String difficulty;
-    private char[][] listOfInitialShots;
+    private int[][] listOfInitialShots;
     private ArrayList<Square> listOfFieldsNotToShootAt;
     private Square lastShotSquare;
+    private ArrayList<Square> listOfShots;
+    private List<Integer> forbiddenRows;
 
     Player(boolean isHuman) {
         this.isHuman = isHuman;
         this.boardOfShots = new Ocean(10);
         this.difficulty = "x";
         this.playerName = createPlayerName();
+        this.listOfShots= new ArrayList<Square>();
         this.listOfShips = new ArrayList<Ship>();
         if (isHuman) {
             this.playerBoard = createPlayerBoard();
         } else {
             this.playerBoard = computerCreatesOwnBoard();
+            this.listOfInitialShots = createListOfInitialShots();
+            this.listOfFieldsNotToShootAt= new ArrayList<Square>();
+            this.forbiddenRows = new ArrayList<Integer>();
         }
+
+    }
+
+    private int [][] createListOfInitialShots() {
+        List<int[]> listArr = new ArrayList<>();
+        for (int y = 2; y <7; y++){
+            for (int x =2; x <7; x++) {
+                int[] pair = new int[]{y,x};
+                listArr.add(pair);
+            }
+        } 
+        int [][] listToReturn = listArr.toArray(new int[25][2]);
+        return listToReturn;
     }
 
     private Ocean computerCreatesOwnBoard() {
@@ -35,9 +56,9 @@ class Player {
         for (String key : Main.ships.keySet()) {
             Ship newShip;
             do {
-                String computerOrientation = Engine.getRandomNumber() < 5 ? "H" : "V";
-                int posY = Engine.getRandomNumber();
-                int posX = Engine.getRandomNumber();
+                String computerOrientation = Engine.getRandomNumber(10) < 5 ? "H" : "V";
+                int posY = Engine.getRandomNumber(10);
+                int posX = Engine.getRandomNumber(10);
                 int length = Main.ships.get(key);
                 newShip = new Ship(length, computerOrientation, posX, posY, key);
                 list.add(newShip);
@@ -111,7 +132,17 @@ class Player {
         Engine.changeHotSeats();
         return ocean;
     }
+    public List<Integer> getForbiddenRows(){
+        return this.forbiddenRows;
+    }
 
+    public int[][] getListOfInitialShots(){
+        return this.listOfInitialShots;
+    }
+
+    public List<Square> getListOfShots() {
+        return this.listOfShots;
+    }
     public String getDifficulty() {
         return this.difficulty;
     }
@@ -193,8 +224,8 @@ class Player {
 
     public void computerLaunchTheRocket(Player playerBeingShot) {
         if (this.getDifficulty().equals("EASY")) {
-            int posY = Engine.getRandomNumber();
-            int posX = Engine.getRandomNumber();
+            int posY = Engine.getRandomNumber(10);
+            int posX = Engine.getRandomNumber(10);
             if (Engine.isFieldAlreadyHit(posX, posY, this.getBoardOfShots().getOceanBoard())) {
                 // -points
             } else if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
@@ -208,9 +239,26 @@ class Player {
         } else if (this.getDifficulty().equals("NORMAL")) {
 
         } else if (this.getDifficulty().equals("HARD")) {
+            if (g)
+            int[] pair;
+            int posY;
+            int posX;
+            if (getForbiddenRows().size()>4) {
+                forbiddenRows.clear();
+            }
+            do {
+                pair = this.getListOfInitialShots()[Engine.getRandomNumber(25)];
+                posY = pair[0];
+                posX = pair[1];
+            } while (forbiddenRows.contains(posY));
+            forbiddenRows.add(posY);
+            
+                
 
-            int posY = Engine.getRandomNumber();
-            int posX = Engine.getRandomNumber();
+
+
+            int posY = Engine.getRandomNumber(10);
+            int posX = Engine.getRandomNumber(10);
             if (Engine.isFieldAlreadyHit(posX, posY, this.getBoardOfShots().getOceanBoard())) {
                 // -points
             } else if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
