@@ -11,40 +11,44 @@ class Player {
     // private boolean turn; ?
     private ArrayList<Ship> listOfShips;
     private boolean isHuman;
+    private int turn;
     private String difficulty;
     private int[][] listOfInitialShots;
     private ArrayList<Square> listOfFieldsNotToShootAt;
     private Square lastShotSquare;
-    private ArrayList<Square> listOfShots;
+    private Square baseShotSquare;
+    // private ArrayList<Square> listOfShots;
     private List<Integer> forbiddenRows;
 
     Player(boolean isHuman) {
         this.isHuman = isHuman;
         this.boardOfShots = new Ocean(10);
         this.difficulty = "x";
+        this.turn = 1;
         this.playerName = createPlayerName();
-        this.listOfShots= new ArrayList<Square>();
+        // this.listOfShots= new ArrayList<Square>();
         this.listOfShips = new ArrayList<Ship>();
         if (isHuman) {
             this.playerBoard = createPlayerBoard();
         } else {
             this.playerBoard = computerCreatesOwnBoard();
             this.listOfInitialShots = createListOfInitialShots();
-            this.listOfFieldsNotToShootAt= new ArrayList<Square>();
+            this.listOfFieldsNotToShootAt = new ArrayList<Square>();
             this.forbiddenRows = new ArrayList<Integer>();
+            this.baseShotSquare = null;
         }
 
     }
 
-    private int [][] createListOfInitialShots() {
+    private int[][] createListOfInitialShots() {
         List<int[]> listArr = new ArrayList<>();
-        for (int y = 2; y <7; y++){
-            for (int x =2; x <7; x++) {
-                int[] pair = new int[]{y,x};
+        for (int y = 2; y < 7; y++) {
+            for (int x = 2; x < 7; x++) {
+                int[] pair = new int[] { y, x };
                 listArr.add(pair);
             }
-        } 
-        int [][] listToReturn = listArr.toArray(new int[25][2]);
+        }
+        int[][] listToReturn = listArr.toArray(new int[25][2]);
         return listToReturn;
     }
 
@@ -132,17 +136,43 @@ class Player {
         Engine.changeHotSeats();
         return ocean;
     }
-    public List<Integer> getForbiddenRows(){
+
+    public int getTurn() {
+        return this.turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public Square getLastShotSquare() {
+        return this.lastShotSquare;
+    }
+
+    public void setLastShotSquare(Square lastShotSquare) {
+        this.lastShotSquare = lastShotSquare;
+    }
+
+    public Square getBaseShotSquare() {
+        return this.baseShotSquare;
+    }
+
+    public void setBaseShotSquare(Square baseShotSquare) {
+        this.baseShotSquare = baseShotSquare;
+    }
+
+    public List<Integer> getForbiddenRows() {
         return this.forbiddenRows;
     }
 
-    public int[][] getListOfInitialShots(){
+    public int[][] getListOfInitialShots() {
         return this.listOfInitialShots;
     }
 
-    public List<Square> getListOfShots() {
-        return this.listOfShots;
-    }
+    // public List<Square> getListOfShots() {
+    // return this.listOfShots;
+    // }
+
     public String getDifficulty() {
         return this.difficulty;
     }
@@ -239,31 +269,29 @@ class Player {
         } else if (this.getDifficulty().equals("NORMAL")) {
 
         } else if (this.getDifficulty().equals("HARD")) {
-            if (g)
-            int[] pair;
             int posY;
             int posX;
-            if (getForbiddenRows().size()>4) {
-                forbiddenRows.clear();
+            if (this.getTurn() < 9 && this.getBaseShotSquare() == null) {
+                int[] pair;
+                if (getForbiddenRows().size() > 4) {
+                    forbiddenRows.clear();
+                }
+                do {
+                    pair = this.getListOfInitialShots()[Engine.getRandomNumber(25)];
+                    posY = pair[0];
+                    posX = pair[1];
+                } while (forbiddenRows.contains(posY));
+                forbiddenRows.add(posY);
+            } else {
+                posY = Engine.getRandomNumber(10);
+                posX = Engine.getRandomNumber(10);
             }
-            do {
-                pair = this.getListOfInitialShots()[Engine.getRandomNumber(25)];
-                posY = pair[0];
-                posX = pair[1];
-            } while (forbiddenRows.contains(posY));
-            forbiddenRows.add(posY);
-            
-                
-
-
-
-            int posY = Engine.getRandomNumber(10);
-            int posX = Engine.getRandomNumber(10);
             if (Engine.isFieldAlreadyHit(posX, posY, this.getBoardOfShots().getOceanBoard())) {
                 // -points
             } else if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
                 playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
                 this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
+                this.setBaseShotSquare(this.getPlayerBoard().getOceanBoard()[posY][posX]);
                 // add to dontShootThereList
             } else {
                 this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
@@ -274,10 +302,10 @@ class Player {
         }
     }
 
-    public void displayScreen(String message, String playerName, int turnNo) {
+    public void displayScreen(String message, String playerName) {
         Engine.clearScreen();
         System.out.println("CURRENT PLAYER: " + playerName);
-        System.out.println("CURRENT TURN: " + turnNo);
+        System.out.println("CURRENT TURN: " + this.getTurn());
         System.out.println("");
         String playerBoard = this.getPlayerBoard().toString();
         String hitsBoard = this.getBoardOfShots().toString();

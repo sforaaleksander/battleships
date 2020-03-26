@@ -5,13 +5,11 @@ import java.util.HashSet;
 class Game {
     private Player player1;
     private Player player2;
-    private int turn;
     public static Set<String> listOfPlayers = new HashSet<>();
 
     Game(boolean isHuman1, boolean isHuman2) {
         this.player1 = new Player(isHuman1);
         this.player2 = new Player(isHuman2);
-        this.turn = 0;
     }
 
     public Player getPlayerOne() {
@@ -20,14 +18,6 @@ class Game {
 
     public Player getPlayerTwo() {
         return this.player2;
-    }
-
-    public int getTurn() {
-        return this.turn;
-    }
-
-    public void setTurn(int turn) {
-        this.turn = turn;
     }
 
     public void winGameScreen(Player player1, Player player2) {
@@ -55,7 +45,6 @@ class Game {
 
     public void pvpMode() {
         boolean isAlive = true;
-        int turn = getTurn();
         boolean switchPlayer = false;
         Player currentPlayer;
         Player opponentPlayer;
@@ -65,15 +54,16 @@ class Game {
                 switchPlayer = true;
                 currentPlayer = getPlayerOne();
                 opponentPlayer = getPlayerTwo();
-                turn = turn + 1;
+                currentPlayer.setTurn(currentPlayer.getTurn()+1);
+                opponentPlayer.setTurn(opponentPlayer.getTurn()+1);
             } else {
                 switchPlayer = false;
                 currentPlayer = getPlayerTwo();
                 opponentPlayer = getPlayerOne();
             }
-            currentPlayer.displayScreen("", currentPlayer.getPlayerName(), turn);
+            currentPlayer.displayScreen("", currentPlayer.getPlayerName());
             String message = currentPlayer.launchTheRocket(opponentPlayer);
-            currentPlayer.displayScreen(message, currentPlayer.getPlayerName(), turn);
+            currentPlayer.displayScreen(message, currentPlayer.getPlayerName());
             Engine.gatherInput("End turn and switch player.");
             Engine.changeHotSeats();
             isAlive = Engine.arePlayersAlive(currentPlayer, opponentPlayer);
@@ -85,7 +75,6 @@ class Game {
 
     public void pvcMode() {
         boolean isAlive = true;
-        int turn = getTurn();
         boolean switchPlayer = false;
         Player currentPlayer;
         Player opponentPlayer;
@@ -95,16 +84,17 @@ class Game {
                 switchPlayer = true;
                 currentPlayer = getPlayerOne();
                 opponentPlayer = getPlayerTwo();
-                turn = turn + 1;
+                currentPlayer.setTurn(currentPlayer.getTurn()+1);
+                opponentPlayer.setTurn(opponentPlayer.getTurn()+1);
             } else {
                 switchPlayer = false;
                 currentPlayer = getPlayerTwo();
                 opponentPlayer = getPlayerOne();
             }
             if (currentPlayer.getIsHuman() == true) {
-                currentPlayer.displayScreen("", currentPlayer.getPlayerName(), turn);
+                currentPlayer.displayScreen("", currentPlayer.getPlayerName());
                 String message = currentPlayer.launchTheRocket(opponentPlayer);
-                currentPlayer.displayScreen(message, currentPlayer.getPlayerName(), turn);
+                currentPlayer.displayScreen(message, currentPlayer.getPlayerName());
                 Engine.gatherInput("End turn and switch player.");
                 Engine.changeHotSeats();
             } else {
