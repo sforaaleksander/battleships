@@ -316,20 +316,20 @@ class Player {
             if (nextPosX > 0 && !this.getListOfFieldsNotToShootAt()
                     .contains(this.getPlayerBoard().getOceanBoard()[nextPosY][nextPosX - 1])) {
                 posY = nextPosY;
-                posX = nextPosX - 1;
+                posX = nextPosX;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else if (nextPosX < 9 && !this.getListOfFieldsNotToShootAt()
                     .contains(this.getPlayerBoard().getOceanBoard()[nextPosY][nextPosX + 1])) {
                 posY = nextPosY;
-                posX = nextPosX + 1;
+                posX = nextPosX;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else if (nextPosY > 0 && !this.getListOfFieldsNotToShootAt()
                     .contains(this.getPlayerBoard().getOceanBoard()[nextPosY - 1][nextPosX])) {
-                posY = nextPosY - 1;
+                posY = nextPosY;
                 posX = nextPosX;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else {
-                posY = nextPosY + 1;
+                posY = nextPosY;
                 posX = nextPosX;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             }
@@ -383,13 +383,13 @@ class Player {
 
     public Square findNextShotSquare(int posY, int posX) {
         if (this.getBaseShotSquare().getPosY() > posY) {
-            return this.getPlayerBoard().getOceanBoard()[posY][posX];
+            return this.getPlayerBoard().getOceanBoard()[posY-1][posX];
         } else if (this.getBaseShotSquare().getPosY() < posY) {
-            return this.getPlayerBoard().getOceanBoard()[posY][posX];
+            return this.getPlayerBoard().getOceanBoard()[posY+1][posX];
         } else if (this.getBaseShotSquare().getPosX() > posX) {
-            return this.getPlayerBoard().getOceanBoard()[posY][posX];
+            return this.getPlayerBoard().getOceanBoard()[posY][posX-1];
         } else if (this.getBaseShotSquare().getPosX() < posX) {
-            return this.getPlayerBoard().getOceanBoard()[posY][posX];
+            return this.getPlayerBoard().getOceanBoard()[posY][posX+1];
         } else {
             return this.getPlayerBoard().getOceanBoard()[posY][posX];
         }
