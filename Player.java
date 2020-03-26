@@ -25,6 +25,8 @@ class Player {
     // private boolean goUp = false;
     // private boolean goDown = false;
     private String direction;
+    private int currentX;
+    private int currentY;
 
 
     Player(boolean isHuman) {
@@ -154,31 +156,23 @@ class Player {
          this.direction = direction;
     }
 
+    public int getCurrentX(){
+        return this.currentX;
+    }
 
-    // public boolean getGoLeft() {
-    //     return this.goLeft;
-    // }
-    // public boolean getGoRight() {
-    //     return this.goRight;
-    // }
-    // public boolean getGoUp() {
-    //     return this.goUp;
-    // }
-    // public boolean getGoDown() {
-    //     return this.goDown;
-    // }
-    // public void setGoLeft(boolean direction) {
-    //      this.goLeft = direction;
-    // }
-    // public void setGoRight(boolean direction) {
-    //     this.goRight= direction;
-    // }
-    // public void setGoUp(boolean direction) {
-    //      this.goUp= direction;
-    // }
-    // public void setGoDown(boolean direction) {
-    //      this.goDown= direction;
-    // }
+    public int getCurrentY(){
+        return this.currentY;
+    }
+
+    public void setCurrentX(int currentX){
+        this.currentX = currentX;
+    }
+
+    public void setCurrentY(int currentY){
+        this.currentY = currentY;
+    }
+
+
     public ArrayList<Square> getListOfFieldsNotToShootAt() {
         return this.listOfFieldsNotToShootAt;
     }
@@ -341,44 +335,31 @@ class Player {
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } while (this.getListOfFieldsNotToShootAt().contains(field));
         } else {
-            int basePosY = this.getBaseShotSquare().getPosY();
-            int basePosX = this.getBaseShotSquare().getPosX();
-            int nextPosY;
-            int nextPosX;
-            // if (this.getNextShotSquare() == null) {
-            //     // this.setNextShotSquare(this.getBaseShotSquare());
-            //     nextPosY = basePosY;
-            //     nextPosX = basePosX;
-            // } else {
-            //     nextPosY = this.getNextShotSquare().getPosY();
-            //     nextPosX = this.getNextShotSquare().getPosX();
-            // }
-            nextPosY = basePosY;
-            nextPosX = basePosX;
-
+            int currentPosX = this.getCurrentX();
+            int currentPosY = this.getCurrentY();
 
             String directione = this.getDirection();
             System.out.println(directione);
             Engine.gatherEmptyInput("directione");
             // going around shot attempt
-            if (nextPosX > 0 && !this.getListOfFieldsNotToShootAt()
-                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY][nextPosX - 1]) && (this.getDirection().equals("LEFT") ||this.getDirection().equals("")) ) {
-                posY = nextPosY;
-                posX = nextPosX - 1;
+            if (currentPosX > 0 && !this.getListOfFieldsNotToShootAt()
+                    .contains(this.getPlayerBoard().getOceanBoard()[currentPosY][currentPosX - 1]) && (this.getDirection().equals("LEFT") ||this.getDirection().equals("")) ) {
+                posY = currentPosY;
+                posX = currentPosX - 1;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
-            } else if (nextPosX < 9 && !this.getListOfFieldsNotToShootAt()
-                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY][nextPosX + 1]) && (this.getDirection().equals("RIGHT") ||this.getDirection().equals(""))) {
-                posY = nextPosY;
-                posX = nextPosX + 1;
+            } else if (currentPosX < 9 && !this.getListOfFieldsNotToShootAt()
+                    .contains(this.getPlayerBoard().getOceanBoard()[currentPosY][currentPosX + 1]) && (this.getDirection().equals("RIGHT") ||this.getDirection().equals(""))) {
+                posY = currentPosY;
+                posX = currentPosX + 1;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
-            } else if (nextPosY > 0 && !this.getListOfFieldsNotToShootAt()
-                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY - 1][nextPosX]) && (this.getDirection().equals("UP") ||this.getDirection().equals(""))) {
-                posY = nextPosY - 1;
-                posX = nextPosX;
+            } else if (currentPosY > 0 && !this.getListOfFieldsNotToShootAt()
+                    .contains(this.getPlayerBoard().getOceanBoard()[currentPosY - 1][currentPosX]) && (this.getDirection().equals("UP") ||this.getDirection().equals(""))) {
+                posY = currentPosY - 1;
+                posX = currentPosX;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else {
-                posY = nextPosY + 1;
-                posX = nextPosX;
+                posY = currentPosY + 1;
+                posX = currentPosX;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             }
         }
@@ -389,6 +370,8 @@ class Player {
             if (this.getBaseShotSquare() == null) {
                 this.setBaseShotSquare(this.getPlayerBoard().getOceanBoard()[posY][posX]);
             }
+            this.setCurrentX(posX);
+            this.setCurrentY(posY);
             this.addToListOfFieldsNotToShootAt(field);
             this.setDirection(this.findDirection(posY, posX));
             if (playerBeingShot.isShipSunk()) {
@@ -400,7 +383,9 @@ class Player {
             playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("MISSED"); // display PC shots for
                                                                                                  // debug
             this.addToListOfFieldsNotToShootAt(field);
-            this.setNextShotSquare(this.getBaseShotSquare());
+            if (this.getBaseShotSquare() != null){
+            this.setCurrentX(this.getBaseShotSquare().getPosX());
+            this.setCurrentY(this.getBaseShotSquare().getPosY());}
             this.setDirection(this.switchDirection(this.getDirection()));
         }
     }
@@ -431,19 +416,14 @@ class Player {
 
     }
 
-    public String findDirection(int posY, int posX) {
-        
+    public String findDirection(int posY, int posX) {        
         if (this.getBaseShotSquare().getPosY() > posY) {
-
             return "UP";
         } else if (this.getBaseShotSquare().getPosY() < posY) {
-
             return "DOWN";
         } else if (this.getBaseShotSquare().getPosX() > posX) {
-
             return "LEFT";
         } else if (this.getBaseShotSquare().getPosX() < posX) {
-            
             return "RIGHT";    
         } else
             return "";
