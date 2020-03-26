@@ -20,12 +20,18 @@ class Player {
     private Square nextShotSquare;
     // private ArrayList<Square> listOfShots;
     private List<Integer> forbiddenRows;
+    // private boolean goLeft = false;
+    // private boolean goRight =false;
+    // private boolean goUp = false;
+    // private boolean goDown = false;
+    private String direction;
+
 
     Player(boolean isHuman) {
         this.isHuman = isHuman;
         this.boardOfShots = new Ocean(10);
         this.difficulty = "x";
-        this.turn = 0;
+        this.turn = 1;
         this.playerName = createPlayerName();
         // this.listOfShots= new ArrayList<Square>();
         this.listOfShips = new ArrayList<Ship>();
@@ -37,6 +43,7 @@ class Player {
             this.listOfFieldsNotToShootAt = new ArrayList<Square>();
             this.forbiddenRows = new ArrayList<Integer>();
             this.baseShotSquare = null;
+            this.direction = "";
         }
 
     }
@@ -138,6 +145,40 @@ class Player {
         return ocean;
     }
 
+    public String getDirection() {
+        return this.direction;
+    }
+
+    
+    public void setDirection(String direction) {
+         this.direction = direction;
+    }
+
+
+    // public boolean getGoLeft() {
+    //     return this.goLeft;
+    // }
+    // public boolean getGoRight() {
+    //     return this.goRight;
+    // }
+    // public boolean getGoUp() {
+    //     return this.goUp;
+    // }
+    // public boolean getGoDown() {
+    //     return this.goDown;
+    // }
+    // public void setGoLeft(boolean direction) {
+    //      this.goLeft = direction;
+    // }
+    // public void setGoRight(boolean direction) {
+    //     this.goRight= direction;
+    // }
+    // public void setGoUp(boolean direction) {
+    //      this.goUp= direction;
+    // }
+    // public void setGoDown(boolean direction) {
+    //      this.goDown= direction;
+    // }
     public ArrayList<Square> getListOfFieldsNotToShootAt() {
         return this.listOfFieldsNotToShootAt;
     }
@@ -232,6 +273,7 @@ class Player {
                     hitCounter = hitCounter + 1;
                     if (hitCounter == element.getLength()) {
                         getListOfShips().remove(element);
+                        this.setBaseShotSquare(null);
                         return true;
                     }
                 }
@@ -303,33 +345,39 @@ class Player {
             int basePosX = this.getBaseShotSquare().getPosX();
             int nextPosY;
             int nextPosX;
-            if (this.getNextShotSquare() == null) {
-                // this.setNextShotSquare(this.getBaseShotSquare());
-                nextPosY = basePosY;
-                nextPosX = basePosX;
-            } else {
-                nextPosY = this.getNextShotSquare().getPosY();
-                nextPosX = this.getNextShotSquare().getPosX();
-            }
+            // if (this.getNextShotSquare() == null) {
+            //     // this.setNextShotSquare(this.getBaseShotSquare());
+            //     nextPosY = basePosY;
+            //     nextPosX = basePosX;
+            // } else {
+            //     nextPosY = this.getNextShotSquare().getPosY();
+            //     nextPosX = this.getNextShotSquare().getPosX();
+            // }
+            nextPosY = basePosY;
+            nextPosX = basePosX;
 
+
+            String directione = this.getDirection();
+            System.out.println(directione);
+            Engine.gatherEmptyInput("directione");
             // going around shot attempt
             if (nextPosX > 0 && !this.getListOfFieldsNotToShootAt()
-                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY][nextPosX - 1])) {
+                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY][nextPosX - 1]) && (this.getDirection().equals("LEFT") ||this.getDirection().equals("")) ) {
                 posY = nextPosY;
-                posX = nextPosX;
+                posX = nextPosX - 1;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else if (nextPosX < 9 && !this.getListOfFieldsNotToShootAt()
-                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY][nextPosX + 1])) {
+                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY][nextPosX + 1]) && (this.getDirection().equals("RIGHT") ||this.getDirection().equals(""))) {
                 posY = nextPosY;
-                posX = nextPosX;
+                posX = nextPosX + 1;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else if (nextPosY > 0 && !this.getListOfFieldsNotToShootAt()
-                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY - 1][nextPosX])) {
-                posY = nextPosY;
+                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY - 1][nextPosX]) && (this.getDirection().equals("UP") ||this.getDirection().equals(""))) {
+                posY = nextPosY - 1;
                 posX = nextPosX;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else {
-                posY = nextPosY;
+                posY = nextPosY + 1;
                 posX = nextPosX;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             }
@@ -342,8 +390,9 @@ class Player {
                 this.setBaseShotSquare(this.getPlayerBoard().getOceanBoard()[posY][posX]);
             }
             this.addToListOfFieldsNotToShootAt(field);
-            this.setNextShotSquare(this.findNextShotSquare(posY, posX));
+            this.setDirection(this.findDirection(posY, posX));
             if (playerBeingShot.isShipSunk()) {
+                this.setDirection("");
                 this.setBaseShotSquare(null);
             }
         } else {
@@ -352,6 +401,7 @@ class Player {
                                                                                                  // debug
             this.addToListOfFieldsNotToShootAt(field);
             this.setNextShotSquare(this.getBaseShotSquare());
+            this.setDirection(this.switchDirection(this.getDirection()));
         }
     }
 
@@ -381,17 +431,31 @@ class Player {
 
     }
 
-    public Square findNextShotSquare(int posY, int posX) {
+    public String findDirection(int posY, int posX) {
+        
         if (this.getBaseShotSquare().getPosY() > posY) {
-            return this.getPlayerBoard().getOceanBoard()[posY-1][posX];
+
+            return "UP";
         } else if (this.getBaseShotSquare().getPosY() < posY) {
-            return this.getPlayerBoard().getOceanBoard()[posY+1][posX];
+
+            return "DOWN";
         } else if (this.getBaseShotSquare().getPosX() > posX) {
-            return this.getPlayerBoard().getOceanBoard()[posY][posX-1];
+
+            return "LEFT";
         } else if (this.getBaseShotSquare().getPosX() < posX) {
-            return this.getPlayerBoard().getOceanBoard()[posY][posX+1];
-        } else {
-            return this.getPlayerBoard().getOceanBoard()[posY][posX];
+            
+            return "RIGHT";    
+        } else
+            return "";
+    }
+
+    public String switchDirection (String wrongDirection){
+        switch (wrongDirection){
+            case "LEFT" : return "RIGHT";
+            case "RIGHT" : return "LEFT";
+            case "UP" : return "DOWN";
+            case "DOWN" : return "UP";
         }
+        return "";
     }
 }
