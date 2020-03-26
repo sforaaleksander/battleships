@@ -60,10 +60,13 @@ class Engine {
             }
             validInput = false;
             userInput = Main.scan.next().toUpperCase();
-            if (userInput.substring(1).matches("^[0-9]*$")) {
-                if (Arrays.asList(letters).contains(userInput.charAt(0)) && Integer.parseInt(userInput.substring(1)) > 0
-                        && Integer.parseInt(userInput.substring(1)) <= 10) {
-                    validInput = true;
+            if (!userInput.equals("")) {
+                if (userInput.substring(1).matches("^[0-9]*$")) {
+                    if (Arrays.asList(letters).contains(userInput.charAt(0))
+                            && Integer.parseInt(userInput.substring(1)) > 0
+                            && Integer.parseInt(userInput.substring(1)) <= 10) {
+                        validInput = true;
+                    }
                 }
             }
         } while (!validInput);
@@ -166,7 +169,8 @@ class Engine {
         return number;
     }
 
-    public static void addFieldsAsNotToShootAt(ArrayList<Square> list) {}
+    public static void addFieldsAsNotToShootAt(ArrayList<Square> list) {
+    }
 
 }
 
