@@ -30,7 +30,7 @@ class Engine {
         return userInput;
     }
 
-    public static String gatherEmptyInput(String title){
+    public static String gatherEmptyInput(String title) {
         System.out.println(title);
         String userInput = Main.scan.next().toUpperCase();
         return userInput;
@@ -43,10 +43,12 @@ class Engine {
         boolean validInput = false;
         while (!validInput) {
             userInput = Main.scan.next();
-            if (userInput.matches("^[0-9]*$")) {
-                userInt = Integer.parseInt(userInput);
-                if (userInt > 0 && userInt <= range) {
-                    validInput = true;
+            if (!userInput.equals("")) {
+                if (userInput.matches("^[0-9]*$")) {
+                    userInt = Integer.parseInt(userInput);
+                    if (userInt > 0 && userInt <= range) {
+                        validInput = true;
+                    }
                 }
             }
         }

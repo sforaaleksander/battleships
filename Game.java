@@ -96,7 +96,6 @@ class Game {
                 String message = currentPlayer.launchTheRocket(opponentPlayer);
                 currentPlayer.displayScreen(message, currentPlayer.getPlayerName());
                 Engine.gatherInput("End turn and switch player.");
-                // Engine.changeHotSeats();
             } else {
                 Engine.clearScreen();
                 System.out.println("\n\n\nComputer is now taking the shot...");
@@ -107,7 +106,6 @@ class Game {
                     System.out.println(e);
                 }
                 Engine.clearScreen();
-                // Engine.changeHotSeats();
             }
             isAlive = Engine.arePlayersAlive(currentPlayer, opponentPlayer);
             if (!isAlive) {
