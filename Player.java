@@ -7,22 +7,24 @@ class Player {
     private Ocean playerBoard;
     private Ocean boardOfShots;
     // private boolean turn; ?
-    private Ship[] listOfShips;
+    private ArrayList<Ship> listOfShips;
     private boolean isHuman;
     private String difficulty;
+    private char[][] listOfInitialShots;
+    private ArrayList<Square> listOfFieldsNotToShootAt;
+    private Square lastShotSquare;
 
     Player(boolean isHuman) {
         this.isHuman = isHuman;
         this.boardOfShots = new Ocean(10);
         this.difficulty = "x";
         this.playerName = createPlayerName();
+        this.listOfShips = new ArrayList<Ship>();
         if (isHuman) {
             this.playerBoard = createPlayerBoard();
         } else {
             this.playerBoard = computerCreatesOwnBoard();
-
         }
-        // listofships?
     }
 
     private Ocean computerCreatesOwnBoard() {
@@ -31,20 +33,22 @@ class Player {
         ArrayList<Ship> list = new ArrayList<>();
         Ocean ocean = new Ocean(oceanSize);
         for (String key : Main.ships.keySet()) {
+            Ship newShip;
             do {
                 String computerOrientation = Engine.getRandomNumber() < 5 ? "H" : "V";
                 int posY = Engine.getRandomNumber();
                 int posX = Engine.getRandomNumber();
                 int length = Main.ships.get(key);
-                Ship newShip = new Ship(length, computerOrientation, posX, posY);
+                newShip = new Ship(length, computerOrientation, posX, posY, key);
                 list.add(newShip);
                 isPlaceOK = ocean.placeOnTable(newShip);
                 // System.out.println(ocean.toString());
                 // Engine.gatherInput("cheat");
             } while (!isPlaceOK);
             ocean.setFieldsUnavailable();
+            this.getListOfShips().add(newShip);
         }
-        this.listOfShips = list.toArray(new Ship[list.size()]);
+        // this.listOfShips = list.toArray(new Ship[list.size()]);
         System.out.println(ocean.toString());
         Engine.changeHotSeats();
         return ocean;
@@ -80,6 +84,7 @@ class Player {
         ArrayList<Ship> list = new ArrayList<>();
         Ocean ocean = new Ocean(oceanSize);
         for (String key : Main.ships.keySet()) {
+            Ship newShip;
             do {
                 System.out.println(ocean.toString());
                 System.out.println(
@@ -94,13 +99,14 @@ class Player {
                 int posY = Engine.fromLetterToNum(userLetter);
                 int posX = Integer.parseInt(userPosition.substring(1)) - 1;
                 int length = Main.ships.get(key);
-                Ship newShip = new Ship(length, userOrientation, posX, posY);
+                newShip = new Ship(length, userOrientation, posX, posY, key);
                 list.add(newShip);
                 isPlaceOK = ocean.placeOnTable(newShip);
             } while (!isPlaceOK);
+            this.getListOfShips().add(newShip);
             ocean.setFieldsUnavailable();
         }
-        this.listOfShips = list.toArray(new Ship[list.size()]);
+        // this.listOfShips = list.toArray(new Ship[list.size()]);
         System.out.println(ocean.toString());
         Engine.changeHotSeats();
         return ocean;
@@ -114,7 +120,7 @@ class Player {
         this.difficulty = difficulty;
     }
 
-    public Ship[] getListOfShips() {
+    public ArrayList<Ship> getListOfShips() {
         return this.listOfShips;
     }
 
@@ -146,6 +152,25 @@ class Player {
         return this.isHuman;
     }
 
+    public boolean isShipSunk() {
+        for (Ship element : getListOfShips()) {
+            int hitCounter = 0;
+            for (int i = 0; i < element.getListOfFields().size(); i++) {
+                if (element.getListOfFields().get(i).getStatus().equals("SHIP")) {
+                    break;
+                } else {
+                    hitCounter = hitCounter + 1;
+                    if (hitCounter == element.getLength()) {
+                        getListOfShips().remove(element);
+                        return true;
+                    }
+                }
+            }
+
+        }
+        return false;
+    }
+
     public String launchTheRocket(Player playerBeingShot) {
         String userPosition = Engine.gatherPositionInput("Type the field to shoot at. (eg. F3)");
         char userLetter = userPosition.charAt(0);
@@ -158,12 +183,12 @@ class Player {
         if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
             playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
-            return "YOU HIT";
+            String sunk = playerBeingShot.isShipSunk() ? " AND SUNK!" : "!";
+            return "YOU HIT" + sunk;
         } else {
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
             return "YOU MISSED";
         }
-
     }
 
     public void computerLaunchTheRocket(Player playerBeingShot) {
@@ -175,6 +200,7 @@ class Player {
             } else if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
                 playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
                 this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
+                playerBeingShot.isShipSunk();
             } else {
                 this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
             }
@@ -182,16 +208,21 @@ class Player {
         } else if (this.getDifficulty().equals("NORMAL")) {
 
         } else if (this.getDifficulty().equals("HARD")) {
-            int posY = 0;
-            int posX = 0;
+
+            int posY = Engine.getRandomNumber();
+            int posX = Engine.getRandomNumber();
             if (Engine.isFieldAlreadyHit(posX, posY, this.getBoardOfShots().getOceanBoard())) {
                 // -points
             } else if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
                 playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
                 this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
+                // add to dontShootThereList
             } else {
                 this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
+                // add to dontShootThereHashSet?
+                // in progress
             }
+
         }
     }
 
