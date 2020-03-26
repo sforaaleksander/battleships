@@ -6,13 +6,15 @@ class Ship{
     private int posY;
     private String orientation;
     private ArrayList<Square> listOfFields;
+    private String shipName;
 
-    Ship(int length, String orientation, int posX, int posY){
+    Ship(int length, String orientation, int posX, int posY, String shipName){
         this.length = length;
         this.orientation = orientation.toUpperCase();
         this.posX = posX;
         this.posY = posY;
         this.listOfFields = new ArrayList<>();
+        this.shipName = shipName;
     }
 
     public int getLength(){
@@ -38,7 +40,8 @@ class Ship{
     public ArrayList<Square> getListOfFields(){
         return this.listOfFields;
     }
-
-
-
+    
+    public String getShipName(){
+        return this.shipName;
+    }
 }
