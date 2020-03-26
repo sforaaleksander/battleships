@@ -25,7 +25,7 @@ class Player {
         this.isHuman = isHuman;
         this.boardOfShots = new Ocean(10);
         this.difficulty = "x";
-        this.turn = 1;
+        this.turn = 0;
         this.playerName = createPlayerName();
         // this.listOfShots= new ArrayList<Square>();
         this.listOfShips = new ArrayList<Ship>();
@@ -232,7 +232,6 @@ class Player {
                     hitCounter = hitCounter + 1;
                     if (hitCounter == element.getLength()) {
                         getListOfShips().remove(element);
-                        this.setBaseShotSquare(null);
                         return true;
                     }
                 }
@@ -344,7 +343,7 @@ class Player {
             }
             this.addToListOfFieldsNotToShootAt(field);
             this.setNextShotSquare(this.findNextShotSquare(posY, posX));
-            if (this.isShipSunk()) {
+            if (playerBeingShot.isShipSunk()) {
                 this.setBaseShotSquare(null);
             }
         } else {
@@ -384,12 +383,15 @@ class Player {
 
     public Square findNextShotSquare(int posY, int posX) {
         if (this.getBaseShotSquare().getPosY() > posY) {
-            return this.getPlayerBoard().getOceanBoard()[posY - 1][posX];
+            return this.getPlayerBoard().getOceanBoard()[posY][posX];
         } else if (this.getBaseShotSquare().getPosY() < posY) {
-            return this.getPlayerBoard().getOceanBoard()[posY + 1][posX];
+            return this.getPlayerBoard().getOceanBoard()[posY][posX];
         } else if (this.getBaseShotSquare().getPosX() > posX) {
-            return this.getPlayerBoard().getOceanBoard()[posY][posX - 1];
-        } else
-            return this.getPlayerBoard().getOceanBoard()[posY][posX + 1];
+            return this.getPlayerBoard().getOceanBoard()[posY][posX];
+        } else if (this.getBaseShotSquare().getPosX() < posX) {
+            return this.getPlayerBoard().getOceanBoard()[posY][posX];
+        } else {
+            return this.getPlayerBoard().getOceanBoard()[posY][posX];
+        }
     }
 }
