@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.ArrayList;
 
 class Engine {
     public static void clearScreen() {
@@ -32,7 +33,6 @@ class Engine {
                 }
             }
         }
-
         return userInt;
     }
 
@@ -67,7 +67,6 @@ class Engine {
                 }
             }
         } while (!validInput);
-
         return userInput;
     }
 
@@ -107,15 +106,15 @@ class Engine {
         }
     }
 
-    public static boolean isFieldAShip(int posX, int posY, Square[][] board) {
-        if (board[posY][posX].getStatus().equals("SHIP")) {
+    public static boolean isFieldAShip(Square field) {
+        if (field.getStatus().equals("SHIP")) {
             return true;
         }
         return false;
     }
 
-    public static boolean isFieldAlreadyHit(int posX, int posY, Square[][] board) {
-        if (board[posY][posX].getStatus().equals("HIT") || board[posY][posX].getStatus().equals("MISSED")) {
+    public static boolean isFieldAlreadyHit(Square field) {
+        if (field.getStatus().equals("HIT") || field.getStatus().equals("MISSED")) {
             return true;
         }
         return false;
@@ -166,6 +165,9 @@ class Engine {
         int number = r.nextInt(range);
         return number;
     }
+
+    public static void addFieldsAsNotToShootAt(ArrayList<Square> list) {}
+
 }
 
 // public static boolean checkPlacement(Ship theShip, Square[][] oceanBoard) {

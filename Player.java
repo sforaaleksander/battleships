@@ -17,6 +17,7 @@ class Player {
     private ArrayList<Square> listOfFieldsNotToShootAt;
     private Square lastShotSquare;
     private Square baseShotSquare;
+    private Square nextShotSquare;
     // private ArrayList<Square> listOfShots;
     private List<Integer> forbiddenRows;
 
@@ -137,6 +138,14 @@ class Player {
         return ocean;
     }
 
+    public ArrayList<Square> getListOfFieldsNotToShootAt() {
+        return this.listOfFieldsNotToShootAt;
+    }
+
+    public void addToListOfFieldsNotToShootAt(Square field) {
+        this.listOfFieldsNotToShootAt.add(field);
+    }
+
     public int getTurn() {
         return this.turn;
     }
@@ -145,12 +154,12 @@ class Player {
         this.turn = turn;
     }
 
-    public Square getLastShotSquare() {
-        return this.lastShotSquare;
+    public Square getNextShotSquare() {
+        return this.nextShotSquare;
     }
 
-    public void setLastShotSquare(Square lastShotSquare) {
-        this.lastShotSquare = lastShotSquare;
+    public void setNextShotSquare(Square nextShotSquare) {
+        this.nextShotSquare = nextShotSquare;
     }
 
     public Square getBaseShotSquare() {
@@ -223,11 +232,11 @@ class Player {
                     hitCounter = hitCounter + 1;
                     if (hitCounter == element.getLength()) {
                         getListOfShips().remove(element);
+                        this.setBaseShotSquare(null);
                         return true;
                     }
                 }
             }
-
         }
         return false;
     }
@@ -237,11 +246,11 @@ class Player {
         char userLetter = userPosition.charAt(0);
         int posY = Engine.fromLetterToNum(userLetter);
         int posX = Integer.parseInt(userPosition.substring(1)) - 1;
-        if (Engine.isFieldAlreadyHit(posX, posY, this.getBoardOfShots().getOceanBoard())) {
+        if (Engine.isFieldAlreadyHit(this.getBoardOfShots().getOceanBoard()[posY][posX])) {
             return "You dummy! You have already struck that coordinats!\nYOU WASTED A MISSLE";
         }
 
-        if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
+        if (Engine.isFieldAShip(playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX])) {
             playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
             String sunk = playerBeingShot.isShipSunk() ? " AND SUNK!" : "!";
@@ -252,52 +261,100 @@ class Player {
         }
     }
 
-    public void computerLaunchTheRocket(Player playerBeingShot) {
-        if (this.getDifficulty().equals("EASY")) {
-            int posY = Engine.getRandomNumber(10);
-            int posX = Engine.getRandomNumber(10);
-            if (Engine.isFieldAlreadyHit(posX, posY, this.getBoardOfShots().getOceanBoard())) {
-                // -points
-            } else if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
-                playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
-                this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
-                playerBeingShot.isShipSunk();
-            } else {
-                this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
+    public void playEasyMode(Player playerBeingShot) {
+        int posY = Engine.getRandomNumber(10);
+        int posX = Engine.getRandomNumber(10);
+        if (Engine.isFieldAlreadyHit(this.getBoardOfShots().getOceanBoard()[posY][posX])) {
+            // -points
+        } else if (Engine.isFieldAShip(playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX])) {
+            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
+            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
+            playerBeingShot.isShipSunk();
+        } else {
+            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
+        }
+    }
+
+    public void playHardMode(Player playerBeingShot) {
+        int posY;
+        int posX;
+        Square field;
+
+        if (this.getTurn() < 9 && this.getBaseShotSquare() == null) {
+            int[] pair;
+            if (getForbiddenRows().size() > 4) {
+                forbiddenRows.clear();
             }
+            do {
+                pair = this.getListOfInitialShots()[Engine.getRandomNumber(25)];
+                posY = pair[0];
+                posX = pair[1];
+                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
+            } while (forbiddenRows.contains(posY) || this.getListOfFieldsNotToShootAt().contains(field));
+            forbiddenRows.add(posY);
 
-        } else if (this.getDifficulty().equals("NORMAL")) {
-
-        } else if (this.getDifficulty().equals("HARD")) {
-            int posY;
-            int posX;
-            if (this.getTurn() < 9 && this.getBaseShotSquare() == null) {
-                int[] pair;
-                if (getForbiddenRows().size() > 4) {
-                    forbiddenRows.clear();
-                }
-                do {
-                    pair = this.getListOfInitialShots()[Engine.getRandomNumber(25)];
-                    posY = pair[0];
-                    posX = pair[1];
-                } while (forbiddenRows.contains(posY));
-                forbiddenRows.add(posY);
-            } else {
+        } else if (this.getBaseShotSquare() == null) {
+            do {
                 posY = Engine.getRandomNumber(10);
                 posX = Engine.getRandomNumber(10);
+                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
+            } while (this.getListOfFieldsNotToShootAt().contains(field));
+        } else {
+            int basePosY = this.getBaseShotSquare().getPosY();
+            int basePosX = this.getBaseShotSquare().getPosX();
+            int nextPosY;
+            int nextPosX;
+            if (this.getNextShotSquare() == null) {
+                // this.setNextShotSquare(this.getBaseShotSquare());
+                nextPosY = basePosY;
+                nextPosX = basePosX;
+            } else{
+                nextPosY = this.getNextShotSquare().getPosY();
+                nextPosX = this.getNextShotSquare().getPosX();
             }
-            if (Engine.isFieldAlreadyHit(posX, posY, this.getBoardOfShots().getOceanBoard())) {
-                // -points
-            } else if (Engine.isFieldAShip(posX, posY, playerBeingShot.getPlayerBoard().getOceanBoard())) {
-                playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
-                this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
-                this.setBaseShotSquare(this.getPlayerBoard().getOceanBoard()[posY][posX]);
-                // add to dontShootThereList
+
+            // going around shot attempt
+            if (nextPosX > 0 && !this.getListOfFieldsNotToShootAt()
+                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY][nextPosX - 1])) {
+                posY = nextPosY;
+                posX = nextPosX - 1;
+                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
+            } else if (nextPosX < 9 && !this.getListOfFieldsNotToShootAt()
+                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY][nextPosX + 1])) {
+                posY = nextPosY;
+                posX = nextPosX + 1;
+                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
+            } else if (nextPosY > 0 && !this.getListOfFieldsNotToShootAt()
+                    .contains(this.getPlayerBoard().getOceanBoard()[nextPosY - 1][nextPosX])) {
+                posY = nextPosY - 1;
+                posX = nextPosX;
+                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else {
-                this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
-                // add to dontShootThereHashSet?
-                // in progress
+                posY = nextPosY + 1;
+                posX = nextPosX;
+                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             }
+        }
+
+        if (Engine.isFieldAShip(playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX])) {
+            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
+            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
+            this.setBaseShotSquare(this.getPlayerBoard().getOceanBoard()[posY][posX]);
+            this.addToListOfFieldsNotToShootAt(field);
+            this.setNextShotSquare(this.findNextShotSquare(posY, posX));
+        } else {
+            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
+            this.addToListOfFieldsNotToShootAt(field);
+            this.setNextShotSquare(this.getBaseShotSquare());
+        }
+    }
+
+    public void computerLaunchTheRocket(Player playerBeingShot) {
+        if (this.getDifficulty().equals("EASY")) {
+            playEasyMode(playerBeingShot);
+        } else if (this.getDifficulty().equals("NORMAL")) {
+        } else if (this.getDifficulty().equals("HARD")) {
+            playHardMode(playerBeingShot);
 
         }
     }
@@ -318,4 +375,14 @@ class Player {
 
     }
 
+    public Square findNextShotSquare(int posY, int posX) {
+        if (this.getBaseShotSquare().getPosY() > posY) {
+            return this.getPlayerBoard().getOceanBoard()[posY - 1][posX];
+        } else if (this.getBaseShotSquare().getPosY() < posY) {
+            return this.getPlayerBoard().getOceanBoard()[posY + 1][posX];
+        } else if (this.getBaseShotSquare().getPosX() > posX) {
+            return this.getPlayerBoard().getOceanBoard()[posY][posX - 1];
+        } else
+            return this.getPlayerBoard().getOceanBoard()[posY][posX + 1];
+    }
 }
