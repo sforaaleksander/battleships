@@ -39,8 +39,8 @@ class Player {
                 Ship newShip = new Ship(length, computerOrientation, posX, posY);
                 list.add(newShip);
                 isPlaceOK = ocean.placeOnTable(newShip);
-                System.out.println(ocean.toString());
-                Engine.gatherInput("cheat");
+                // System.out.println(ocean.toString());
+                // Engine.gatherInput("cheat");
             } while (!isPlaceOK);
             ocean.setFieldsUnavailable();
         }
