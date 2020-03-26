@@ -54,8 +54,8 @@ class Game {
                 switchPlayer = true;
                 currentPlayer = getPlayerOne();
                 opponentPlayer = getPlayerTwo();
-                currentPlayer.setTurn(currentPlayer.getTurn()+1);
-                opponentPlayer.setTurn(opponentPlayer.getTurn()+1);
+                currentPlayer.setTurn(currentPlayer.getTurn() + 1);
+                opponentPlayer.setTurn(opponentPlayer.getTurn() + 1);
             } else {
                 switchPlayer = false;
                 currentPlayer = getPlayerTwo();
@@ -84,8 +84,8 @@ class Game {
                 switchPlayer = true;
                 currentPlayer = getPlayerOne();
                 opponentPlayer = getPlayerTwo();
-                currentPlayer.setTurn(currentPlayer.getTurn()+1);
-                opponentPlayer.setTurn(opponentPlayer.getTurn()+1);
+                currentPlayer.setTurn(currentPlayer.getTurn() + 1);
+                opponentPlayer.setTurn(opponentPlayer.getTurn() + 1);
             } else {
                 switchPlayer = false;
                 currentPlayer = getPlayerTwo();
@@ -107,6 +107,38 @@ class Game {
                 }
                 Engine.clearScreen();
             }
+            isAlive = Engine.arePlayersAlive(currentPlayer, opponentPlayer);
+            if (!isAlive) {
+                winGameScreen(currentPlayer, opponentPlayer);
+            }
+        }
+    }
+
+    public void cvcMode() {
+        boolean isAlive = true;
+        boolean switchPlayer = false;
+        Player currentPlayer;
+        Player opponentPlayer;
+
+        while (isAlive) {
+            if (!switchPlayer) {
+                switchPlayer = true;
+                currentPlayer = getPlayerOne();
+                opponentPlayer = getPlayerTwo();
+                currentPlayer.setTurn(currentPlayer.getTurn() + 1);
+                opponentPlayer.setTurn(opponentPlayer.getTurn() + 1);
+            } else {
+                switchPlayer = false;
+                currentPlayer = getPlayerTwo();
+                opponentPlayer = getPlayerOne();
+            }
+
+            currentPlayer.computerLaunchTheRocket(opponentPlayer);
+            currentPlayer.displayScreen("", currentPlayer.getPlayerName());
+            Engine.gatherEmptyInput("End turn and switch player.");
+
+            Engine.clearScreen();
+
             isAlive = Engine.arePlayersAlive(currentPlayer, opponentPlayer);
             if (!isAlive) {
                 winGameScreen(currentPlayer, opponentPlayer);

@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 class Player {
     private String playerName;
@@ -15,15 +14,9 @@ class Player {
     private String difficulty;
     private int[][] listOfInitialShots;
     private ArrayList<Square> listOfFieldsNotToShootAt;
-    private Square lastShotSquare;
     private Square baseShotSquare;
     private Square nextShotSquare;
-    // private ArrayList<Square> listOfShots;
     private List<Integer> forbiddenRows;
-    // private boolean goLeft = false;
-    // private boolean goRight =false;
-    // private boolean goUp = false;
-    // private boolean goDown = false;
     private String direction;
     private int currentX;
     private int currentY;
@@ -35,7 +28,6 @@ class Player {
         this.difficulty = "x";
         this.turn = 1;
         this.playerName = createPlayerName();
-        // this.listOfShots= new ArrayList<Square>();
         this.listOfShips = new ArrayList<Ship>();
         if (isHuman) {
             this.playerBoard = createPlayerBoard();
@@ -141,7 +133,6 @@ class Player {
             this.getListOfShips().add(newShip);
             ocean.setFieldsUnavailable();
         }
-        // this.listOfShips = list.toArray(new Ship[list.size()]);
         System.out.println(ocean.toString());
         Engine.changeHotSeats();
         return ocean;
@@ -150,7 +141,6 @@ class Player {
     public String getDirection() {
         return this.direction;
     }
-
     
     public void setDirection(String direction) {
          this.direction = direction;
@@ -212,10 +202,6 @@ class Player {
     public int[][] getListOfInitialShots() {
         return this.listOfInitialShots;
     }
-
-    // public List<Square> getListOfShots() {
-    // return this.listOfShots;
-    // }
 
     public String getDifficulty() {
         return this.difficulty;
@@ -338,10 +324,6 @@ class Player {
             int currentPosX = this.getCurrentX();
             int currentPosY = this.getCurrentY();
 
-            String directione = this.getDirection();
-            System.out.println(directione);
-            Engine.gatherEmptyInput("directione");
-            // going around shot attempt
             if (currentPosX > 0 && !this.getListOfFieldsNotToShootAt()
                     .contains(this.getPlayerBoard().getOceanBoard()[currentPosY][currentPosX - 1]) && (this.getDirection().equals("LEFT") ||this.getDirection().equals("")) ) {
                 posY = currentPosY;

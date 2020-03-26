@@ -42,7 +42,7 @@ class Main {
         playGameMenu = new HashMap<>();
         playGameMenu.put(1, () -> startPvPGame());
         playGameMenu.put(2, () -> startPvCGame());
-        playGameMenu.put(3, () -> startPvPGame());
+        playGameMenu.put(3, () -> startCvCGame());
     }
 
     public static void mainMenu(){
@@ -80,11 +80,13 @@ class Main {
     }
 
     public static void startPvCGame(){
-        Game newGame = new Game(false, true);
+        Game newGame = new Game(true, false);
         newGame.pvcMode();
     }
 
     public static void startCvCGame(){
+        Game newGame = new Game(false, false);
+        newGame.cvcMode();
 
     }
 }
