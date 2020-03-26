@@ -15,6 +15,23 @@ class Engine {
 
     public static String gatherInput(String title) {
         System.out.println(title);
+        boolean validInput = true;
+        String userInput = "";
+        do {
+            if (!validInput) {
+                System.out.println("Text MUST have some length! Enter again: ");
+            }
+            validInput = false;
+            userInput = Main.scan.next().toUpperCase();
+            if (!userInput.equals("")) {
+                validInput = true;
+            }
+        } while (!validInput);
+        return userInput;
+    }
+
+    public static String gatherEmptyInput(String title){
+        System.out.println(title);
         String userInput = Main.scan.next().toUpperCase();
         return userInput;
     }
@@ -159,7 +176,7 @@ class Engine {
 
     public static void changeHotSeats() {
         clearScreen();
-        gatherInput("\n\n\nPress any key when ready.");
+        gatherEmptyInput("\n\n\nPress any key when ready.");
         clearScreen();
     }
 

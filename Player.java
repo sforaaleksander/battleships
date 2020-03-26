@@ -308,7 +308,7 @@ class Player {
                 // this.setNextShotSquare(this.getBaseShotSquare());
                 nextPosY = basePosY;
                 nextPosX = basePosX;
-            } else{
+            } else {
                 nextPosY = this.getNextShotSquare().getPosY();
                 nextPosX = this.getNextShotSquare().getPosX();
             }
@@ -339,16 +339,18 @@ class Player {
         if (Engine.isFieldAShip(playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX])) {
             playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
-            if (this.getBaseShotSquare()==null){
-            this.setBaseShotSquare(this.getPlayerBoard().getOceanBoard()[posY][posX]);}
+            if (this.getBaseShotSquare() == null) {
+                this.setBaseShotSquare(this.getPlayerBoard().getOceanBoard()[posY][posX]);
+            }
             this.addToListOfFieldsNotToShootAt(field);
             this.setNextShotSquare(this.findNextShotSquare(posY, posX));
-            if(this.isShipSunk()){
+            if (this.isShipSunk()) {
                 this.setBaseShotSquare(null);
             }
         } else {
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
-            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("MISSED"); // display PC shots for debug
+            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("MISSED"); // display PC shots for
+                                                                                                 // debug
             this.addToListOfFieldsNotToShootAt(field);
             this.setNextShotSquare(this.getBaseShotSquare());
         }
