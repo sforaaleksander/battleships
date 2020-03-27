@@ -67,7 +67,10 @@ class Main {
     }
  
     public static void highScoresDisplay(){
+        Engine.clearScreen();
+        System.out.println("HIGH SCORES BOARD\n");
         System.out.println(Engine.loadHighScores());
+        Engine.gatherEmptyInput("");
     }
 
     public static void exitGame(){

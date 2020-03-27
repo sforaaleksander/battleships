@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Collections;
 
 class Engine {
     public static void clearScreen() {
@@ -212,18 +213,30 @@ class Engine {
     }
 
     public static String loadHighScores() {
-        String tenHighScores = "";
-        List<String> allHighScores = new ArrayList<String>();
+        String tenHighestScores = "";
+        List<String[]> allHighScores = new ArrayList<String[]>();
         try {
             File file = new File("highscores.txt");
             Scanner reader = new Scanner(file);
             while (reader.hasNextLine()) {
-                allHighScores.add(reader.nextLine());
+                String entryString = reader.nextLine();
+                String[] entry = entryString.split("\\|");
+                allHighScores.add(entry);
             }
             reader.close();
         } catch (IOException e) {
             return "No highscores yet.";
         }
-        return allHighScores.toString();
+        String[][] sortedArr = allHighScores.toArray(new String[allHighScores.size()][3]);
+        Arrays.sort(sortedArr, (a, b) -> Integer.compare(Integer.parseInt(a[2]), Integer.parseInt(b[2])));
+        int i = 0;
+        int z = sortedArr.length-1;
+        while (z > 0 && i < 10 ){
+            String[] testArr = sortedArr[z];
+            tenHighestScores += String.join("|", testArr) + "\n";
+            z--;
+            i++;
+        }
+        return tenHighestScores;
     }
 }
