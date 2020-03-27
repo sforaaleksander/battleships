@@ -190,29 +190,4 @@ class Engine {
 
     public static void addFieldsAsNotToShootAt(ArrayList<Square> list) {
     }
-
 }
-
-// public static boolean checkPlacement(Ship theShip, Square[][] oceanBoard) {
-// if (theShip.getOrientation().equals("HORIZONTAL")) {
-// if (theShip.getPosX() == 0){
-// for (int i = theShip.getPosX(); i < theShip.getPosX() + theShip.getLength() +
-// 1; i++) {
-// if (oceanBoard[theShip.getPosY()][i].getStatus().equals("SHIP")){
-// return false;
-// }
-// if (oceanBoard[theShip.getPosY()][i].getStatus().equals("SHIP")){
-// return false;
-// }
-// }
-// }
-// } else {
-// for (int i = theShip.getPosY(); i < theShip.getPosY() + theShip.getLength();
-// i++) {
-// if (oceanBoard[i][theShip.getPosX()].getStatus().equals("SHIP")){
-// return false;
-// };
-// }
-
-// }
-// return true;}
