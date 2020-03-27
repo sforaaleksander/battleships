@@ -289,6 +289,7 @@ class Player {
         }
     }
 
+
     public void playHardMode(Player playerBeingShot) {
         int posY;
         int posX;
@@ -371,6 +372,7 @@ class Player {
             this.setDirection(this.switchDirection(this.getDirection()));
         }
     }
+
 
     public void playNormalMode(Player playerBeingShot) {
         int posY;
@@ -481,6 +483,7 @@ class Player {
         } else
             return "";
     }
+    
 
     public String switchDirection(String wrongDirection) {
         switch (wrongDirection) {

@@ -79,7 +79,7 @@ class Engine {
             }
             validInput = false;
             userInput = Main.scan.next().toUpperCase();
-            if (!userInput.equals("")) {
+            if (!userInput.equals("") && userInput.length()>1) {
                 if (userInput.substring(1).matches("^[0-9]*$")) {
                     if (Arrays.asList(letters).contains(userInput.charAt(0))
                             && Integer.parseInt(userInput.substring(1)) > 0
