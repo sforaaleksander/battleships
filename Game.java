@@ -27,9 +27,6 @@ class Game {
         System.out.println("");
         System.out.println(player2.getPlayerName() + "'S BOARD");
         System.out.println(player2.getPlayerBoard().toString());
-
-        // TODO
-        // show highscore
         restartGame();
     }
 

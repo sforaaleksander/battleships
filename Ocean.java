@@ -4,12 +4,10 @@ class Ocean {
     private int oceanSize;
     private Square[][] oceanBoard;
     private ArrayList<Square> allShipSquares;
-    private ArrayList<Square> allUnavailableSquares;
 
     Ocean(int oceanSize) {
         this.oceanSize = oceanSize;
         this.oceanBoard = initializeOceanBoard(oceanSize);
-
     }
 
     public Square[][] initializeOceanBoard(int oceanSize) {
@@ -29,7 +27,7 @@ class Ocean {
 
     public int getOceanSize() {
         return this.oceanSize;
-    };
+    }
 
     public Square getSquareByPos(int posY, int posX) {
         return this.getOceanBoard()[posY][posX];

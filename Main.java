@@ -29,7 +29,7 @@ class Main {
         ships.put("Battleship", 4);
         ships.put("Cruiser", 3);
         ships.put("Submarine", 3);
-        // ships.put("Destroyer", 2);
+        ships.put("Destroyer", 2);
 
         mainMenuList = new String[]{"PLAY NEW GAME", "ABOUT", "SHOW HIGHSCORES", "EXIT"};
         mainMenu = new HashMap<>();
