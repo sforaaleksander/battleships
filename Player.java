@@ -290,12 +290,12 @@ class Player {
     }
 
 
-    public void playHardMode(Player playerBeingShot) {
+    public void playNormalOrHardMode(Player playerBeingShot) {
         int posY;
         int posX;
         Square field;
 
-        if (this.getTurn() < 9 && this.getBaseShotSquare() == null) {
+        if (this.getTurn() < 9 && this.getBaseShotSquare() == null && this.getDifficulty().equals("HARD")) {
             int[] pair;
             if (getForbiddenRows().size() > 4) {
                 forbiddenRows.clear();
@@ -374,83 +374,13 @@ class Player {
     }
 
 
-    public void playNormalMode(Player playerBeingShot) {
-        int posY;
-        int posX;
-        Square field;
-
-        if (this.getBaseShotSquare() == null) {
-            do {
-                posY = Engine.getRandomNumber(10);
-                posX = Engine.getRandomNumber(10);
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
-            } while (this.getListOfFieldsNotToShootAt().contains(field));
-        } else {
-            int currentPosX = this.getCurrentX();
-            int currentPosY = this.getCurrentY();
-
-            if (currentPosX > 0
-                    && !this.getListOfFieldsNotToShootAt()
-                            .contains(this.getPlayerBoard().getOceanBoard()[currentPosY][currentPosX - 1])
-                    && (this.getDirection().equals("LEFT") || this.getDirection().equals(""))) {
-                posY = currentPosY;
-                posX = currentPosX - 1;
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
-            } else if (currentPosX < 9
-                    && !this.getListOfFieldsNotToShootAt()
-                            .contains(this.getPlayerBoard().getOceanBoard()[currentPosY][currentPosX + 1])
-                    && (this.getDirection().equals("RIGHT") || this.getDirection().equals(""))) {
-                posY = currentPosY;
-                posX = currentPosX + 1;
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
-            } else if (currentPosY > 0
-                    && !this.getListOfFieldsNotToShootAt()
-                            .contains(this.getPlayerBoard().getOceanBoard()[currentPosY - 1][currentPosX])
-                    && (this.getDirection().equals("UP") || this.getDirection().equals(""))) {
-                posY = currentPosY - 1;
-                posX = currentPosX;
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
-            } else {
-                posY = currentPosY + 1;
-                posX = currentPosX;
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
-            }
-        }
-
-        if (Engine.isFieldAShip(playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX])) {
-            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
-            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
-            if (this.getBaseShotSquare() == null) {
-                this.setBaseShotSquare(this.getPlayerBoard().getOceanBoard()[posY][posX]);
-            }
-            this.setCurrentX(posX);
-            this.setCurrentY(posY);
-            this.addToListOfFieldsNotToShootAt(field);
-            this.setDirection(this.findDirection(posY, posX));
-            if (playerBeingShot.isShipSunk()) {
-                this.setDirection("");
-                this.setBaseShotSquare(null);
-            }
-        } else if (playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].getStatus().equals("EMPTY")) {
-            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
-            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("MISSED"); // display PC shots for
-                                                                                                 // debug
-            this.addToListOfFieldsNotToShootAt(field);
-            if (this.getBaseShotSquare() != null) {
-                this.setCurrentX(this.getBaseShotSquare().getPosX());
-                this.setCurrentY(this.getBaseShotSquare().getPosY());
-            }
-            this.setDirection(this.switchDirection(this.getDirection()));
-        }
-    }
-
     public void computerLaunchTheRocket(Player playerBeingShot) {
         if (this.getDifficulty().equals("EASY")) {
             playEasyMode(playerBeingShot);
         } else if (this.getDifficulty().equals("NORMAL")) {
-            playNormalMode(playerBeingShot);
+            playNormalOrHardMode(playerBeingShot);
         } else if (this.getDifficulty().equals("HARD")) {
-            playHardMode(playerBeingShot);
+            playNormalOrHardMode(playerBeingShot);
 
         }
     }
@@ -483,7 +413,7 @@ class Player {
         } else
             return "";
     }
-    
+
 
     public String switchDirection(String wrongDirection) {
         switch (wrongDirection) {
