@@ -6,6 +6,7 @@ class Game {
     private Player player1;
     private Player player2;
     public static Set<String> listOfPlayers = new HashSet<>();
+    // private long turnTime;
 
     Game(boolean isHuman1, boolean isHuman2) {
         this.player1 = new Player(isHuman1);
@@ -58,13 +59,17 @@ class Game {
                 currentPlayer = getPlayerTwo();
                 opponentPlayer = getPlayerOne();
             }
-            currentPlayer.displayScreen("", currentPlayer.getPlayerName());
+            long startTime = System.nanoTime();
+            currentPlayer.displayScreen("");
             String message = currentPlayer.launchTheRocket(opponentPlayer);
-            currentPlayer.displayScreen(message, currentPlayer.getPlayerName());
+            currentPlayer.displayScreen(message);
             Engine.gatherEmptyInput("End turn and switch player.");
+            long elapsedTime = System.nanoTime() - startTime;
+            currentPlayer.increaseTime(elapsedTime);
             Engine.changeHotSeats();
             isAlive = Engine.arePlayersAlive(currentPlayer, opponentPlayer);
             if (!isAlive) {
+                Engine.saveHighScoreToFile(currentPlayer.getPlayerName(), currentPlayer.calculateHighScore());
                 winGameScreen(currentPlayer, opponentPlayer);
             }
         }
@@ -89,10 +94,14 @@ class Game {
                 opponentPlayer = getPlayerOne();
             }
             if (currentPlayer.getIsHuman() == true) {
-                currentPlayer.displayScreen("", currentPlayer.getPlayerName());
+                long startTime = System.nanoTime();
+                currentPlayer.displayScreen("");
                 String message = currentPlayer.launchTheRocket(opponentPlayer);
-                currentPlayer.displayScreen(message, currentPlayer.getPlayerName());
+                System.out.println(opponentPlayer.getPlayerBoard().toString()); //for tests
+                currentPlayer.displayScreen(message);
                 Engine.gatherEmptyInput("End turn and switch player.");
+                long elapsedTime = System.nanoTime() - startTime;
+                currentPlayer.increaseTime(elapsedTime);
             } else {
                 Engine.clearScreen();
                 System.out.println("\n\n\nComputer is now taking the shot...");
@@ -106,7 +115,9 @@ class Game {
             }
             isAlive = Engine.arePlayersAlive(currentPlayer, opponentPlayer);
             if (!isAlive) {
+                Engine.saveHighScoreToFile(currentPlayer.getPlayerName(), currentPlayer.calculateHighScore());
                 winGameScreen(currentPlayer, opponentPlayer);
+
             }
         }
     }
@@ -131,7 +142,7 @@ class Game {
             }
 
             currentPlayer.computerLaunchTheRocket(opponentPlayer);
-            currentPlayer.displayScreen("", currentPlayer.getPlayerName());
+            currentPlayer.displayScreen("");
             Engine.gatherEmptyInput("End turn and switch player.");
 
             Engine.clearScreen();

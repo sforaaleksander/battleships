@@ -19,12 +19,14 @@ class Player {
     private String direction;
     private int currentX;
     private int currentY;
+    private long time;
 
     Player(boolean isHuman) {
         this.isHuman = isHuman;
         this.boardOfShots = new Ocean(10);
         this.difficulty = "x";
         this.turn = 0;
+        this.time = 0;
         this.playerName = createPlayerName();
         this.listOfShips = new ArrayList<Ship>();
         if (isHuman) {
@@ -131,6 +133,14 @@ class Player {
         System.out.println(ocean.toString());
         Engine.changeHotSeats();
         return ocean;
+    }
+
+    public long getTime(){
+        return this.time;
+    }
+
+    public void increaseTime(long turnTime){
+        this.time += turnTime;
     }
 
     public String getDirection() {
@@ -262,7 +272,7 @@ class Player {
         int posY = Engine.fromLetterToNum(userLetter);
         int posX = Integer.parseInt(userPosition.substring(1)) - 1;
         if (Engine.isFieldAlreadyHit(this.getBoardOfShots().getOceanBoard()[posY][posX])) {
-            return "You dummy! You have already struck that coordinats!\nYOU WASTED A MISSLE";
+            return "You have already struck that coordinats! You wasted a missle!";
         }
 
         if (Engine.isFieldAShip(playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX])) {
@@ -272,7 +282,7 @@ class Player {
             return "YOU HIT" + sunk;
         } else {
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
-            return "YOU MISSED";
+            return "YOU MISSED!";
         }
     }
 
@@ -385,9 +395,9 @@ class Player {
         }
     }
 
-    public void displayScreen(String message, String playerName) {
+    public void displayScreen(String message) {
         Engine.clearScreen();
-        System.out.println("CURRENT PLAYER: " + playerName);
+        System.out.println("CURRENT PLAYER: " + this.getPlayerName());
         System.out.println("CURRENT TURN: " + this.getTurn());
         System.out.println("");
         String playerBoard = this.getPlayerBoard().toString();
@@ -427,5 +437,12 @@ class Player {
                 return "UP";
         }
         return "";
+    }
+
+    public int calculateHighScore(){
+        int baseNum = 10_000;
+        int turnPoints = this.getTurn() * 100;
+        int timePoints = Math.toIntExact(this.getTime()/100_000_000);
+        return baseNum - turnPoints - timePoints;
     }
 }

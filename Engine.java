@@ -3,6 +3,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.Scanner;
 
 class Engine {
     public static void clearScreen() {
@@ -79,7 +85,7 @@ class Engine {
             }
             validInput = false;
             userInput = Main.scan.next().toUpperCase();
-            if (!userInput.equals("") && userInput.length()>1) {
+            if (!userInput.equals("") && userInput.length() > 1) {
                 if (userInput.substring(1).matches("^[0-9]*$")) {
                     if (Arrays.asList(letters).contains(userInput.charAt(0))
                             && Integer.parseInt(userInput.substring(1)) > 0
@@ -189,5 +195,35 @@ class Engine {
     }
 
     public static void addFieldsAsNotToShootAt(ArrayList<Square> list) {
+    }
+
+    public static void saveHighScoreToFile(String playerName, int score) {
+        LocalDate dateToday = LocalDate.now();
+        String date = dateToday.toString();
+        String highScoreEntry = playerName + "|" + date + "|" + Integer.toString(score) + "\n";
+        try {
+            FileWriter fileWriter = new FileWriter("highscores.txt", true);
+            fileWriter.write(highScoreEntry);
+            fileWriter.close(); 
+        } catch (IOException e) {
+            System.out.println(e);
+            Engine.gatherEmptyInput("Could not write to file.");
+        }
+    }
+
+    public static String loadHighScores() {
+        String tenHighScores = "";
+        List<String> allHighScores = new ArrayList<String>();
+        try {
+            File file = new File("highscores.txt");
+            Scanner reader = new Scanner(file);
+            while (reader.hasNextLine()) {
+                allHighScores.add(reader.nextLine());
+            }
+            reader.close();
+        } catch (IOException e) {
+            return "No highscores yet.";
+        }
+        return allHighScores.toString();
     }
 }

@@ -42,8 +42,7 @@ class Ocean {
     }
 
     public boolean placeOnTable(Ship newShip) {
-        if (this.checkIfAroundShipUnavailable(this.getOceanBoard()[newShip.getPosX()][newShip.getPosY()], newShip)
-                && Engine.checkIfFitsOnMap(newShip, this.getOceanBoard())) {
+        if (this.checkIfPlacementPossible(this.getOceanBoard()[newShip.getPosX()][newShip.getPosY()], newShip)) {
             if (newShip.getOrientation().equals("H")) {
                 for (int i = newShip.getPosX(); i < newShip.getPosX() + newShip.getLength(); i++) {
                     this.getOceanBoard()[newShip.getPosY()][i].changeStatus("SHIP");
@@ -60,8 +59,8 @@ class Ocean {
                 }
             }
             return true;
-        } else
-            return false;
+        }
+        return false;
     }
 
     public String toString() {
@@ -81,9 +80,9 @@ class Ocean {
         return output;
     }
 
-    public boolean checkIfAroundShipUnavailable(Square beginnigField, Ship ship) {
+    public boolean checkIfPlacementPossible(Square beginnigField, Ship ship) {
         ArrayList<Square> potentialShipSquares = new ArrayList<Square>();
-        if (Engine.checkIfFitsOnMap(ship, this.getOceanBoard()) == false) {
+        if (!Engine.checkIfFitsOnMap(ship, this.getOceanBoard())) {
             return false;
         }
         for (int z = 0; z < ship.getLength(); z++) {
