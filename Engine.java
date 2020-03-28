@@ -117,18 +117,9 @@ class Engine {
         return letterNums.get(letter);
     }
 
-    public static boolean checkIfFitsOnMap(Ship theShip, Square[][] table) {
-        if (theShip.getOrientation().equals("H")) {
-            if (theShip.getLength() + theShip.getPosX() - 1 < table.length && theShip.getPosX() >= 0) {
-                return true;
-            }
-            return false;
-        } else {
-            if (theShip.getLength() + theShip.getPosY() - 1 < table.length && theShip.getPosY() >= 0) {
-                return true;
-            }
-            return false;
-        }
+    public static boolean checkIfFitsOnMap(Ship theShip, Square[][] table){
+        int isHorizontal = theShip.getOrientation().equals("H") ? theShip.getPosX() : theShip.getPosY();
+        return (theShip.getLength() + isHorizontal - 1 < table.length && isHorizontal >= 0);
     }
 
     public static boolean isFieldAShip(Square field) {
@@ -139,37 +130,20 @@ class Engine {
         return field.getStatus().equals("HIT") || field.getStatus().equals("MISSED");
     }
 
-    public static boolean areBothPlayersAlive(Player player1, Player player2) {
-        for (Square element1 : player1.getPlayerBoard().getAllShipSquares()) {
-            if (element1.getStatus().equals("SHIP")) {
-                for (Square element2 : player2.getPlayerBoard().getAllShipSquares()) {
-                    if (element2.getStatus().equals("SHIP")) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+    public static boolean arePlayersAlive(Player player1, Player player2) {
+        int counterPlayer1 = countShipSquares(player1);
+        int counterPlayer2 = countShipSquares(player2);
+        return (counterPlayer1 > 0 && counterPlayer2 > 0);
     }
 
-    public static boolean arePlayersAlive(Player player1, Player player2) {
-        int counterPlayer1 = 0;
-        int counterPlayer2 = 0;
-
-        for (Square element1 : player1.getPlayerBoard().getAllShipSquares()) {
+    private static int countShipSquares(Player player) {
+        int counter = 0;
+        for (Square element1 : player.getPlayerBoard().getAllShipSquares()) {
             if (element1.getStatus().equals("SHIP")) {
-                counterPlayer1 = counterPlayer1 + 1;
+                counter = counter + 1;
             }
         }
-        for (Square element2 : player2.getPlayerBoard().getAllShipSquares()) {
-            if (element2.getStatus().equals("SHIP")) {
-                counterPlayer2 = counterPlayer2 + 1;
-            }
-        }
-        if (counterPlayer1 > 0 && counterPlayer2 > 0) {
-            return true;
-        }
-        return false;
+        return counter;
     }
 
     public static void changeHotSeats() {
