@@ -46,6 +46,7 @@ class Main {
     }
 
     public static void mainMenu(){
+        Engine.clearScreen();
         System.out.println("THE BATTLESHIP GAME\n");
         for (int i = 0; i < mainMenuList.length; i++){
             System.out.println(i + 1 + ". " + mainMenuList[i]);
@@ -55,6 +56,7 @@ class Main {
     }
 
     public static void newGameMenu(){
+        Engine.clearScreen();
         System.out.println("PLAY NEW GAME\n");
         for (int i = 0; i < newGameMenuList.length; i++){
             System.out.println(i + 1 + ". " + newGameMenuList[i]);
