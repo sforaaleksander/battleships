@@ -139,7 +139,7 @@ class Engine {
     private static int countShipSquares(Player player) {
         int counter = 0;
         for (Square element1 : player.getPlayerBoard().getAllShipSquares()) {
-            if (element1.getStatus().equals("SHIP")) {
+            if (isFieldAShip(element1)) {
                 counter = counter + 1;
             }
         }
