@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Collections;
 
 class Engine {
     public static void clearScreen() {
@@ -26,7 +25,7 @@ class Engine {
         String userInput = "";
         do {
             if (!validInput) {
-                System.out.println("Text MUST have some length! Enter again: ");
+                System.out.println("Your input must contain at least one character! Enter again: ");
             }
             validInput = false;
             userInput = Main.scan.next().toUpperCase();
@@ -100,10 +99,7 @@ class Engine {
     }
 
     public static boolean checkIfAvailable(Square field) {
-        if (field.getIsAvailable()) {
-            return true;
-        }
-        return false;
+        return field.getIsAvailable();
     }
 
     public static int fromLetterToNum(Character letter) {
@@ -136,17 +132,11 @@ class Engine {
     }
 
     public static boolean isFieldAShip(Square field) {
-        if (field.getStatus().equals("SHIP")) {
-            return true;
-        }
-        return false;
+        return field.getStatus().equals("SHIP");
     }
 
     public static boolean isFieldAlreadyHit(Square field) {
-        if (field.getStatus().equals("HIT") || field.getStatus().equals("MISSED")) {
-            return true;
-        }
-        return false;
+        return field.getStatus().equals("HIT") || field.getStatus().equals("MISSED");
     }
 
     public static boolean areBothPlayersAlive(Player player1, Player player2) {
@@ -178,9 +168,8 @@ class Engine {
         }
         if (counterPlayer1 > 0 && counterPlayer2 > 0) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public static void changeHotSeats() {
@@ -205,7 +194,7 @@ class Engine {
         try {
             FileWriter fileWriter = new FileWriter("highscores.txt", true);
             fileWriter.write(highScoreEntry);
-            fileWriter.close(); 
+            fileWriter.close();
         } catch (IOException e) {
             System.out.println(e);
             Engine.gatherEmptyInput("Could not write to file.");
@@ -219,8 +208,7 @@ class Engine {
             File file = new File("highscores.txt");
             Scanner reader = new Scanner(file);
             while (reader.hasNextLine()) {
-                String entryString = reader.nextLine();
-                String[] entry = entryString.split("\\|");
+                String[] entry = reader.nextLine().split("\\|");
                 allHighScores.add(entry);
             }
             reader.close();
@@ -230,8 +218,8 @@ class Engine {
         String[][] sortedArr = allHighScores.toArray(new String[allHighScores.size()][3]);
         Arrays.sort(sortedArr, (a, b) -> Integer.compare(Integer.parseInt(a[2]), Integer.parseInt(b[2])));
         int i = 0;
-        int z = sortedArr.length-1;
-        while (z > 0 && i < 10 ){
+        int z = sortedArr.length - 1;
+        while (z > 0 && i < 10) {
             String[] testArr = sortedArr[z];
             tenHighestScores += String.join("|", testArr) + "\n";
             z--;

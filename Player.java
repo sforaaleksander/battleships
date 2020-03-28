@@ -135,11 +135,11 @@ class Player {
         return ocean;
     }
 
-    public long getTime(){
+    public long getTime() {
         return this.time;
     }
 
-    public void increaseTime(long turnTime){
+    public void increaseTime(long turnTime) {
         this.time += turnTime;
     }
 
@@ -299,7 +299,6 @@ class Player {
         }
     }
 
-
     public void playNormalOrHardMode(Player playerBeingShot) {
         int posY;
         int posX;
@@ -383,7 +382,6 @@ class Player {
         }
     }
 
-
     public void computerLaunchTheRocket(Player playerBeingShot) {
         if (this.getDifficulty().equals("EASY")) {
             playEasyMode(playerBeingShot);
@@ -420,10 +418,9 @@ class Player {
             return "LEFT";
         } else if (this.getBaseShotSquare().getPosX() < posX) {
             return "RIGHT";
-        } else
-            return "";
+        }
+        return "";
     }
-
 
     public String switchDirection(String wrongDirection) {
         switch (wrongDirection) {
@@ -439,10 +436,10 @@ class Player {
         return "";
     }
 
-    public int calculateHighScore(){
+    public int calculateHighScore() {
         int baseNum = 10_000;
         int turnPoints = this.getTurn() * 100;
-        int timePoints = Math.toIntExact(this.getTime()/100_000_000);
+        int timePoints = Math.toIntExact(this.getTime() / 100_000_000);
         return baseNum - turnPoints - timePoints;
     }
 }

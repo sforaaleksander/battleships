@@ -6,7 +6,6 @@ class Game {
     private Player player1;
     private Player player2;
     public static Set<String> listOfPlayers = new HashSet<>();
-    // private long turnTime;
 
     Game(boolean isHuman1, boolean isHuman2) {
         this.player1 = new Player(isHuman1);
