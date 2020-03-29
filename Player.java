@@ -26,21 +26,19 @@ class Player {
         this.boardOfShots = new Ocean(10);
         this.turn = 0;
         this.time = 0;
-        this.difficulty = "x";
         this.playerName = createPlayerName();
         this.listOfShips = new ArrayList<Ship>();
         if (isHuman) {
             this.playerBoard = createPlayerBoard();
         } else {
-            
-            this.colour = Engine.getRandomNumber(10) > 5 ? "BLACK" : "WHITE";
-            System.out.println(this.getColour());
+            this.difficulty = chooseDifficultyLvl();
             this.playerBoard = computerCreatesOwnBoard();
             this.listOfInitialShots = createListOfInitialShots();
             this.listOfFieldsNotToShootAt = new ArrayList<Square>();
             this.forbiddenRows = new ArrayList<Integer>();
             this.baseShotSquare = null;
             this.direction = "";
+            this.colour = Engine.getRandomNumber(10) > 5 ? "BLACK" : "WHITE";
         }
 
     }
@@ -88,17 +86,17 @@ class Player {
         if (Game.listOfPlayers.contains(userName)) {
             System.out.println("Name already taken, choose other one: ");
             createPlayerName();
-        }
-        if (humanOrComputer.equals("Computer")) {         
-            for (int i = 1; i < 4; i++) {
-                System.out.println(i + ". " + Engine.computerDifficulty.get(i));
-            }
-            String compDiff = Engine.computerDifficulty.get(Engine.gatherIntInput("Select computer difficulty level: ", 3));
-            this.setDifficulty(compDiff);
-        }
+        }        
         Game.listOfPlayers.add(userName);
         return userName;
+    }
 
+    private String chooseDifficultyLvl(){
+        for (int i = 1; i < 4; i++) {
+            System.out.println(i + ". " + Engine.computerDifficulty.get(i));
+        }
+        String compDiff = Engine.computerDifficulty.get(Engine.gatherIntInput("Select computer difficulty level: ", 3));
+        return compDiff;
     }
 
     private Ocean createPlayerBoard() {
@@ -204,10 +202,6 @@ class Player {
 
     public String getDifficulty() {
         return this.difficulty;
-    }
-
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
     }
 
     public ArrayList<Ship> getListOfShips() {
