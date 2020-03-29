@@ -35,8 +35,6 @@ class Game {
         if (input.equals("Y")) {
             listOfPlayers.clear();
             Main.newGameMenu();
-        } else {
-            Main.exitGame();
         }
     }
 
@@ -96,7 +94,7 @@ class Game {
                 long startTime = System.nanoTime();
                 currentPlayer.displayScreen("");
                 String message = currentPlayer.launchTheRocket(opponentPlayer);
-                System.out.println(opponentPlayer.getPlayerBoard().toString()); //for tests
+                System.out.println(opponentPlayer.getPlayerBoard().toString()); // for tests
                 currentPlayer.displayScreen(message);
                 Engine.gatherEmptyInput("End turn and switch player.");
                 long elapsedTime = System.nanoTime() - startTime;

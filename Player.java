@@ -19,19 +19,23 @@ class Player {
     private String direction;
     private int currentX;
     private int currentY;
+    private String colour;
     private long time;
 
     Player(boolean isHuman) {
         this.isHuman = isHuman;
         this.boardOfShots = new Ocean(10);
-        this.difficulty = "x";
         this.turn = 0;
         this.time = 0;
+        this.difficulty = "x";
         this.playerName = createPlayerName();
         this.listOfShips = new ArrayList<Ship>();
         if (isHuman) {
             this.playerBoard = createPlayerBoard();
         } else {
+            
+            this.colour = Engine.getRandomNumber(10) > 5 ? "BLACK" : "WHITE";
+            System.out.println(this.getColour());
             this.playerBoard = computerCreatesOwnBoard();
             this.listOfInitialShots = createListOfInitialShots();
             this.listOfFieldsNotToShootAt = new ArrayList<Square>();
@@ -133,6 +137,10 @@ class Player {
         System.out.println(ocean.toString());
         Engine.changeHotSeats();
         return ocean;
+    }
+
+    public String getColour() {
+        return this.colour;
     }
 
     public long getTime() {
@@ -314,15 +322,23 @@ class Player {
                 posY = pair[0];
                 posX = pair[1];
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
-            } while (forbiddenRows.contains(posY) || this.getListOfFieldsNotToShootAt().contains(field));
+            } while (forbiddenRows.contains(posY) || this.getListOfFieldsNotToShootAt().contains(field) || !checkColour(posY, posX));
             forbiddenRows.add(posY);
 
+        } else if (this.getBaseShotSquare() == null && this.getDifficulty().equals("HARD")) {
+            do {
+                posY = Engine.getRandomNumber(10);
+                posX = Engine.getRandomNumber(10);
+                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
+            } while (this.getListOfFieldsNotToShootAt().contains(field) || !checkColour(posY, posX));
+        
         } else if (this.getBaseShotSquare() == null) {
             do {
                 posY = Engine.getRandomNumber(10);
                 posX = Engine.getRandomNumber(10);
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } while (this.getListOfFieldsNotToShootAt().contains(field));
+            
         } else {
             int currentPosX = this.getCurrentX();
             int currentPosY = this.getCurrentY();
@@ -473,5 +489,12 @@ class Player {
                 break;
         }
 
+    }
+
+    public boolean checkColour(int posY, int posX){
+        if (this.getColour().equals("WHITE")){
+            return (posX % 2 == 0 && posY % 2 == 0) || (posX % 2 != 0 && posY % 2 != 0);
+        } else 
+        return (posX % 2 != 0 && posY % 2 == 0) || (posX % 2 == 0 && posY % 2 != 0);
     }
 }
