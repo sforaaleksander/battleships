@@ -19,6 +19,7 @@ class Main {
     }
 
     public static void initialize(){
+        Game.listOfPlayers.clear();
         Engine.clearScreen();
         isRunning = true;
         scan = new Scanner(System.in);
