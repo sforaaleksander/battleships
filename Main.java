@@ -1,36 +1,27 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 class Main {
-    public static Scanner scan;
     public static boolean isRunning;
-    public static Map<String, Integer> ships;
     public static Map<Integer, Runnable> mainMenu;
     public static String[] mainMenuList;
     public static Map<Integer, Runnable> playGameMenu;
     public static String[] newGameMenuList;
 
     public static void main(String args[]) {
-        initialize();
+        initializeMain();
         while (isRunning){
         mainMenu();
         }
+        Engine.scan.close();
     }
 
-    public static void initialize(){
+    public static void initializeMain(){
         Game.listOfPlayers.clear();
         Engine.clearScreen();
         isRunning = true;
-        scan = new Scanner(System.in);
-        scan.useDelimiter(System.lineSeparator());
-
-        ships = new HashMap<>();
-        ships.put("Carrier", 5);
-        ships.put("Battleship", 4);
-        ships.put("Cruiser", 3);
-        ships.put("Submarine", 3);
-        ships.put("Destroyer", 2);
+        Engine.initializeScanner();
+        Engine.initializeHashMaps();
 
         mainMenuList = new String[]{"PLAY NEW GAME", "ABOUT", "SHOW HIGHSCORES", "EXIT"};
         mainMenu = new HashMap<>();
@@ -83,7 +74,6 @@ class Main {
     public static void startPvPGame(){
         Game newGame = new Game(true, true);
         newGame.pvpMode();
-
     }
 
     public static void startPvCGame(){

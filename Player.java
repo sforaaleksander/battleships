@@ -62,13 +62,13 @@ class Player {
         boolean isPlaceOK = false;
         ArrayList<Ship> list = new ArrayList<>();
         Ocean ocean = new Ocean(oceanSize);
-        for (String key : Main.ships.keySet()) {
+        for (String key : Engine.shipsNameLength.keySet()) {
             Ship newShip;
             do {
                 String computerOrientation = Engine.getRandomNumber(10) < 5 ? "H" : "V";
                 int posY = Engine.getRandomNumber(10);
                 int posX = Engine.getRandomNumber(10);
-                int length = Main.ships.get(key);
+                int length = Engine.shipsNameLength.get(key);
                 newShip = new Ship(length, computerOrientation, posX, posY, key);
                 list.add(newShip);
                 isPlaceOK = ocean.placeOnTable(newShip);
@@ -89,15 +89,11 @@ class Player {
             System.out.println("Name already taken, choose other one: ");
             createPlayerName();
         }
-        if (humanOrComputer.equals("Computer")) {
-            Map<Integer, String> computerDifficulty = new HashMap<>();
-            computerDifficulty.put(1, "EASY");
-            computerDifficulty.put(2, "NORMAL");
-            computerDifficulty.put(3, "HARD");
+        if (humanOrComputer.equals("Computer")) {         
             for (int i = 1; i < 4; i++) {
-                System.out.println(i + ". " + computerDifficulty.get(i));
+                System.out.println(i + ". " + Engine.computerDifficulty.get(i));
             }
-            String compDiff = computerDifficulty.get(Engine.gatherIntInput("Select Computer Difficulty Level: ", 3));
+            String compDiff = Engine.computerDifficulty.get(Engine.gatherIntInput("Select computer difficulty level: ", 3));
             this.setDifficulty(compDiff);
         }
         Game.listOfPlayers.add(userName);
@@ -110,12 +106,12 @@ class Player {
         boolean isPlaceOK = true;
         ArrayList<Ship> list = new ArrayList<>();
         Ocean ocean = new Ocean(oceanSize);
-        for (String key : Main.ships.keySet()) {
+        for (String key : Engine.shipsNameLength.keySet()) {
             Ship newShip;
             do {
                 System.out.println(ocean.toString());
                 System.out.println(
-                        "Place the " + key + " ship on your board. The ship's length is " + Main.ships.get(key) + ".");
+                        "Place the " + key + " ship on your board. The ship's length is " + Engine.shipsNameLength.get(key) + ".");
                 if (!isPlaceOK) {
                     System.out.println("The ships must fit on board and may not touch each other.");
                 }
@@ -125,7 +121,7 @@ class Player {
                 char userLetter = userPosition.charAt(0);
                 int posY = Engine.fromLetterToNum(userLetter);
                 int posX = Integer.parseInt(userPosition.substring(1)) - 1;
-                int length = Main.ships.get(key);
+                int length = Engine.shipsNameLength.get(key);
                 newShip = new Ship(length, userOrientation, posX, posY, key);
                 list.add(newShip);
                 isPlaceOK = ocean.placeOnTable(newShip);

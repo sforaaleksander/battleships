@@ -11,6 +11,12 @@ import java.util.List;
 import java.util.Scanner;
 
 class Engine {
+    public static Scanner scan;
+    private static Character[] lettersAJ = new Character[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+    public static Map<String, Integer> shipsNameLength;
+    public static Map<Character, Integer> lettersToNums;
+    public static Map<Integer, String> computerDifficulty;
+
     public static void clearScreen() {
         try {
             new ProcessBuilder("clear").inheritIO().start().waitFor();
@@ -18,6 +24,32 @@ class Engine {
             System.out.println(e);
         }
     }
+
+    public static void initializeScanner() {
+        scan = new Scanner(System.in);
+        scan.useDelimiter(System.lineSeparator());
+
+    }
+
+    public static void initializeHashMaps() {
+        shipsNameLength = new HashMap<>();
+        shipsNameLength.put("Carrier", 5);
+        shipsNameLength.put("Battleship", 4);
+        shipsNameLength.put("Cruiser", 3);
+        shipsNameLength.put("Submarine", 3);
+        shipsNameLength.put("Destroyer", 2);
+
+        lettersToNums = new HashMap<>();
+        for (int i = 0; i < 10; i++) {
+            lettersToNums.put(lettersAJ[i], i);
+        }
+
+        computerDifficulty = new HashMap<>();
+        computerDifficulty.put(1, "EASY");
+        computerDifficulty.put(2, "NORMAL");
+        computerDifficulty.put(3, "HARD");
+    }
+
 
     public static String gatherInput(String title) {
         System.out.println(title);
@@ -28,7 +60,7 @@ class Engine {
                 System.out.println("Your input must contain at least one character! Enter again: ");
             }
             validInput = false;
-            userInput = Main.scan.next().toUpperCase();
+            userInput = scan.next().toUpperCase();
             if (!userInput.equals("")) {
                 validInput = true;
             }
@@ -38,7 +70,7 @@ class Engine {
 
     public static String gatherEmptyInput(String title) {
         System.out.println(title);
-        String userInput = Main.scan.next().toUpperCase();
+        String userInput = scan.next().toUpperCase();
         return userInput;
     }
 
@@ -48,7 +80,7 @@ class Engine {
         int userInt = 1;
         boolean validInput = false;
         while (!validInput) {
-            userInput = Main.scan.next();
+            userInput = scan.next();
             if (!userInput.equals("")) {
                 if (userInput.matches("^[0-9]*$")) {
                     userInt = Integer.parseInt(userInput);
@@ -66,7 +98,7 @@ class Engine {
         String userInput = "";
         boolean validInput = false;
         while (!validInput) {
-            userInput = Main.scan.next().toUpperCase();
+            userInput = scan.next().toUpperCase();
             if (userInput.equals("H") || userInput.equals("V")) {
                 validInput = true;
             }
@@ -76,7 +108,6 @@ class Engine {
 
     public static String gatherPositionInput(String title) {
         System.out.println(title);
-        Character[] letters = new Character[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
         boolean validInput = true;
         String userInput = "";
         do {
@@ -84,10 +115,10 @@ class Engine {
                 System.out.println("Please provide the position in a correct format. (eg. F3)");
             }
             validInput = false;
-            userInput = Main.scan.next().toUpperCase();
+            userInput = scan.next().toUpperCase();
             if (!userInput.equals("") && userInput.length() > 1) {
                 if (userInput.substring(1).matches("^[0-9]*$")) {
-                    if (Arrays.asList(letters).contains(userInput.charAt(0))
+                    if (Arrays.asList(lettersAJ).contains(userInput.charAt(0))
                             && Integer.parseInt(userInput.substring(1)) > 0
                             && Integer.parseInt(userInput.substring(1)) <= 10) {
                         validInput = true;
@@ -103,21 +134,10 @@ class Engine {
     }
 
     public static int fromLetterToNum(Character letter) {
-        Map<Character, Integer> letterNums = new HashMap<>();
-        letterNums.put('A', 0);
-        letterNums.put('B', 1);
-        letterNums.put('C', 2);
-        letterNums.put('D', 3);
-        letterNums.put('E', 4);
-        letterNums.put('F', 5);
-        letterNums.put('G', 6);
-        letterNums.put('H', 7);
-        letterNums.put('I', 8);
-        letterNums.put('J', 9);
-        return letterNums.get(letter);
+        return lettersToNums.get(letter);
     }
 
-    public static boolean checkIfFitsOnMap(Ship theShip, Square[][] table){
+    public static boolean checkIfFitsOnMap(Ship theShip, Square[][] table) {
         int isHorizontal = theShip.getOrientation().equals("H") ? theShip.getPosX() : theShip.getPosY();
         return (theShip.getLength() + isHorizontal - 1 < table.length && isHorizontal >= 0);
     }
