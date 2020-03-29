@@ -27,10 +27,10 @@ class Player {
         this.playerName = createPlayerName();
         this.listOfShips = new ArrayList<Ship>();
         if (isHuman) {
-            this.playerBoard = createPlayerBoard();
+            this.playerBoard = placeManuallyOrRandomly();
         } else {
             this.difficulty = chooseDifficultyLvl();
-            this.playerBoard = computerCreatesOwnBoard();
+            this.playerBoard = createRandomBoard();
             this.listOfInitialShots = createListOfInitialShots();
             this.listOfFieldsNotToShootAt = new ArrayList<Square>();
             this.forbiddenRows = new ArrayList<Integer>();
@@ -53,7 +53,7 @@ class Player {
         return listToReturn;
     }
 
-    private Ocean computerCreatesOwnBoard() {
+    private Ocean createRandomBoard() {
         int oceanSize = 10;
         boolean isPlaceOK = false;
         ArrayList<Ship> list = new ArrayList<>();
@@ -95,6 +95,13 @@ class Player {
         }
         String compDiff = Engine.computerDifficulty.get(Engine.gatherIntInput("Select computer difficulty level: ", 3));
         return compDiff;
+    }
+
+    private Ocean placeManuallyOrRandomly(){
+        String userChoice = Engine.gatherInput("Do you want to have your ships placed randomly?");
+        if (userChoice.equals("Y")){
+            return createRandomBoard();
+        } return  createPlayerBoard();
     }
 
     private Ocean createPlayerBoard() {
@@ -495,18 +502,3 @@ class Player {
         }
     }
 }
-
-// public void addFieldsAsNotToShootAt() {
-// for (int y=0; y<this.getBoardOfShots().getOceanSize(); y++){
-// for (int x=0; x<this.getBoardOfShots().getOceanSize(); x++){
-// if (this.getBoardOfShots().getOceanBoard()[y][x].getStatus().equals("HIT")) {
-// for (int i = -1; i < 2; i++) {
-// for (int j = -1; j < 2; j++) {
-// this.getBoardOfShots().getOceanBoard()[y][x]
-// !this.listOfFieldsNotToShootAt.contains(field))
-
-// }
-// }
-
-// }
-// }
