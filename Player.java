@@ -348,10 +348,20 @@ class Player {
                 posY = currentPosY - 1;
                 posX = currentPosX;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
-            } else {
+            } else if (currentPosY < 9
+                    && !this.getListOfFieldsNotToShootAt()
+                            .contains(this.getPlayerBoard().getOceanBoard()[currentPosY + 1][currentPosX])
+                    && (this.getDirection().equals("DOWN") || this.getDirection().equals(""))) {
                 posY = currentPosY + 1;
                 posX = currentPosX;
                 field = this.getPlayerBoard().getOceanBoard()[posY][posX];
+            } else {
+                this.setDirection(this.switchDirection(this.getDirection())); //
+                this.nextPosByDirection();
+                posX = this.getCurrentX(); // trying to fix confusion when
+                posY = this.getCurrentY(); // can not hit the next field
+                field = this.getPlayerBoard().getOceanBoard()[posY][posX]; //
+                                                                           //
             }
         }
 
@@ -437,9 +447,31 @@ class Player {
     }
 
     public int calculateHighScore() {
-        int baseNum = 10_000;
-        int turnPoints = this.getTurn() * 100;
+        int baseNum = 100_000;
+        int turnPoints = this.getTurn() * 10;
         int timePoints = Math.toIntExact(this.getTime() / 100_000_000);
         return baseNum - turnPoints - timePoints;
+    }
+
+    public void nextPosByDirection() {
+        switch (this.getDirection()) {
+            case "LEFT":
+                this.setCurrentY(getBaseShotSquare().getPosY());
+                this.setCurrentX(getBaseShotSquare().getPosX() - 1);
+                break;
+            case "RIGHT":
+                this.setCurrentY(getBaseShotSquare().getPosY());
+                this.setCurrentX(getBaseShotSquare().getPosX() + 1);
+                break;
+            case "UP":
+                this.setCurrentY(getBaseShotSquare().getPosY() - 1);
+                this.setCurrentX(getBaseShotSquare().getPosX());
+                break;
+            case "DOWN":
+                this.setCurrentY(getBaseShotSquare().getPosY() + 1);
+                this.setCurrentX(getBaseShotSquare().getPosX());
+                break;
+        }
+
     }
 }
