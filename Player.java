@@ -14,7 +14,6 @@ class Player {
     private int[][] listOfInitialShots;
     private ArrayList<Square> listOfFieldsNotToShootAt;
     private Square baseShotSquare;
-    private Square nextShotSquare;
     private List<Integer> forbiddenRows;
     private String direction;
     private int currentX;
@@ -189,14 +188,6 @@ class Player {
 
     public void setTurn(int turn) {
         this.turn = turn;
-    }
-
-    public Square getNextShotSquare() {
-        return this.nextShotSquare;
-    }
-
-    public void setNextShotSquare(Square nextShotSquare) {
-        this.nextShotSquare = nextShotSquare;
     }
 
     public Square getBaseShotSquare() {
