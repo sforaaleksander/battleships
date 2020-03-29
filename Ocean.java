@@ -3,22 +3,30 @@ import java.util.ArrayList;
 class Ocean {
     private int oceanSize;
     private Square[][] oceanBoard;
-    private ArrayList<Square> allShipSquares;
+    private ArrayList<Square> ShipSquaresList;
+    private ArrayList<Square> allSquaresList;
 
     Ocean(int oceanSize) {
         this.oceanSize = oceanSize;
+        this.allSquaresList = new ArrayList<>();
         this.oceanBoard = initializeOceanBoard(oceanSize);
     }
 
     public Square[][] initializeOceanBoard(int oceanSize) {
         oceanBoard = new Square[oceanSize][oceanSize];
-        allShipSquares = new ArrayList<>();
+        ShipSquaresList = new ArrayList<>();
         for (int i = 0; i < oceanSize; i++) {
             for (int j = 0; j < oceanSize; j++) {
-                oceanBoard[i][j] = new Square(i, j);
+                Square field = new Square(i, j);
+                oceanBoard[i][j] = field;
+                allSquaresList.add(field);
             }
         }
         return oceanBoard;
+    }
+
+    public ArrayList<Square> getAllSquaresList(){
+        return this.allSquaresList;
     }
 
     public Square[][] getOceanBoard() {
@@ -33,12 +41,12 @@ class Ocean {
         return this.getOceanBoard()[posY][posX];
     }
 
-    public ArrayList<Square> getAllShipSquares() {
-        return this.allShipSquares;
+    public ArrayList<Square> getShipSquaresList() {
+        return this.ShipSquaresList;
     }
 
     public void addToShipSquares(Square field) {
-        this.allShipSquares.add(field);
+        this.ShipSquaresList.add(field);
     }
 
     public boolean placeOnTable(Ship newShip) {
@@ -65,13 +73,12 @@ class Ocean {
 
     public String toString() {
         String output = " ";
-        String[] letters = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
         for (int x = 1; x < 11; x++) {
             output += " " + x;
         }
         output += "\n";
         for (int i = 0; i < this.oceanSize; i++) {
-            output += letters[i];
+            output += Engine.lettersAJ[i];
             for (int j = 0; j < this.oceanSize; j++) {
                 output += oceanBoard[i][j].toString();
             }
@@ -113,7 +120,7 @@ class Ocean {
     }
 
     public void setFieldsUnavailable() {
-        for (Square element : getAllShipSquares()) {
+        for (Square element : getShipSquaresList()) {
             for (int i = -1; i < 2; i++) {
                 for (int j = -1; j < 2; j++) {
                     int x = element.getPosX() + j;

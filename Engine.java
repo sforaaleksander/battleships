@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 class Engine {
     public static Scanner scan;
-    private static Character[] lettersAJ = new Character[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+    public static Character[] lettersAJ = new Character[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
     public static Map<String, Integer> shipsNameLength;
     public static Map<Character, Integer> lettersToNums;
     public static Map<Integer, String> computerDifficulty;
@@ -158,9 +158,9 @@ class Engine {
 
     private static int countShipSquares(Player player) {
         int counter = 0;
-        for (Square element1 : player.getPlayerBoard().getAllShipSquares()) {
+        for (Square element1 : player.getPlayerBoard().getShipSquaresList()) {
             if (isFieldAShip(element1)) {
-                counter = counter + 1;
+                counter++;
             }
         }
         return counter;
@@ -176,9 +176,6 @@ class Engine {
         Random r = new Random();
         int number = r.nextInt(range);
         return number;
-    }
-
-    public static void addFieldsAsNotToShootAt(ArrayList<Square> list) {
     }
 
     public static void saveHighScoreToFile(String playerName, int score) {
