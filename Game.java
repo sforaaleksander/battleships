@@ -92,22 +92,23 @@ class Game {
             if (currentPlayer.getIsHuman() == true) {
                 long startTime = System.nanoTime();
                 currentPlayer.displayScreen("");
-                String message = currentPlayer.launchTheRocket(opponentPlayer);
-                System.out.println(opponentPlayer.getPlayerBoard().toString()); //for tests
-                currentPlayer.displayScreen(message);
-                Engine.gatherEmptyInput("End turn and switch player.");
+                // hashed for tests
+                // String message = currentPlayer.launchTheRocket(opponentPlayer);
+                // currentPlayer.displayScreen(message);
+                // Engine.gatherEmptyInput("End turn and switch player.");
                 long elapsedTime = System.nanoTime() - startTime;
                 currentPlayer.increaseTime(elapsedTime);
             } else {
-                Engine.clearScreen();
-                System.out.println("\n\n\nComputer is now taking the shot...");
+                opponentPlayer.displayScreen(""); //for debug only
+                // Engine.clearScreen();
+                // System.out.println("\n\n\nComputer is now taking the shot...");
                 currentPlayer.computerLaunchTheRocket(opponentPlayer);
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException e) {
-                    System.out.println(e);
-                }
-                Engine.clearScreen();
+                // try {
+                //     TimeUnit.SECONDS.sleep(1);
+                // } catch (InterruptedException e) {
+                //     System.out.println(e);
+                // }
+                // Engine.clearScreen();
             }
             isAlive = Engine.arePlayersAlive(currentPlayer, opponentPlayer);
             if (!isAlive) {

@@ -416,9 +416,9 @@ class Player {
         String hitsBoard = this.getBoardOfShots().toString();
         System.out.println("YOUR SHIPS");
         System.out.println(playerBoard);
-        System.out.println("_____________________\n");
-        System.out.println("BOARD OF SHOTS");
-        System.out.println(hitsBoard);
+        // System.out.println("_____________________\n"); commented for debugging
+        // System.out.println("BOARD OF SHOTS");
+        // System.out.println(hitsBoard);
         System.out.println(message);
 
     }
