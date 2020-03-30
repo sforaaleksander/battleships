@@ -4,22 +4,12 @@ import java.util.ArrayList;
 class Game {
     private Player player1;
     private Player player2;
-    // private String gameMode;
     public static ArrayList<String> listOfPlayers = new ArrayList<>();
 
     Game(boolean isHuman1, boolean isHuman2) {
-        // this.gameMode = "";
         this.player1 = new Player(isHuman1);
         this.player2 = new Player(isHuman2);
     }
-
-    // public String getGameMode() {
-    // return this.gameMode;
-    // }
-
-    // public void setGameMode(String gameMode) {
-    // this.gameMode = gameMode;
-    // }
 
     public Player getPlayerOne() {
         return this.player1;
@@ -53,7 +43,7 @@ class Game {
         boolean switchPlayer = false;
         Player currentPlayer = getPlayerOne();
         Player opponentPlayer = getPlayerTwo();
-
+        
         while (isAlive) {
             if (!switchPlayer) {
                 switchPlayer = true;
