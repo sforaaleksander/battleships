@@ -1,11 +1,10 @@
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 class Game {
     private Player player1;
     private Player player2;
-    public static Set<String> listOfPlayers = new HashSet<>();
+    public static ArrayList<String> listOfPlayers = new ArrayList<>();
 
     Game(boolean isHuman1, boolean isHuman2) {
         this.player1 = new Player(isHuman1);
@@ -140,9 +139,7 @@ class Game {
             currentPlayer.computerLaunchTheRocket(opponentPlayer);
             currentPlayer.displayScreen("");
             Engine.gatherEmptyInput("End turn and switch player.");
-
             Engine.clearScreen();
-
             isAlive = Engine.arePlayersAlive(currentPlayer, opponentPlayer);
             if (!isAlive) {
                 winGameScreen(currentPlayer, opponentPlayer);

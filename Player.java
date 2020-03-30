@@ -251,7 +251,6 @@ class Player {
                     hitCounter = hitCounter + 1;
                     if (hitCounter == element.getLength()) {
                         getListOfShips().remove(element);
-                        this.setBaseShotSquare(null);
                         return true;
                     }
                 }
@@ -275,6 +274,7 @@ class Player {
             String sunk = playerBeingShot.isShipSunk() ? " AND SUNK!" : "!";
             return "YOU HIT" + sunk;
         } else {
+            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("MISSED");
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
             return "YOU MISSED!";
         }
@@ -307,7 +307,7 @@ class Player {
                 pair = this.getListOfInitialShots()[Engine.getRandomNumber(25)];
                 posY = pair[0];
                 posX = pair[1];
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
+                field = playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX];
             } while (forbiddenRows.contains(posY) || this.getListOfFieldsNotToShootAt().contains(field)
                     || !checkColour(posY, posX));
             forbiddenRows.add(posY);
@@ -316,14 +316,14 @@ class Player {
             do {
                 posY = Engine.getRandomNumber(10);
                 posX = Engine.getRandomNumber(10);
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
+                field = playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX];
             } while (this.getListOfFieldsNotToShootAt().contains(field) || !checkColour(posY, posX));
 
         } else if (this.getBaseShotSquare() == null) {
             do {
                 posY = Engine.getRandomNumber(10);
                 posX = Engine.getRandomNumber(10);
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
+                field = playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX];
             } while (this.getListOfFieldsNotToShootAt().contains(field));
 
         } else {
@@ -332,47 +332,43 @@ class Player {
 
             if (currentPosX > 0
                     && !this.getListOfFieldsNotToShootAt()
-                            .contains(this.getPlayerBoard().getOceanBoard()[currentPosY][currentPosX - 1])
+                            .contains(playerBeingShot.getPlayerBoard().getOceanBoard()[currentPosY][currentPosX - 1])
                     && (this.getDirection().equals("LEFT") || this.getDirection().equals(""))) {
                 posY = currentPosY;
                 posX = currentPosX - 1;
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else if (currentPosX < 9
                     && !this.getListOfFieldsNotToShootAt()
-                            .contains(this.getPlayerBoard().getOceanBoard()[currentPosY][currentPosX + 1])
+                            .contains(playerBeingShot.getPlayerBoard().getOceanBoard()[currentPosY][currentPosX + 1])
                     && (this.getDirection().equals("RIGHT") || this.getDirection().equals(""))) {
                 posY = currentPosY;
                 posX = currentPosX + 1;
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else if (currentPosY > 0
                     && !this.getListOfFieldsNotToShootAt()
-                            .contains(this.getPlayerBoard().getOceanBoard()[currentPosY - 1][currentPosX])
+                            .contains(playerBeingShot.getPlayerBoard().getOceanBoard()[currentPosY - 1][currentPosX])
                     && (this.getDirection().equals("UP") || this.getDirection().equals(""))) {
                 posY = currentPosY - 1;
                 posX = currentPosX;
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else if (currentPosY < 9
                     && !this.getListOfFieldsNotToShootAt()
-                            .contains(this.getPlayerBoard().getOceanBoard()[currentPosY + 1][currentPosX])
+                            .contains(playerBeingShot.getPlayerBoard().getOceanBoard()[currentPosY + 1][currentPosX])
                     && (this.getDirection().equals("DOWN") || this.getDirection().equals(""))) {
                 posY = currentPosY + 1;
                 posX = currentPosX;
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX];
             } else {
-                this.setDirection(this.switchDirection()); //
+                this.setDirection(this.switchDirection());
                 this.nextPosByDirection();
-                posX = this.getCurrentX(); // trying to fix confusion when
-                posY = this.getCurrentY(); // can not hit the next field
-                field = this.getPlayerBoard().getOceanBoard()[posY][posX]; //
-                                                                           //
+                posX = this.getCurrentX(); 
+                posY = this.getCurrentY();                                                           
             }
         }
+
+        field = playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX];
 
         if (Engine.isFieldAShip(playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX])) {
             playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
             if (this.getBaseShotSquare() == null) {
-                this.setBaseShotSquare(this.getPlayerBoard().getOceanBoard()[posY][posX]);
+                this.setBaseShotSquare(this.getBoardOfShots().getOceanBoard()[posY][posX]);
             }
             this.setCurrentX(posX);
             this.setCurrentY(posY);
@@ -381,12 +377,12 @@ class Player {
             if (playerBeingShot.isShipSunk()) {
                 this.setDirection("");
                 this.setBaseShotSquare(null);
-                this.addFieldsAroundSunkShip();
+                this.addFieldsAroundSunkShip(playerBeingShot);
             }
         } else if (playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].getStatus().equals("EMPTY")) {
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
-            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("MISSED"); // display PC shots for
-                                                                                                 // debug
+            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("MISSED");
+                                                                                                 
             this.addToListOfFieldsNotToShootAt(field);
             if (this.getBaseShotSquare() != null) {
                 this.setCurrentX(this.getBaseShotSquare().getPosX());
@@ -486,15 +482,15 @@ class Player {
             return (posX % 2 != 0 && posY % 2 == 0) || (posX % 2 == 0 && posY % 2 != 0);
     }
 
-    public void addFieldsAroundSunkShip() {
-        for (Square field : this.getBoardOfShots().getAllSquaresList()) {
+    public void addFieldsAroundSunkShip(Player playerBeingShot) {
+        for (Square field : playerBeingShot.getPlayerBoard().getAllSquaresList()) {
             if (field.getStatus().equals("HIT")) {
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         int x = field.getPosX() + j;
                         int y = field.getPosY() + i;
-                        if (x >= 0 && x < 10 && y >= 0 && y < 10 && !this.listOfFieldsNotToShootAt.contains(this.boardOfShots.getOceanBoard()[y][x])){
-                            listOfFieldsNotToShootAt.add(this.playerBoard.getOceanBoard()[y][x]);
+                        if (x >= 0 && x < 10 && y >= 0 && y < 10 && !this.getListOfFieldsNotToShootAt().contains(playerBeingShot.getPlayerBoard().getOceanBoard()[y][x])){
+                            this.addToListOfFieldsNotToShootAt(playerBeingShot.getPlayerBoard().getOceanBoard()[y][x]);
                         }
                     }
                 }
