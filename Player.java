@@ -416,7 +416,22 @@ class Player {
         System.out.println("BOARD OF SHOTS");
         System.out.println(hitsBoard);
         System.out.println(message);
+    }
 
+    public void displaySimulationScreen(Player opponentPlayer, boolean switchPlayer){
+        Engine.clearScreen();
+        String boardOne = switchPlayer ? this.getPlayerBoard().toString() : opponentPlayer.getPlayerBoard().toString();
+        String boardTwo = switchPlayer ? opponentPlayer.getPlayerBoard().toString() : this.getPlayerBoard().toString();
+        String nameOne = switchPlayer ? this.getPlayerName() : opponentPlayer.getPlayerName();
+        String nameTwo = switchPlayer ? opponentPlayer.getPlayerName() : this.getPlayerName();
+        System.out.println("CURRENT TURN: " + this.getTurn() + "\n");
+        System.out.println( nameOne + "'S BOARD");
+        System.out.println("");
+        System.out.println(boardOne);
+        System.out.println("_____________________\n");
+        System.out.println(nameTwo + "'S BOARD");
+        System.out.println("");
+        System.out.println(boardTwo);
     }
 
     public String findDirection(int posY, int posX) {
