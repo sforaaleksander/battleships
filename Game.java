@@ -4,11 +4,21 @@ import java.util.ArrayList;
 class Game {
     private Player player1;
     private Player player2;
+    private String gameMode;
     public static ArrayList<String> listOfPlayers = new ArrayList<>();
 
     Game(boolean isHuman1, boolean isHuman2) {
+        this.gameMode = "";
         this.player1 = new Player(isHuman1);
         this.player2 = new Player(isHuman2);
+    }
+
+    public String getGameMode(){
+        return this.gameMode;
+    }
+
+    public void setGameMode(String gameMode){
+        this.gameMode = gameMode;
     }
 
     public Player getPlayerOne() {
@@ -39,8 +49,8 @@ class Game {
     public void pvpMode() {
         boolean isAlive = true;
         boolean switchPlayer = false;
-        Player currentPlayer;
-        Player opponentPlayer;
+        Player currentPlayer = getPlayerOne();
+        Player opponentPlayer = getPlayerTwo();
 
         while (isAlive) {
             if (!switchPlayer) {
@@ -62,12 +72,10 @@ class Game {
             long elapsedTime = System.nanoTime() - startTime;
             currentPlayer.increaseTime(elapsedTime);
             Engine.changeHotSeats();
-            isAlive = Engine.arePlayersAlive(currentPlayer, opponentPlayer);
-            if (!isAlive) {
-                Engine.saveHighScoreToFile(currentPlayer.getPlayerName(), currentPlayer.calculateHighScore());
-                winGameScreen(currentPlayer, opponentPlayer);
-            }
+            isAlive = Engine.arePlayersAlive(currentPlayer, opponentPlayer);            
         }
+        Engine.saveHighScoreToFile(currentPlayer.getPlayerName(), currentPlayer.calculateHighScore());
+                winGameScreen(currentPlayer, opponentPlayer);
     }
 
     public void pvcMode() {
@@ -92,7 +100,6 @@ class Game {
                 long startTime = System.nanoTime();
                 currentPlayer.displayScreen("");
                 String message = currentPlayer.launchTheRocket(opponentPlayer);
-                System.out.println(opponentPlayer.getPlayerBoard().toString()); //for tests
                 currentPlayer.displayScreen(message);
                 Engine.gatherEmptyInput("End turn and switch player.");
                 long elapsedTime = System.nanoTime() - startTime;

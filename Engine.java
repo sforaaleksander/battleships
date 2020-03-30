@@ -212,7 +212,7 @@ class Engine {
         int z = sortedArr.length - 1;
         while (z > 0 && i < 10) {
             String[] testArr = sortedArr[z];
-            tenHighestScores += String.join("|", testArr) + "\n";
+            tenHighestScores += i + ". " + String.join("|", testArr) + "\n";
             z--;
             i++;
         }

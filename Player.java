@@ -98,7 +98,7 @@ class Player {
     }
 
     private Ocean placeManuallyOrRandomly(){
-        String userChoice = Engine.gatherInput("Do you want to have your ships placed randomly?");
+        String userChoice = Engine.gatherInput("Do you want to have your ships placed randomly? [Y/N]");
         if (userChoice.equals("Y")){
             return createRandomBoard();
         } return  createPlayerBoard();
