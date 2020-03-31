@@ -38,18 +38,18 @@ class Player {
             this.direction = "";
             this.colour = Engine.getRandomNumber(10) > 5 ? "BLACK" : "WHITE";
         }
-
     }
 
     private int[][] createListOfInitialShots() {
-        List<int[]> listArr = new ArrayList<>();
+        int[][] listToReturn = new int[25][2];
+        int count = 0;
         for (int y = 2; y < 7; y++) {
             for (int x = 2; x < 7; x++) {
                 int[] pair = new int[] { y, x };
-                listArr.add(pair);
+                listToReturn[count] = pair;
+                count++;
             }
         }
-        int[][] listToReturn = listArr.toArray(new int[25][2]);
         return listToReturn;
     }
 
@@ -173,7 +173,7 @@ class Player {
         this.currentY = currentY;
     }
 
-    public ArrayList<Square> getListOfFieldsNotToShootAt() {
+    public List<Square> getListOfFieldsNotToShootAt() {
         return this.listOfFieldsNotToShootAt;
     }
 
@@ -209,7 +209,7 @@ class Player {
         return this.difficulty;
     }
 
-    public ArrayList<Ship> getListOfShips() {
+    public List<Ship> getListOfShips() {
         return this.listOfShips;
     }
 
