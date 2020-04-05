@@ -8,7 +8,7 @@ public class HumanPlayer extends Player{
     }
 
     private Ocean placeManuallyOrRandomly() {
-        String userChoice = Engine.gatherInput("Do you want to have your ships placed randomly? [Y/N]");
+        String userChoice = IO.gatherInput("Do you want to have your ships placed randomly? [Y/N]");
         if (userChoice.equals("Y")) {
             return createRandomBoard();
         }
@@ -29,9 +29,9 @@ public class HumanPlayer extends Player{
                 if (!isPlaceOK) {
                     System.out.println("The ships must fit on board and may not touch each other.");
                 }
-                String userOrientation = Engine
+                String userOrientation = IO
                         .gatherVOrHInput("Type [h] for horizontal or [v] for vertical for your ship placement.");
-                String userPosition = Engine.gatherPositionInput("Type the position. (eg. F3)");
+                String userPosition = IO.gatherPositionInput("Type the position. (eg. F3)");
                 char userLetter = userPosition.charAt(0);
                 int posY = Engine.fromLetterToNum(userLetter);
                 int posX = Integer.parseInt(userPosition.substring(1)) - 1;
@@ -64,7 +64,7 @@ public class HumanPlayer extends Player{
     }
 
     public String launchTheRocket(Player playerBeingShot) {
-        String userPosition = Engine.gatherPositionInput("Type the field to shoot at. (eg. F3)");
+        String userPosition = IO.gatherPositionInput("Type the field to shoot at. (eg. F3)");
         char userLetter = userPosition.charAt(0);
         int posY = Engine.fromLetterToNum(userLetter);
         int posX = Integer.parseInt(userPosition.substring(1)) - 1;

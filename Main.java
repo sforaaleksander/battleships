@@ -13,13 +13,13 @@ class Main {
         while (isRunning){
         mainMenu();
         }
-        Engine.scan.close();
+        IO.scan.close();
     }
 
     public static void initializeMain(){
         Engine.clearScreen();
         isRunning = true;
-        Engine.initializeScanner();
+        IO.initializeScanner();
         Engine.initializeHashMaps();
 
         mainMenuList = new String[]{"PLAY NEW GAME", "ABOUT", "SHOW HIGHSCORES", "EXIT"};
@@ -41,7 +41,7 @@ class Main {
         System.out.println("THE BATTLESHIP GAME\n");
         for (int i = 0; i < mainMenuList.length; i++){
             System.out.println(i + 1 + ". " + mainMenuList[i]);
-        } int userChoice = Engine.gatherIntInput("", 4);
+        } int userChoice = IO.gatherIntInput("", 4);
         Engine.clearScreen();
         mainMenu.get(userChoice).run();        
     }
@@ -51,7 +51,7 @@ class Main {
         System.out.println("PLAY NEW GAME\n");
         for (int i = 0; i < newGameMenuList.length; i++){
             System.out.println(i + 1 + ". " + newGameMenuList[i]);
-        } int userChoice = Engine.gatherIntInput("", 3);
+        } int userChoice = IO.gatherIntInput("", 3);
         Engine.clearScreen();
         playGameMenu.get(userChoice).run();
     }
@@ -62,8 +62,8 @@ class Main {
     public static void highScoresDisplay(){
         Engine.clearScreen();
         System.out.println("HIGH SCORES BOARD\n");
-        System.out.println(Engine.loadHighScores());
-        Engine.gatherEmptyInput("");
+        System.out.println(IO.loadHighScores());
+        IO.gatherEmptyInput("");
     }
 
     public static void exitGame(){

@@ -101,7 +101,7 @@ public class ComputerPlayer extends Player {
         for (int i = 1; i < 4; i++) {
             System.out.println(i + ". " + Engine.computerDifficulty.get(i));
         }
-        String compDiff = Engine.computerDifficulty.get(Engine.gatherIntInput("Select computer difficulty level: ", 3));
+        String compDiff = Engine.computerDifficulty.get(IO.gatherIntInput("Select computer difficulty level: ", 3));
         return compDiff;
     }
 

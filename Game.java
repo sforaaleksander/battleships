@@ -35,7 +35,7 @@ class Game {
     }
 
     public void restartGame() {
-        String input = Engine.gatherInput("Do you want to start new game? [y/n]");
+        String input = IO.gatherInput("Do you want to start new game? [y/n]");
         if (input.equals("Y")) {
             Main.newGameMenu();
         }
@@ -48,14 +48,14 @@ class Game {
             pvpTurn(this.humanPlayer1, this.humanPlayer2);
             isAlive = Engine.arePlayersAlive(this.humanPlayer1, this.humanPlayer2);
             if (!isAlive){
-                Engine.saveHighScoreToFile(this.humanPlayer1.getPlayerName(), this.humanPlayer1.calculateHighScore());
+                IO.saveHighScoreToFile(this.humanPlayer1.getPlayerName(), this.humanPlayer1.calculateHighScore());
                 winGameScreen(this.humanPlayer1, this.humanPlayer2);
             }
             this.humanPlayer2.setTurn(humanPlayer2.getTurn() + 1); 
             pvpTurn(this.humanPlayer2, this.humanPlayer1);
             isAlive = Engine.arePlayersAlive(this.humanPlayer2, this.humanPlayer1);
             if (!isAlive){
-                Engine.saveHighScoreToFile(this.humanPlayer1.getPlayerName(), this.humanPlayer1.calculateHighScore());
+                IO.saveHighScoreToFile(this.humanPlayer1.getPlayerName(), this.humanPlayer1.calculateHighScore());
                 winGameScreen(this.humanPlayer1, this.humanPlayer2);
             }
         }
@@ -68,14 +68,14 @@ class Game {
             pvcModeHumanAttacks(this.humanPlayer1, this.computerPlayer1);
             isAlive = Engine.arePlayersAlive(this.humanPlayer1, this.computerPlayer1);
             if (!isAlive){
-                Engine.saveHighScoreToFile(this.humanPlayer1.getPlayerName(), this.humanPlayer1.calculateHighScore());
+                IO.saveHighScoreToFile(this.humanPlayer1.getPlayerName(), this.humanPlayer1.calculateHighScore());
                 winGameScreen(this.humanPlayer1, this.computerPlayer1);
             }
             this.computerPlayer1.setTurn(computerPlayer1.getTurn() + 1); 
             pvcModeComputerAttacks(this.computerPlayer1, this.humanPlayer1);
             isAlive = Engine.arePlayersAlive(this.computerPlayer1, this.humanPlayer1);
             if (!isAlive){
-                Engine.saveHighScoreToFile(this.computerPlayer1.getPlayerName(), this.computerPlayer1.calculateHighScore());
+                IO.saveHighScoreToFile(this.computerPlayer1.getPlayerName(), this.computerPlayer1.calculateHighScore());
                 winGameScreen(this.computerPlayer1, this.humanPlayer1);
             }
         }
@@ -88,14 +88,14 @@ class Game {
             cvcTurn(this.computerPlayer1, this.computerPlayer2, false);
             isAlive = Engine.arePlayersAlive(this.computerPlayer1, this.computerPlayer1);
             if (!isAlive){
-                Engine.saveHighScoreToFile(this.computerPlayer1.getPlayerName(), this.computerPlayer1.calculateHighScore());
+                IO.saveHighScoreToFile(this.computerPlayer1.getPlayerName(), this.computerPlayer1.calculateHighScore());
                 winGameScreen(this.computerPlayer1, this.computerPlayer1);
             }
             this.computerPlayer2.setTurn(computerPlayer2.getTurn() + 1); 
             cvcTurn(this.computerPlayer2, this.computerPlayer1, true);
             isAlive = Engine.arePlayersAlive(this.computerPlayer1, this.computerPlayer1);
             if (!isAlive){
-                Engine.saveHighScoreToFile(this.computerPlayer1.getPlayerName(), this.computerPlayer1.calculateHighScore());
+                IO.saveHighScoreToFile(this.computerPlayer1.getPlayerName(), this.computerPlayer1.calculateHighScore());
                 winGameScreen(this.computerPlayer2, this.computerPlayer1);
             }
         }
@@ -106,7 +106,7 @@ class Game {
         currentPlayer.displayScreen("");
         String message = currentPlayer.launchTheRocket(opponentPlayer);
         currentPlayer.displayScreen(message);
-        Engine.gatherEmptyInput("End turn and switch player.");
+        IO.gatherEmptyInput("End turn and switch player.");
         long elapsedTime = System.nanoTime() - startTime;
         currentPlayer.increaseTime(elapsedTime);
         Engine.changeHotSeats();
@@ -117,7 +117,7 @@ class Game {
         currentPlayer.displayScreen("");
         String message = currentPlayer.launchTheRocket(opponentPlayer);
         currentPlayer.displayScreen(message);
-        Engine.gatherEmptyInput("End turn and switch player.");
+        IO.gatherEmptyInput("End turn and switch player.");
         long elapsedTime = System.nanoTime() - startTime;
         currentPlayer.increaseTime(elapsedTime);
 
@@ -139,7 +139,7 @@ class Game {
     public void cvcTurn(ComputerPlayer currentPlayer, ComputerPlayer opponentPlayer, boolean switchPlayer) {
         currentPlayer.computerLaunchTheRocket(opponentPlayer);
         currentPlayer.displaySimulationScreen(opponentPlayer, switchPlayer);
-        Engine.gatherEmptyInput("End turn and switch player.");
+        IO.gatherEmptyInput("End turn and switch player.");
         Engine.clearScreen();
 
     }

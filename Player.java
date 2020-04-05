@@ -13,7 +13,7 @@ class Player {
         this.boardOfShots = new Ocean(10);
         this.turn = 0;
         this.time = 0;
-        this.playerName = Engine.gatherInput("Enter nickname: ");;
+        this.playerName = IO.gatherInput("Enter nickname: ");;
         this.listOfShips = new ArrayList<Ship>();
     }
 
