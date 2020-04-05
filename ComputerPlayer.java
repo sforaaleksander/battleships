@@ -96,7 +96,6 @@ public class ComputerPlayer extends Player {
         return listToReturn;
     }
 
-
     private String chooseDifficultyLvl() {
         for (int i = 1; i < 4; i++) {
             System.out.println(i + ". " + Engine.computerDifficulty.get(i));
@@ -134,7 +133,7 @@ public class ComputerPlayer extends Player {
                 posX = pair[1];
                 field = playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX];
             } while (forbiddenRows.contains(posY) || this.getListOfFieldsNotToShootAt().contains(field)
-                    || !checkColour(posY, posX));
+                    || !AIhelpers.checkColour(posY, posX, this.getColour()));
             forbiddenRows.add(posY);
 
         } else if (this.getBaseShotSquare() == null && this.getDifficulty().equals("HARD")) {
@@ -142,7 +141,7 @@ public class ComputerPlayer extends Player {
                 posY = Engine.getRandomNumber(10);
                 posX = Engine.getRandomNumber(10);
                 field = playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX];
-            } while (this.getListOfFieldsNotToShootAt().contains(field) || !checkColour(posY, posX));
+            } while (this.getListOfFieldsNotToShootAt().contains(field) || !AIhelpers.checkColour(posY, posX, this.getColour()));
 
         } else if (this.getBaseShotSquare() == null) {
             do {
@@ -180,8 +179,8 @@ public class ComputerPlayer extends Player {
                 posY = currentPosY + 1;
                 posX = currentPosX;
             } else {
-                this.setDirection(this.switchDirection());
-                this.nextPosByDirection();
+                this.setDirection(AIhelpers.switchDirection(this.getDirection()));
+                AIhelpers.nextPosByDirection(this);
                 posX = this.getCurrentX(); 
                 posY = this.getCurrentY();                                                           
             }
@@ -198,11 +197,11 @@ public class ComputerPlayer extends Player {
             this.setCurrentX(posX);
             this.setCurrentY(posY);
             this.addToListOfFieldsNotToShootAt(field);
-            this.setDirection(this.findDirection(posY, posX));
+            this.setDirection(AIhelpers.findDirection(getBaseShotSquare(), posY, posX));
             if (playerBeingShot.isShipSunk()) {
                 this.setDirection("");
                 this.setBaseShotSquare(null);
-                this.addFieldsAroundSunkShip(playerBeingShot);
+                AIhelpers.addFieldsAroundSunkShip(this, playerBeingShot);
             }
         } else if (playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].getStatus().equals("EMPTY")) {
             this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
@@ -213,7 +212,7 @@ public class ComputerPlayer extends Player {
                 this.setCurrentX(this.getBaseShotSquare().getPosX());
                 this.setCurrentY(this.getBaseShotSquare().getPosY());
             }
-            this.setDirection(this.switchDirection());
+            this.setDirection(AIhelpers.switchDirection(this.getDirection()));
         }
     }
 
@@ -224,7 +223,6 @@ public class ComputerPlayer extends Player {
             playNormalOrHardMode(playerBeingShot);
         } else if (this.getDifficulty().equals("HARD")) {
             playNormalOrHardMode(playerBeingShot);
-
         }
     }
 
@@ -243,77 +241,4 @@ public class ComputerPlayer extends Player {
         System.out.println("");
         System.out.println(boardTwo);
     }
-
-    public String findDirection(int posY, int posX) {
-        if (this.getBaseShotSquare().getPosY() > posY) {
-            return "UP";
-        } else if (this.getBaseShotSquare().getPosY() < posY) {
-            return "DOWN";
-        } else if (this.getBaseShotSquare().getPosX() > posX) {
-            return "LEFT";
-        } else if (this.getBaseShotSquare().getPosX() < posX) {
-            return "RIGHT";
-        }
-        return "";
-    }
-
-    public String switchDirection() {
-        switch (this.getDirection()) {
-            case "LEFT":
-                return "RIGHT";
-            case "RIGHT":
-                return "LEFT";
-            case "UP":
-                return "DOWN";
-            case "DOWN":
-                return "UP";
-        }
-        return "";
-    }
-
-    public void nextPosByDirection() {
-        switch (this.getDirection()) {
-            case "LEFT":
-                this.setCurrentY(getBaseShotSquare().getPosY());
-                this.setCurrentX(getBaseShotSquare().getPosX() - 1);
-                break;
-            case "RIGHT":
-                this.setCurrentY(getBaseShotSquare().getPosY());
-                this.setCurrentX(getBaseShotSquare().getPosX() + 1);
-                break;
-            case "UP":
-                this.setCurrentY(getBaseShotSquare().getPosY() - 1);
-                this.setCurrentX(getBaseShotSquare().getPosX());
-                break;
-            case "DOWN":
-                this.setCurrentY(getBaseShotSquare().getPosY() + 1);
-                this.setCurrentX(getBaseShotSquare().getPosX());
-                break;
-        }
-
-    }
-
-    public boolean checkColour(int posY, int posX) {
-        if (this.getColour().equals("WHITE")) {
-            return (posX % 2 == 0 && posY % 2 == 0) || (posX % 2 != 0 && posY % 2 != 0);
-        } else
-            return (posX % 2 != 0 && posY % 2 == 0) || (posX % 2 == 0 && posY % 2 != 0);
-    }
-
-    public void addFieldsAroundSunkShip(Player playerBeingShot) {
-        for (Square field : playerBeingShot.getPlayerBoard().getAllSquaresList()) {
-            if (field.getStatus().equals("HIT")) {
-                for (int i = -1; i < 2; i++) {
-                    for (int j = -1; j < 2; j++) {
-                        int x = field.getPosX() + j;
-                        int y = field.getPosY() + i;
-                        if (x >= 0 && x < 10 && y >= 0 && y < 10 && !this.getListOfFieldsNotToShootAt().contains(playerBeingShot.getPlayerBoard().getOceanBoard()[y][x])){
-                            this.addToListOfFieldsNotToShootAt(playerBeingShot.getPlayerBoard().getOceanBoard()[y][x]);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 }
