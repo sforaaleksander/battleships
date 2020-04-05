@@ -19,7 +19,7 @@ public class ComputerPlayer extends Player {
         super();
         this.difficulty = chooseDifficultyLvl();
         this.setPlayerBoard(createRandomBoard());
-        this.listOfInitialShots = createListOfInitialShots();
+        this.listOfInitialShots = AIhelpers.createListOfInitialShots();
         this.listOfFieldsNotToShootAt = new ArrayList<Square>();
         this.forbiddenRows = new ArrayList<Integer>();
         this.baseShotSquare = null;
@@ -81,19 +81,6 @@ public class ComputerPlayer extends Player {
 
     public String getDifficulty() {
         return this.difficulty;
-    }
-
-    private int[][] createListOfInitialShots() {
-        int[][] listToReturn = new int[25][2];
-        int count = 0;
-        for (int y = 2; y < 7; y++) {
-            for (int x = 2; x < 7; x++) {
-                int[] pair = new int[] { y, x };
-                listToReturn[count] = pair;
-                count++;
-            }
-        }
-        return listToReturn;
     }
 
     private String chooseDifficultyLvl() {

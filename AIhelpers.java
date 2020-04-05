@@ -1,5 +1,18 @@
 
 public class AIhelpers {
+
+    public static int[][] createListOfInitialShots() {
+        int[][] listToReturn = new int[25][2];
+        int count = 0;
+        for (int y = 2; y < 7; y++) {
+            for (int x = 2; x < 7; x++) {
+                int[] pair = new int[] { y, x };
+                listToReturn[count] = pair;
+                count++;
+            }
+        }
+        return listToReturn;
+    }
     public static String findDirection(Square baseShotSquare, int posY, int posX) {
         if (baseShotSquare.getPosY() > posY) {
             return "UP";
