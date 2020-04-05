@@ -3,7 +3,6 @@ import java.util.ArrayList;
 public class HumanPlayer extends Player{
     HumanPlayer(){
     super();
-    // this.is
     this.setPlayerBoard(placeManuallyOrRandomly());
     }
 

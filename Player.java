@@ -85,10 +85,6 @@ class Player {
         this.boardOfShots = board;
     }
 
-    // public boolean getIsHuman() {
-    //     return this.isHuman;
-    // }
-
     public int calculateHighScore() {
         int baseNum = 100_000;
         int turnPoints = this.getTurn() * 10;

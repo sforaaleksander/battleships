@@ -133,7 +133,6 @@ class Game {
             System.out.println(e);
         }
         Engine.clearScreen();
-
     }
 
     public void cvcTurn(ComputerPlayer currentPlayer, ComputerPlayer opponentPlayer, boolean switchPlayer) {
