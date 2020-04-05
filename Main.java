@@ -17,7 +17,6 @@ class Main {
     }
 
     public static void initializeMain(){
-        Game.listOfPlayers.clear();
         Engine.clearScreen();
         isRunning = true;
         Engine.initializeScanner();
@@ -32,9 +31,9 @@ class Main {
 
         newGameMenuList = new String[] {"PLAYER VS. PLAYER", "PLAYER VS. COMPUTER", "COMPUTER VS. COMPUTER"};
         playGameMenu = new HashMap<>();
-        playGameMenu.put(1, () -> startPvPGame());
-        playGameMenu.put(2, () -> startPvCGame());
-        playGameMenu.put(3, () -> startCvCGame());
+        playGameMenu.put(1, () -> new Game("pvp"));
+        playGameMenu.put(2, () -> new Game("pvc"));
+        playGameMenu.put(3, () -> new Game("cvc"));
     }
 
     public static void mainMenu(){
@@ -69,21 +68,5 @@ class Main {
 
     public static void exitGame(){
         isRunning = false;
-    }
-
-    public static void startPvPGame(){
-        Game newGame = new Game(true, true);
-        newGame.gamePlay("pvpMode");
-    }
-
-    public static void startPvCGame(){
-        Game newGame = new Game(true, false);
-        newGame.gamePlay("pvcMode");
-    }
-
-    public static void startCvCGame(){
-        Game newGame = new Game(false, false);
-        newGame.gamePlay("cvcMode");
-
     }
 }

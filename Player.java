@@ -6,19 +6,18 @@ class Player {
     private Ocean playerBoard;
     private Ocean boardOfShots;
     private ArrayList<Ship> listOfShips;
-    private boolean isHuman;
-   
+    private int turn;
+    private long time;
 
-    Player(boolean isHuman) {
-        this.isHuman = isHuman;
+    Player() {
         this.boardOfShots = new Ocean(10);
         this.turn = 0;
         this.time = 0;
-        this.playerName = createPlayerName();
-        this.listOfShips = new ArrayList<Ship>();  
+        this.playerName = Engine.gatherInput("Enter nickname: ");;
+        this.listOfShips = new ArrayList<Ship>();
     }
 
-    private Ocean createRandomBoard() {
+    protected Ocean createRandomBoard() {
         int oceanSize = 10;
         boolean isPlaceOK = false;
         ArrayList<Ship> list = new ArrayList<>();
@@ -42,25 +41,6 @@ class Player {
         return ocean;
     }
 
-    private String createPlayerName() {
-        String humanOrComputer = isHuman ? "Player" : "Computer";
-        int numberOfPlayer = Game.listOfPlayers.size() + 1;
-        String userName = Engine.gatherInput("Enter nickname for " + humanOrComputer + numberOfPlayer + ": ");
-        if (Game.listOfPlayers.contains(userName)) {
-            System.out.println("Name already taken, choose other one: ");
-            createPlayerName();
-        }
-        Game.listOfPlayers.add(userName);
-        return userName;
-    }
-
-    private Ocean placeManuallyOrRandomly(){
-        String userChoice = Engine.gatherInput("Do you want to have your ships placed randomly? [Y/N]");
-        if (userChoice.equals("Y")){
-            return createRandomBoard();
-        } return  createPlayerBoard();
-    }
-
     public long getTime() {
         return this.time;
     }
@@ -76,7 +56,6 @@ class Player {
     public void setTurn(int turn) {
         this.turn = turn;
     }
-
 
     public List<Ship> getListOfShips() {
         return this.listOfShips;
@@ -106,14 +85,32 @@ class Player {
         this.boardOfShots = board;
     }
 
-    public boolean getIsHuman() {
-        return this.isHuman;
-    }
+    // public boolean getIsHuman() {
+    //     return this.isHuman;
+    // }
 
     public int calculateHighScore() {
         int baseNum = 100_000;
         int turnPoints = this.getTurn() * 10;
         int timePoints = Math.toIntExact(this.getTime() / 100_000_000);
         return baseNum - turnPoints - timePoints;
+    }
+
+    public boolean isShipSunk() {
+        for (Ship element : getListOfShips()) {
+            int hitCounter = 0;
+            for (int i = 0; i < element.getListOfFields().size(); i++) {
+                if (element.getListOfFields().get(i).getStatus().equals("SHIP")) {
+                    break;
+                } else {
+                    hitCounter = hitCounter + 1;
+                    if (hitCounter == element.getLength()) {
+                        getListOfShips().remove(element);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

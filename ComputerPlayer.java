@@ -1,7 +1,9 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class ComputerPlayer extends Player {
  
-    private int turn;
+    
     private String difficulty;
     private int[][] listOfInitialShots;
     private ArrayList<Square> listOfFieldsNotToShootAt;
@@ -11,12 +13,12 @@ public class ComputerPlayer extends Player {
     private int currentX;
     private int currentY;
     private String colour;
-    private long time;
+    
 
     ComputerPlayer(){
         super();
         this.difficulty = chooseDifficultyLvl();
-        this.playerBoard = createRandomBoard();
+        this.setPlayerBoard(createRandomBoard());
         this.listOfInitialShots = createListOfInitialShots();
         this.listOfFieldsNotToShootAt = new ArrayList<Square>();
         this.forbiddenRows = new ArrayList<Integer>();
@@ -101,46 +103,6 @@ public class ComputerPlayer extends Player {
         }
         String compDiff = Engine.computerDifficulty.get(Engine.gatherIntInput("Select computer difficulty level: ", 3));
         return compDiff;
-    }
-
-
-    public boolean isShipSunk() {
-        for (Ship element : getListOfShips()) {
-            int hitCounter = 0;
-            for (int i = 0; i < element.getListOfFields().size(); i++) {
-                if (element.getListOfFields().get(i).getStatus().equals("SHIP")) {
-                    break;
-                } else {
-                    hitCounter = hitCounter + 1;
-                    if (hitCounter == element.getLength()) {
-                        getListOfShips().remove(element);
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public String launchTheRocket(Player playerBeingShot) {
-        String userPosition = Engine.gatherPositionInput("Type the field to shoot at. (eg. F3)");
-        char userLetter = userPosition.charAt(0);
-        int posY = Engine.fromLetterToNum(userLetter);
-        int posX = Integer.parseInt(userPosition.substring(1)) - 1;
-        if (Engine.isFieldAlreadyHit(this.getBoardOfShots().getOceanBoard()[posY][posX])) {
-            return "You have already struck that coordinats! You wasted a missle!";
-        }
-
-        if (Engine.isFieldAShip(playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX])) {
-            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
-            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
-            String sunk = playerBeingShot.isShipSunk() ? " AND SUNK!" : "!";
-            return "YOU HIT" + sunk;
-        } else {
-            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("MISSED");
-            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
-            return "YOU MISSED!";
-        }
     }
 
     public void playEasyMode(Player playerBeingShot) {
@@ -265,7 +227,6 @@ public class ComputerPlayer extends Player {
 
         }
     }
-
 
     public void displaySimulationScreen(Player opponentPlayer, boolean switchPlayer){
         Engine.clearScreen();

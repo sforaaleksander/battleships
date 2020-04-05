@@ -1,7 +1,18 @@
+import java.util.ArrayList;
+
 public class HumanPlayer extends Player{
     HumanPlayer(){
     super();
-    this.playerBoard = placeManuallyOrRandomly();
+    // this.is
+    this.setPlayerBoard(placeManuallyOrRandomly());
+    }
+
+    private Ocean placeManuallyOrRandomly() {
+        String userChoice = Engine.gatherInput("Do you want to have your ships placed randomly? [Y/N]");
+        if (userChoice.equals("Y")) {
+            return createRandomBoard();
+        }
+        return createPlayerBoard();
     }
 
     private Ocean createPlayerBoard() {
@@ -50,5 +61,26 @@ public class HumanPlayer extends Player{
         System.out.println("BOARD OF SHOTS");
         System.out.println(hitsBoard);
         System.out.println(message);
+    }
+
+    public String launchTheRocket(Player playerBeingShot) {
+        String userPosition = Engine.gatherPositionInput("Type the field to shoot at. (eg. F3)");
+        char userLetter = userPosition.charAt(0);
+        int posY = Engine.fromLetterToNum(userLetter);
+        int posX = Integer.parseInt(userPosition.substring(1)) - 1;
+        if (Engine.isFieldAlreadyHit(this.getBoardOfShots().getOceanBoard()[posY][posX])) {
+            return "You have already struck that coordinats! You wasted a missle!";
+        }
+
+        if (Engine.isFieldAShip(playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX])) {
+            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("HIT");
+            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("HIT");
+            String sunk = playerBeingShot.isShipSunk() ? " AND SUNK!" : "!";
+            return "YOU HIT" + sunk;
+        } else {
+            playerBeingShot.getPlayerBoard().getOceanBoard()[posY][posX].changeStatus("MISSED");
+            this.getBoardOfShots().getOceanBoard()[posY][posX].changeStatus("MISSED");
+            return "YOU MISSED!";
+        }
     }
 }
