@@ -59,7 +59,6 @@ public class AIhelpers {
                 player.setCurrentX(player.getBaseShotSquare().getPosX());
                 break;
         }
-
     }
 
     public static boolean checkColour(int posY, int posX, String colour) {
