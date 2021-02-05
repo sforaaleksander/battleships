@@ -1,43 +1,47 @@
+package com.codecool.battleship_oop.player;
+
+import com.codecool.battleship_oop.board.Ocean;
+import com.codecool.battleship_oop.board.Square;
+import com.codecool.battleship_oop.board.SquareStatus;
+import com.codecool.battleship_oop.ship.Ship;
+import com.codecool.battleship_oop.ship.ShipType;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
-class Player {
-    private String playerName;
+public abstract class Player {
+    private final String playerName;
+    private final Ocean boardOfShots;
+    private final List<Ship> listOfShips;
     private Ocean playerBoard;
-    private Ocean boardOfShots;
-    private ArrayList<Ship> listOfShips;
     private int turn;
     private long time;
 
-    Player() {
+    protected Player(String name) {
         this.boardOfShots = new Ocean(10);
         this.turn = 0;
         this.time = 0;
-        this.playerName = IO.gatherInput("Enter nickname: ");;
-        this.listOfShips = new ArrayList<Ship>();
+        this.playerName = name;
+        this.listOfShips = new ArrayList<>();
     }
 
     protected Ocean createRandomBoard() {
         int oceanSize = 10;
-        boolean isPlaceOK = false;
-        ArrayList<Ship> list = new ArrayList<>();
+        boolean isPlaceOK;
         Ocean ocean = new Ocean(oceanSize);
-        for (String key : Engine.shipsNameLength.keySet()) {
+        for (ShipType shipType : ShipType.values()) {
             Ship newShip;
             do {
-                String computerOrientation = Engine.getRandomNumber(10) < 5 ? "H" : "V";
-                int posY = Engine.getRandomNumber(10);
-                int posX = Engine.getRandomNumber(10);
-                int length = Engine.shipsNameLength.get(key);
-                newShip = new Ship(length, computerOrientation, posX, posY, key);
-                list.add(newShip);
+                String computerOrientation = ThreadLocalRandom.current().nextInt(10) < 5 ? "H" : "V";
+                int posY = ThreadLocalRandom.current().nextInt(10);
+                int posX = ThreadLocalRandom.current().nextInt(10);
+                newShip = new Ship(shipType, computerOrientation, posX, posY);
                 isPlaceOK = ocean.placeOnTable(newShip);
             } while (!isPlaceOK);
-            ocean.setFieldsUnavailable();
             this.getListOfShips().add(newShip);
         }
         System.out.println(ocean.toString());
-        Engine.changeHotSeats();
         return ocean;
     }
 
@@ -61,10 +65,6 @@ class Player {
         return this.listOfShips;
     }
 
-    public void setPlayerName(String name) {
-        this.playerName = name;
-    }
-
     public String getPlayerName() {
         return this.playerName;
     }
@@ -77,12 +77,16 @@ class Player {
         this.playerBoard = board;
     }
 
+    public Square[][] getBoardSquares() {
+        return playerBoard.getOceanBoard();
+    }
+
     public Ocean getBoardOfShots() {
         return this.boardOfShots;
     }
 
-    public void setBoardOfShots(Ocean board) {
-        this.boardOfShots = board;
+    public Square[][] getShotsBoardSquares() {
+        return boardOfShots.getOceanBoard();
     }
 
     public int calculateHighScore() {
@@ -96,7 +100,7 @@ class Player {
         for (Ship element : getListOfShips()) {
             int hitCounter = 0;
             for (int i = 0; i < element.getListOfFields().size(); i++) {
-                if (element.getListOfFields().get(i).getStatus().equals("SHIP")) {
+                if (element.getListOfFields().get(i).getStatus().equals(SquareStatus.SHIP)) {
                     break;
                 } else {
                     hitCounter = hitCounter + 1;
@@ -108,5 +112,13 @@ class Player {
             }
         }
         return false;
+    }
+
+    public boolean isFieldAShip(Square field) {
+        return field.getStatus().equals(SquareStatus.SHIP);
+    }
+
+    public boolean isFieldAlreadyHit(Square field) {
+        return field.getStatus().equals(SquareStatus.HIT) || field.getStatus().equals(SquareStatus.MISSED);
     }
 }
