@@ -1,24 +1,32 @@
-import java.util.Scanner;
+package com.codecool.battleship_oop.input;
+
+import com.codecool.battleship_oop.board.LettersAJ;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Scanner;
 
+public class Input {
+    private final Scanner scan;
 
-public class IO {
-    public static Scanner scan;
-
-    public static void initializeScanner() {
+    public Input() {
         scan = new Scanner(System.in);
         scan.useDelimiter(System.lineSeparator());
     }
 
-    public static String gatherInput(String title) {
+    public Scanner getScan() {
+        return scan;
+    }
+
+    public String gatherInput(String title) {
         System.out.println(title);
         boolean validInput = true;
-        String userInput = "";
+        String userInput;
         do {
             if (!validInput) {
                 System.out.println("Your input must contain at least one character. Enter again: ");
@@ -32,32 +40,27 @@ public class IO {
         return userInput;
     }
 
-    public static String gatherEmptyInput(String title) {
+    public void gatherEmptyInput(String title) {
         System.out.println(title);
-        String userInput = scan.next().toUpperCase();
-        return userInput;
+        scan.next();
     }
 
-    public static int gatherIntInput(String title, int range) {
+    public int gatherIntInput(String title, int range) {
         System.out.println(title);
         String userInput;
         int userInt = 1;
         boolean validInput = false;
         while (!validInput) {
             userInput = scan.next();
-            if (!userInput.equals("")) {
-                if (userInput.matches("^[0-9]*$")) {
-                    userInt = Integer.parseInt(userInput);
-                    if (userInt > 0 && userInt <= range) {
-                        validInput = true;
-                    }
-                }
+            if (!userInput.equals("") && userInput.matches("^[0-9]*$") && userInt <= range) {
+                userInt = Integer.parseInt(userInput);
+                validInput = true;
             }
         }
         return userInt;
     }
 
-    public static String gatherVOrHInput(String title) {
+    public String gatherVOrHInput(String title) {
         System.out.println(title);
         String userInput = "";
         boolean validInput = false;
@@ -70,10 +73,10 @@ public class IO {
         return userInput;
     }
 
-    public static String gatherPositionInput(String title) {
+    public String gatherPositionInput(String title) {
         System.out.println(title);
         boolean validInput = true;
-        String userInput = "";
+        String userInput;
         do {
             if (!validInput) {
                 System.out.println("Please provide the position in a correct format. (eg. F3)");
@@ -82,7 +85,7 @@ public class IO {
             userInput = scan.next().toUpperCase();
             if (!userInput.equals("") && userInput.length() > 1) {
                 if (userInput.substring(1).matches("^[0-9]*$")) {
-                    if (Arrays.asList(Engine.lettersAJ).contains(userInput.charAt(0))
+                    if (LettersAJ.getLettersList().contains(userInput.charAt(0))
                             && Integer.parseInt(userInput.substring(1)) > 0
                             && Integer.parseInt(userInput.substring(1)) <= 10) {
                         validInput = true;
@@ -94,23 +97,23 @@ public class IO {
     }
 
 
-    public static void saveHighScoreToFile(String playerName, int score) {
+    public void saveHighScoreToFile(String playerName, int score) {
         LocalDate dateToday = LocalDate.now();
         String date = dateToday.toString();
-        String highScoreEntry = playerName + "|" + date + "|" + Integer.toString(score) + "\n";
+        String highScoreEntry = playerName + "|" + date + "|" + score + "\n";
         try {
             FileWriter fileWriter = new FileWriter("highscores.txt", true);
             fileWriter.write(highScoreEntry);
             fileWriter.close();
         } catch (IOException e) {
-            System.out.println(e);
-            IO.gatherEmptyInput("Could not write to file.");
+            e.printStackTrace();
+            gatherEmptyInput("Could not write to file.");
         }
     }
 
-    public static String loadHighScores() {
-        String tenHighestScores = "";
-        ArrayList<String[]> allHighScores = new ArrayList<String[]>();
+    public String loadHighScores() {
+        StringBuilder tenHighestScores = new StringBuilder();
+        ArrayList<String[]> allHighScores = new ArrayList<>();
         try {
             File file = new File("highscores.txt");
             Scanner reader = new Scanner(file);
@@ -123,15 +126,15 @@ public class IO {
             return "No highscores yet.";
         }
         String[][] sortedArr = allHighScores.toArray(new String[allHighScores.size()][3]);
-        Arrays.sort(sortedArr, (a, b) -> Integer.compare(Integer.parseInt(a[2]), Integer.parseInt(b[2])));
-        int i = 0;
+        Arrays.sort(sortedArr, Comparator.comparingInt(a -> Integer.parseInt(a[2])));
+        int i = 1;
         int z = sortedArr.length - 1;
-        while (z > 0 && i < 10) {
+        while (z > 0 && i < 11) {
             String[] testArr = sortedArr[z];
-            tenHighestScores += i+1 + ". " + String.join("|", testArr) + "\n";
+            tenHighestScores.append(i).append(". ").append(String.join("|", testArr)).append("\n");
             z--;
             i++;
         }
-        return tenHighestScores;
+        return tenHighestScores.toString();
     }
 }
