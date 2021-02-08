@@ -96,7 +96,6 @@ public class Input {
         return userInput;
     }
 
-
     public void saveHighScoreToFile(String playerName, int score) {
         LocalDate dateToday = LocalDate.now();
         String date = dateToday.toString();

@@ -76,7 +76,7 @@ public class ComputerPlayerHard extends ComputerPlayerNormal {
             return (posX % 2 != 0 && posY % 2 == 0) || (posX % 2 == 0 && posY % 2 != 0);
     }
 
-    public int[][] createListOfInitialShots() {
+    private int[][] createListOfInitialShots() {
         int[][] listToReturn = new int[25][2];
         int count = 0;
         for (int y = 2; y < 7; y++) {

@@ -38,9 +38,9 @@ public class Battleship {
         mainMenu.put(4, this::exitGame);
 
         playGameMenu = new HashMap<>();
-        playGameMenu.put(1, () -> new Game(GameMode.PVP, display, input));
-        playGameMenu.put(2, () -> new Game(GameMode.PVC, display, input));
-        playGameMenu.put(3, () -> new Game(GameMode.CVC, display, input));
+        playGameMenu.put(1, () -> new GamePvp(display, input).play());
+        playGameMenu.put(2, () -> new GamePvc(display, input).play());
+        playGameMenu.put(3, () -> new GameCvc(display, input).play());
     }
 
     public void mainMenu() {

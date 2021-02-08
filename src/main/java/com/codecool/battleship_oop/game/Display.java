@@ -14,7 +14,6 @@ public class Display {
         this.input = input;
     }
 
-
     public void printMainMenu() {
         clearScreen();
         System.out.println("THE BATTLESHIP GAME\n");
@@ -31,7 +30,6 @@ public class Display {
         }
     }
 
-
     public void changeHotSeats() {
         clearScreen();
         input.gatherEmptyInput("\n\n\nPress any key when ready.");
@@ -46,7 +44,7 @@ public class Display {
         }
     }
 
-    void printComputerDifficulties() {
+    public void printComputerDifficulties() {
         int i = 1;
         for (ComputerDifficulty difficulty : ComputerDifficulty.values()) {
             System.out.println(i + ". " + difficulty.getName());

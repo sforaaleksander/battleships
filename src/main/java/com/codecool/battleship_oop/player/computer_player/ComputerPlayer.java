@@ -14,7 +14,6 @@ public abstract class ComputerPlayer extends Player {
 
     public ComputerPlayer(String name) {
         super(name);
-        this.setPlayerBoard(createRandomBoard());
         this.fieldsNotToShootAt = new HashSet<>();
     }
 

@@ -4,11 +4,9 @@ import com.codecool.battleship_oop.board.Ocean;
 import com.codecool.battleship_oop.board.Square;
 import com.codecool.battleship_oop.board.SquareStatus;
 import com.codecool.battleship_oop.ship.Ship;
-import com.codecool.battleship_oop.ship.ShipType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Player {
     private final String playerName;
@@ -24,25 +22,6 @@ public abstract class Player {
         this.time = 0;
         this.playerName = name;
         this.listOfShips = new ArrayList<>();
-    }
-
-    protected Ocean createRandomBoard() {
-        int oceanSize = 10;
-        boolean isPlaceOK;
-        Ocean ocean = new Ocean(oceanSize);
-        for (ShipType shipType : ShipType.values()) {
-            Ship newShip;
-            do {
-                String computerOrientation = ThreadLocalRandom.current().nextInt(10) < 5 ? "H" : "V";
-                int posY = ThreadLocalRandom.current().nextInt(10);
-                int posX = ThreadLocalRandom.current().nextInt(10);
-                newShip = new Ship(shipType, computerOrientation, posX, posY);
-                isPlaceOK = ocean.placeOnTable(newShip);
-            } while (!isPlaceOK);
-            this.getListOfShips().add(newShip);
-        }
-        System.out.println(ocean.toString());
-        return ocean;
     }
 
     public long getTime() {
